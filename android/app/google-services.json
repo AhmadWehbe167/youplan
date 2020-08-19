@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "99938883350",
+    "firebase_url": "https://youplan1-e3611.firebaseio.com",
+    "project_id": "youplan1-e3611",
+    "storage_bucket": "youplan1-e3611.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99938883350:android:572ed4ee6a91f7bc09e237",
+        "android_client_info": {
+          "package_name": "youplan.youplan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99938883350-2msououvtpo3e32e2cpm4ds6obraak2b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "youplan.youplan",
+            "certificate_hash": "e4be3627fb653c27dc010151a565f3fa3a052e4d"
+          }
+        },
+        {
+          "client_id": "99938883350-k0cdqfbjts380de1df2ubmv2c7d1prqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3IMLlX509LG7WovU8ysARBGiyYiOHyi8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99938883350-k0cdqfbjts380de1df2ubmv2c7d1prqa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
