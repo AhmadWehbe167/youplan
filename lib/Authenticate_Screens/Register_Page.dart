@@ -112,15 +112,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             userName = val;
                           });
                         },
-                        validate: (val) {
+                        validate: (String val) {
                           if (val.length == 0) {
                             return 'This is mandatory';
                           } else if (val.length < 3) {
                             return 'UserName should be at least 3 characters';
                           } else if (val.length > 27) {
                             return 'UserName should not be more than 27';
+                          } else if (val[val.length - 1] == ' ') {
+                            return 'Check if last letter is white space';
                           } else if (checkTextNumbers(val)) {
-                            return 'no spaces and only characters, numbers, underscore ';
+                            return 'no spaces and only characters, numbers, underscore';
                           } else {
                             return null;
                           }
@@ -144,15 +146,19 @@ class _RegisterPageState extends State<RegisterPage> {
                             fullName = val;
                           });
                         },
-                        validate: (val) {
+                        validate: (String val) {
                           if (val.length == 0) {
                             return 'This is mandatory';
                           } else if (val.length < 4) {
                             return 'Name should be at least 4 characters';
                           } else if (val.length > 27) {
                             return 'Name should not be more than 27';
+                          } else if (val[val.length - 1] == ' ') {
+                            return 'Check if last letter is white space';
                           } else if (checkText(val)) {
                             return 'use only characters';
+                          } else if (consecutiveWhiteSpaces(val)) {
+                            return 'you can\'t have two white spaces consecutively';
                           } else {
                             return null;
                           }
@@ -167,9 +173,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             email = val;
                           });
                         },
-                        validate: (val) {
+                        validate: (String val) {
                           if (val.isEmpty) {
                             return 'This is mandatory';
+                          } else if (val[val.length - 1] == ' ') {
+                            return 'Check if last letter is white space';
                           } else if (!validateEmail(val)) {
                             return 'Please Provide a valid email';
                           } else {
@@ -193,6 +201,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             return 'Password should be at least 6 characters';
                           } else if (val.length > 27) {
                             return 'Password should not be more than 27';
+                          } else if (val[val.length - 1] == ' ') {
+                            return 'Check if last letter is white space';
+                          } else if (containsWhiteSpaces(val)) {
+                            return 'you can\'t have white spaces in password';
+                          } else if (!checkAlphaNumericPass(val)) {
+                            return 'Password should contain both letters and numbers';
                           } else {
                             return null;
                           }

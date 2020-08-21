@@ -58,7 +58,7 @@ class AuthServices {
   Future checkUserNameAvailability(String userName) async {
     DocumentSnapshot querySnapshot = await Firestore.instance
         .collection('userNames')
-        .document(userName)
+        .document(userName.toUpperCase())
         .get();
     if (querySnapshot.exists) {
       return false;
