@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 
-class MyTextField extends StatelessWidget {
+class AuthTextField extends StatelessWidget {
   final String labelTitle;
   final Function validate;
   final TextInputType keyboard;
   final bool obsecure;
   final IconButton icon;
   final Function onChan;
-  const MyTextField({
+  const AuthTextField({
     Key key,
     this.labelTitle,
     this.validate,
@@ -22,46 +22,45 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: EdgeInsets.fromLTRB(width / 15, 0, width / 15, height / 100),
-      child: Container(
-        child: TextFormField(
-          style: TextStyle(
-              color: navy, letterSpacing: 0.5, fontWeight: FontWeight.bold),
-          obscureText: obsecure,
-          decoration: new InputDecoration(
-            errorStyle: TextStyle(fontWeight: FontWeight.bold),
-            hintText: labelTitle,
-            hintStyle: TextStyle(fontWeight: FontWeight.normal),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            suffixIcon: icon,
-            isDense: true,
-            fillColor: Colors.white,
-            filled: true,
-            labelStyle:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(width / 25),
-                borderSide: BorderSide(
-                  color: Colors.white,
-                  width: 2,
-                )),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(width / 25),
-                borderSide: BorderSide(
-                  color: navy,
-                  width: 2,
-                )),
-            border: new OutlineInputBorder(
-              borderRadius: new BorderRadius.circular(width / 25),
-              borderSide: new BorderSide(),
-            ),
+    return TextFormField(
+      style: TextStyle(
+          color: navy,
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.bold,
+          fontSize: height * 0.025),
+      obscureText: obsecure,
+      decoration: InputDecoration(
+        errorStyle: TextStyle(fontWeight: FontWeight.bold),
+        hintText: labelTitle,
+        hintStyle:
+            TextStyle(fontWeight: FontWeight.normal, fontSize: height * 0.023),
+        suffixIcon: icon,
+        isDense: true,
+        fillColor: Colors.white,
+        filled: true,
+        enabledBorder: OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(height / 50),
+            borderSide: BorderSide(
+              color: Colors.white,
+              width: 2,
+            )),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(height / 50),
+            borderSide: BorderSide(
+              color: navy,
+              width: 2,
+            )),
+        border: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(height / 50),
+          borderSide: new BorderSide(
+            color: navy,
+            width: 2,
           ),
-          validator: validate,
-          keyboardType: keyboard,
-          onChanged: onChan,
         ),
       ),
+      validator: validate,
+      keyboardType: keyboard,
+      onChanged: onChan,
     );
   }
 }

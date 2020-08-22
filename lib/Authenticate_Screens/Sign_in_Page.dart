@@ -102,7 +102,7 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                             )
                           : Container(),
-                      MyTextField(
+                      AuthTextField(
                         obsecure: false,
                         labelTitle: 'Email',
                         keyboard: TextInputType.emailAddress,
@@ -121,7 +121,7 @@ class _SignInPageState extends State<SignInPage> {
                           }
                         },
                       ),
-                      MyTextField(
+                      AuthTextField(
                         obsecure: isObsecure,
                         labelTitle: 'Password',
                         keyboard: TextInputType.emailAddress,

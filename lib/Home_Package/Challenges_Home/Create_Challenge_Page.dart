@@ -48,7 +48,7 @@ class _CreateChallengePageState extends State<CreateChallengePage> {
             SizedBox(
               height: 10,
             ),
-            MyTextField(
+            AuthTextField(
               labelTitle: 'Title',
               keyboard: TextInputType.text,
               validate: (val) {
@@ -68,7 +68,7 @@ class _CreateChallengePageState extends State<CreateChallengePage> {
             SizedBox(
               height: 25,
             ),
-            MyTextField(
+            AuthTextField(
               labelTitle: 'Description',
               keyboard: TextInputType.text,
               validate: (val) {
@@ -83,7 +83,7 @@ class _CreateChallengePageState extends State<CreateChallengePage> {
                 description = val;
               },
             ),
-            MyTextField(
+            AuthTextField(
               labelTitle: 'Notes',
               keyboard: TextInputType.text,
               validate: (val) {

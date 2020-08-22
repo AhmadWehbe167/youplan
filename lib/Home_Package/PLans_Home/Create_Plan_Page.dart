@@ -67,7 +67,7 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
             SizedBox(
               height: 10,
             ),
-            MyTextField(
+            AuthTextField(
               labelTitle: 'Title',
               keyboard: TextInputType.text,
               validate: (val) {
@@ -152,7 +152,7 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
             SizedBox(
               height: 25,
             ),
-            MyTextField(
+            AuthTextField(
               labelTitle: 'Description',
               keyboard: TextInputType.text,
               validate: (val) {
@@ -167,7 +167,7 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
                 description = val;
               },
             ),
-            MyTextField(
+            AuthTextField(
               labelTitle: 'Notes',
               keyboard: TextInputType.text,
               validate: (val) {
