@@ -129,7 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               flex: 5,
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(
-                                    width * 0.03, 0, width * 0.03, 0),
+                                    width * 0.05, 0, width * 0.05, 0),
                                 child: AuthTextField(
                                   obsecure: false,
                                   labelTitle: 'UserName',
@@ -171,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               flex: 5,
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(
-                                    width * 0.03, 0, width * 0.03, 0),
+                                    width * 0.05, 0, width * 0.05, 0),
                                 child: AuthTextField(
                                   obsecure: false,
                                   labelTitle: 'Full Name',
@@ -206,7 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               flex: 5,
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(
-                                    width * 0.03, 0, width * 0.03, 0),
+                                    width * 0.05, 0, width * 0.05, 0),
                                 child: AuthTextField(
                                   obsecure: false,
                                   labelTitle: 'Email',
@@ -235,7 +235,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               flex: 5,
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(
-                                    width * 0.03, 0, width * 0.03, 0),
+                                    width * 0.05, 0, width * 0.05, 0),
                                 child: AuthTextField(
                                   obsecure: isObsecure,
                                   labelTitle: 'Password',
@@ -283,7 +283,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               flex: 5,
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(
-                                    width * 0.03, 0, width * 0.03, 0),
+                                    width * 0.05, 0, width * 0.05, 0),
                                 child: AuthTextField(
                                   obsecure: isObsecure,
                                   labelTitle: 'Confirm Password',
