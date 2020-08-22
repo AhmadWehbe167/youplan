@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:youplan/Authenticate_Screens/AuthBackground.dart';
 import 'package:youplan/Authenticate_Screens/Refactored.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/services/ConnectionCheck.dart';
@@ -17,6 +16,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  ScrollController _scrollController = ScrollController();
   final AuthServices _auth = AuthServices();
   final _formKey = GlobalKey<FormState>();
   bool isObsecure = true;
@@ -24,6 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String fullName;
   String email;
   String password;
+  String confirmPassword;
   bool loading = false;
   String userNameTakenError;
   String networkError;
@@ -43,43 +44,40 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return loading
         ? Loading()
         : Form(
             key: _formKey,
             child: Stack(
               children: <Widget>[
-                AuthBackground(),
                 Scaffold(
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: lightNavy,
                   body: ListView(
+                    controller: _scrollController,
                     children: [
-                      SizedBox(
-                        height: 20,
-                      ),
                       MyImage(
-                        imageName: 'standingMan',
-                        myHeight: 130,
-                      ),
-                      SizedBox(
-                        height: 15,
+                        imageName: 'orangeStandingMan',
+                        myHeight: height / 4.5,
+                        myWidth: width / 2,
                       ),
                       MyImage(
                         imageName: 'WhiteSignUp',
-                        myHeight: 30,
+                        myHeight: height / 23,
+                        myWidth: width / 4,
                       ),
                       Center(
                         child: Text(
                           'Create an account to get started',
                           style: TextStyle(
-//                            color: Color(0xfff5b8da),
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: height / 47,
                           ),
                         ),
                       ),
                       SizedBox(
-                        height: 25,
+                        height: height / 70,
                       ),
                       networkError != null
                           ? Center(
@@ -188,7 +186,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       MyTextField(
                         obsecure: isObsecure,
                         labelTitle: 'Password',
-                        keyboard: TextInputType.emailAddress,
                         onChan: (val) {
                           setState(() {
                             password = val;
@@ -224,6 +221,34 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         ),
                       ),
+                      MyTextField(
+                        obsecure: isObsecure,
+                        labelTitle: 'Confirm Password',
+                        onChan: (val) {
+                          setState(() {
+                            confirmPassword = val;
+                          });
+                        },
+                        validate: (val) {
+                          if (val != password) {
+                            return 'Passwords don\'t match';
+                          } else {
+                            return null;
+                          }
+                        },
+                        icon: IconButton(
+                          icon: Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isObsecure = !isObsecure;
+                            });
+                          },
+                        ),
+                      ),
                       Center(
                           child: RichText(
                         text: TextSpan(children: <TextSpan>[
@@ -235,20 +260,20 @@ class _RegisterPageState extends State<RegisterPage> {
                               text: 'terms and conditions',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: navy,
+                                color: myOrange,
                                 fontWeight: FontWeight.bold,
                               ))
                         ]),
                       )),
                       SizedBox(
-                        height: 25,
+                        height: height / 80,
                       ),
                       Center(
                         child: RaisedButton(
                           elevation: 3,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0),
-                              side: BorderSide(color: lightNavy)),
+                              side: BorderSide(color: myOrange)),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               bool isConnected = await checkConnection();
@@ -312,7 +337,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             }
                           },
                           textColor: Colors.white,
-                          color: lightNavy,
+                          color: myOrange,
                           padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
                           child: const Text('Sign Up',
                               style: TextStyle(
@@ -339,20 +364,19 @@ class _RegisterPageState extends State<RegisterPage> {
                               'Sign In',
                               style: TextStyle(
                                   fontSize: 17,
-//                                  color: Color(0xff063e4f),
-                                  color: navy,
+                                  color: myOrange,
                                   fontWeight: FontWeight.bold),
                             ),
                           )
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: EdgeInsets.only(top: height / 100),
                         child: Center(
                           child: Text(
                             '---- Or Continue With ----',
                             style: TextStyle(
-                              color: lightNavy,
+                              color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -362,12 +386,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 20, bottom: 10),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Opacity(
                               child: MyImage(
                                 myHeight: 40,
+                                myWidth: 40,
                                 imageName: 'Facebook',
                               ),
                               opacity: 0.85,
@@ -375,6 +400,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             Opacity(
                               child: MyImage(
                                 myHeight: 40,
+                                myWidth: 40,
                                 imageName: 'google',
                               ),
                               opacity: 0.85,
@@ -382,6 +408,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             Opacity(
                               child: MyImage(
                                 myHeight: 40,
+                                myWidth: 40,
                                 imageName: 'phone',
                               ),
                               opacity: 0.85,
