@@ -57,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     controller: _scrollController,
                     children: [
                       Container(
-                        height: height * 0.25,
+                        height: height * 0.2,
                         child: Column(
                           children: <Widget>[
                             Expanded(
@@ -97,253 +97,213 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.03,
+                        height: height * 0.01,
                       ),
                       networkError != null
                           ? Center(
                               child: Text(
                                 '$networkError',
                                 style: TextStyle(
-                                    color: Colors.red[800],
-                                    fontSize: 15,
+                                    color: Colors.redAccent,
+                                    fontSize: width / 24,
                                     fontWeight: FontWeight.bold),
                               ),
                             )
                           : Container(),
-                      emailTakenError != null
-                          ? Center(
-                              child: Text(
-                                '$emailTakenError',
-                                style: TextStyle(
-                                    color: Colors.red[800],
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )
-                          : Container(),
-                      Container(
-                        height: height * 0.4,
-                        child: Column(
-                          children: <Widget>[
-                            Expanded(
-                              flex: 5,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    width * 0.05, 0, width * 0.05, 0),
-                                child: AuthTextField(
-                                  obsecure: false,
-                                  labelTitle: 'UserName',
-                                  keyboard: TextInputType.emailAddress,
-                                  onChan: (val) {
-                                    setState(() {
-                                      userName = val;
-                                    });
-                                  },
-                                  validate: (String val) {
-                                    if (val.length == 0) {
-                                      return 'This is mandatory';
-                                    } else if (val.length < 3) {
-                                      return 'UserName should be at least 3 characters';
-                                    } else if (val.length > 27) {
-                                      return 'UserName should not be more than 27';
-                                    } else if (val[val.length - 1] == ' ') {
-                                      return 'Check if last letter is white space';
-                                    } else if (checkTextNumbers(val)) {
-                                      return 'no spaces and only characters, numbers, underscore';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                            userNameTakenError != null
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 30),
-                                    child: Text(
-                                      'UserName is taken choose a different one',
-                                      style: TextStyle(color: Colors.red[800]),
-                                    ),
-                                  )
-                                : Container(),
-                            Expanded(child: SizedBox()),
-                            Expanded(
-                              flex: 5,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    width * 0.05, 0, width * 0.05, 0),
-                                child: AuthTextField(
-                                  obsecure: false,
-                                  labelTitle: 'Full Name',
-                                  keyboard: TextInputType.emailAddress,
-                                  onChan: (val) {
-                                    setState(() {
-                                      fullName = val;
-                                    });
-                                  },
-                                  validate: (String val) {
-                                    if (val.length == 0) {
-                                      return 'This is mandatory';
-                                    } else if (val.length < 4) {
-                                      return 'Name should be at least 4 characters';
-                                    } else if (val.length > 27) {
-                                      return 'Name should not be more than 27';
-                                    } else if (val[val.length - 1] == ' ') {
-                                      return 'Check if last letter is white space';
-                                    } else if (checkText(val)) {
-                                      return 'use only characters';
-                                    } else if (consecutiveWhiteSpaces(val)) {
-                                      return 'you can\'t have two white spaces consecutively';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                            Expanded(child: SizedBox()),
-                            Expanded(
-                              flex: 5,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    width * 0.05, 0, width * 0.05, 0),
-                                child: AuthTextField(
-                                  obsecure: false,
-                                  labelTitle: 'Email',
-                                  keyboard: TextInputType.emailAddress,
-                                  onChan: (val) {
-                                    setState(() {
-                                      email = val;
-                                    });
-                                  },
-                                  validate: (String val) {
-                                    if (val.isEmpty) {
-                                      return 'This is mandatory';
-                                    } else if (val[val.length - 1] == ' ') {
-                                      return 'Check if last letter is white space';
-                                    } else if (!validateEmail(val)) {
-                                      return 'Please Provide a valid email';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                            Expanded(child: SizedBox()),
-                            Expanded(
-                              flex: 5,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    width * 0.05, 0, width * 0.05, 0),
-                                child: AuthTextField(
-                                  obsecure: isObsecure,
-                                  labelTitle: 'Password',
-                                  onChan: (val) {
-                                    setState(() {
-                                      password = val;
-                                    });
-                                  },
-                                  validate: (val) {
-                                    if (val.length == 0) {
-                                      return 'This is mandatory';
-                                    } else if (val.length < 6) {
-                                      return 'Password should be at least 6 characters';
-                                    } else if (val.length > 27) {
-                                      return 'Password should not be more than 27';
-                                    } else if (val[val.length - 1] == ' ') {
-                                      return 'Check if last letter is white space';
-                                    } else if (containsWhiteSpaces(val)) {
-                                      return 'you can\'t have white spaces in password';
-                                    } else if (!checkAlphaNumericPass(val)) {
-                                      return 'Password should contain both letters and numbers';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  icon: IconButton(
-                                    padding: EdgeInsets.fromLTRB(
-                                        0, 0, width / 100, 0),
-                                    icon: Icon(
-                                      Icons.remove_red_eye,
-                                      color: Colors.black,
-                                      size: height / 30,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        isObsecure = !isObsecure;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(child: SizedBox()),
-                            Expanded(
-                              flex: 5,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    width * 0.05, 0, width * 0.05, 0),
-                                child: AuthTextField(
-                                  obsecure: isObsecure,
-                                  labelTitle: 'Confirm Password',
-                                  onChan: (val) {
-                                    setState(() {
-                                      confirmPassword = val;
-                                    });
-                                  },
-                                  validate: (val) {
-                                    if (val != password) {
-                                      return 'Passwords don\'t match';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  icon: IconButton(
-                                    padding: EdgeInsets.fromLTRB(
-                                        0, 0, width / 100, 0),
-                                    icon: Icon(
-                                      Icons.remove_red_eye,
-                                      color: Colors.black,
-                                      size: height / 30,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        isObsecure = !isObsecure;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: RichText(
-                                      text: TextSpan(children: <TextSpan>[
-                                        TextSpan(
-                                            text:
-                                                'By signing up you agree to the ',
-                                            style: TextStyle(
-                                                fontSize: width / 28,
-                                                color: Colors.white)),
-                                        TextSpan(
-                                            text: 'terms and conditions',
-                                            style: TextStyle(
-                                              fontSize: width / 28,
-                                              color: myOrange,
-                                              fontWeight: FontWeight.bold,
-                                            ))
-                                      ]),
-                                    ),
-                                  )),
-                            ),
-                          ],
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(width * 0.05, height / 100,
+                            width * 0.05, height / 100),
+                        child: AuthTextField(
+                          obsecure: false,
+                          labelTitle: 'UserName',
+                          keyboard: TextInputType.emailAddress,
+                          onChan: (val) {
+                            setState(() {
+                              userName = val;
+                            });
+                          },
+                          validate: (String val) {
+                            if (val.length == 0) {
+                              return 'This is mandatory';
+                            } else if (val.length < 3) {
+                              return 'UserName should be at least 3 characters';
+                            } else if (val.length > 27) {
+                              return 'UserName should not be more than 27';
+                            } else if (val[val.length - 1] == ' ') {
+                              return 'Check if last letter is white space';
+                            } else if (checkTextNumbers(val)) {
+                              return 'no spaces and only characters, numbers, underscore';
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
                       ),
+                      userNameTakenError != null
+                          ? Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: height / 100),
+                                child: Text(
+                                  'UserName is taken choose a different one',
+                                  style: TextStyle(color: Colors.redAccent),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            width * 0.05, 0, width * 0.05, height / 100),
+                        child: AuthTextField(
+                          obsecure: false,
+                          labelTitle: 'Full Name',
+                          keyboard: TextInputType.emailAddress,
+                          onChan: (val) {
+                            setState(() {
+                              fullName = val;
+                            });
+                          },
+                          validate: (String val) {
+                            if (val.length == 0) {
+                              return 'This is mandatory';
+                            } else if (val.length < 4) {
+                              return 'Name should be at least 4 characters';
+                            } else if (val.length > 27) {
+                              return 'Name should not be more than 27';
+                            } else if (val[val.length - 1] == ' ') {
+                              return 'Check if last letter is white space';
+                            } else if (checkText(val)) {
+                              return 'use only characters';
+                            } else if (consecutiveWhiteSpaces(val)) {
+                              return 'you can\'t have two white spaces consecutively';
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            width * 0.05, 0, width * 0.05, height / 100),
+                        child: AuthTextField(
+                          obsecure: false,
+                          labelTitle: 'Email',
+                          keyboard: TextInputType.emailAddress,
+                          onChan: (val) {
+                            setState(() {
+                              email = val;
+                            });
+                          },
+                          validate: (String val) {
+                            if (val.isEmpty) {
+                              return 'This is mandatory';
+                            } else if (val[val.length - 1] == ' ') {
+                              return 'Check if last letter is white space';
+                            } else if (!validateEmail(val)) {
+                              return 'Please Provide a valid email';
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                      ),
+                      emailTakenError != null
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: height / 100),
+                              child: Center(
+                                child: Text(
+                                  '$emailTakenError',
+                                  style: TextStyle(
+                                      color: Colors.redAccent,
+                                      fontSize: width / 23,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            width * 0.05, 0, width * 0.05, height / 100),
+                        child: AuthTextField(
+                          obsecure: isObsecure,
+                          labelTitle: 'Password',
+                          onChan: (val) {
+                            setState(() {
+                              password = val;
+                            });
+                          },
+                          validate: (val) {
+                            if (val.length == 0) {
+                              return 'This is mandatory';
+                            } else if (val.length < 6) {
+                              return 'Password should be at least 6 characters';
+                            } else if (val.length > 27) {
+                              return 'Password should not be more than 27';
+                            } else if (val[val.length - 1] == ' ') {
+                              return 'Check if last letter is white space';
+                            } else if (containsWhiteSpaces(val)) {
+                              return 'you can\'t have white spaces in password';
+                            } else if (!checkAlphaNumericPass(val)) {
+                              return 'Password should contain both letters and numbers';
+                            } else {
+                              return null;
+                            }
+                          },
+                          icon: IconButton(
+                            padding: EdgeInsets.fromLTRB(0, 0, width / 100, 0),
+                            icon: Icon(
+                              Icons.remove_red_eye,
+                              color: Colors.black,
+                              size: height / 30,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                isObsecure = !isObsecure;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            width * 0.05, 0, width * 0.05, height / 100),
+                        child: AuthTextField(
+                          obsecure: isObsecure,
+                          labelTitle: 'Confirm Password',
+                          onChan: (val) {
+                            setState(() {
+                              confirmPassword = val;
+                            });
+                          },
+                          validate: (val) {
+                            if (val != password) {
+                              return 'Passwords don\'t match';
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.topCenter,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: RichText(
+                              text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                    text: 'By signing up you agree to the ',
+                                    style: TextStyle(
+                                        fontSize: width / 28,
+                                        color: Colors.white)),
+                                TextSpan(
+                                    text: 'terms and conditions',
+                                    style: TextStyle(
+                                      fontSize: width / 28,
+                                      color: myOrange,
+                                      fontWeight: FontWeight.bold,
+                                    ))
+                              ]),
+                            ),
+                          )),
                       Container(
                         height: height * 0.27,
                         child: Column(

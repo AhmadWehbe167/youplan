@@ -27,10 +27,11 @@ class AuthTextField extends StatelessWidget {
           color: navy,
           letterSpacing: 0.5,
           fontWeight: FontWeight.bold,
-          fontSize: height * 0.025),
+          fontSize: height * 0.023),
       obscureText: obsecure,
       decoration: InputDecoration(
-        errorStyle: TextStyle(fontWeight: FontWeight.bold),
+        errorStyle:
+            TextStyle(fontWeight: FontWeight.bold, color: Colors.redAccent),
         hintText: labelTitle,
         hintStyle:
             TextStyle(fontWeight: FontWeight.normal, fontSize: height * 0.023),
