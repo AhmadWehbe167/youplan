@@ -9,10 +9,41 @@ class AuthBackground extends StatefulWidget {
 class _AuthBackgroundState extends State<AuthBackground> {
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: myOrange,
-      body: Column(
-        children: <Widget>[AuthWavyHeader()],
+      backgroundColor: lightNavy,
+      body: Stack(
+        alignment: Alignment.topCenter,
+        children: <Widget>[
+          AuthWavyHeader(),
+//          Transform.translate(
+//            offset: Offset(0, height / 3.2),
+//            child: FittedBox(
+//              fit: BoxFit.contain,
+//              child: Text(
+//                'Create an account to get started',
+//                style: TextStyle(
+//                  color: Colors.white,
+//                  fontSize: height / 47,
+//                ),
+//              ),
+//            ),
+//          ),
+//          MyImage(
+//            imageName: 'orangeStandingMan',
+//            myHeight: height / 3.2,
+//            myWidth: width / 2.3,
+//          ),
+//          Transform.translate(
+//            offset: Offset(0, height / 4),
+//            child: MyImage(
+//              imageName: 'WhiteSignUp',
+//              myHeight: height / 15,
+//              myWidth: width / 2.5,
+//            ),
+//          ),
+        ],
       ),
     );
   }

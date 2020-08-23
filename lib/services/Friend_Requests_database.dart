@@ -99,7 +99,7 @@ class FRDatabaseService {
     await challengeNamesReference.document(uid).setData({
       'Names': [],
     });
-    await userNamesReference.document(userNameArg).setData({});
+    await userNamesReference.document(userNameArg.toUpperCase()).setData({});
     return await requestsReference.document(uid).setData({
       'friends': [],
       'plans': [],

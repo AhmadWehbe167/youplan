@@ -14,8 +14,9 @@ const List<Color> orangeGradients = [
   Color(0xFFFD7267),
 ];
 const List<Color> WhiteGradients = [
-  Colors.white,
-  Colors.white,
+  Colors.orange,
+  Colors.amber,
+  Colors.yellow,
 ];
 const List<Color> aquaGradients = [navy, lightNavy];
 
