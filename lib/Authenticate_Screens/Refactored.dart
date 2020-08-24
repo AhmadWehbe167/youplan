@@ -21,20 +21,25 @@ class AuthTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
     return TextFormField(
       style: TextStyle(
-          color: navy,
-          letterSpacing: 0.5,
-          fontWeight: FontWeight.bold,
-          fontSize: height * 0.023),
+        color: navy,
+        letterSpacing: 0.5,
+        fontWeight: FontWeight.bold,
+        fontSize: height * 0.025,
+      ),
       obscureText: obsecure,
       decoration: InputDecoration(
-        errorStyle:
-            TextStyle(fontWeight: FontWeight.bold, color: Colors.redAccent),
+        contentPadding: EdgeInsets.all(height / 70),
+        errorStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.redAccent,
+          fontSize: height * 0.018,
+        ),
         hintText: labelTitle,
-        hintStyle:
-            TextStyle(fontWeight: FontWeight.normal, fontSize: height * 0.023),
+        hintStyle: TextStyle(
+          fontWeight: FontWeight.normal,
+        ),
         suffixIcon: icon,
         isDense: true,
         fillColor: Colors.white,

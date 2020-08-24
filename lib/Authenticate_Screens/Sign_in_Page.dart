@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:youplan/Authenticate_Screens/AuthBackground.dart';
 import 'package:youplan/Authenticate_Screens/Refactored.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/services/ConnectionCheck.dart';
 import 'package:youplan/services/auth.dart';
-import 'package:youplan/shared/Shared_Widgets.dart';
 import 'package:youplan/shared/loading.dart';
 
 class SignInPage extends StatefulWidget {
@@ -39,70 +37,78 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return loading
         ? Loading()
         : Form(
             key: _formKey,
-            child: Stack(
-              children: <Widget>[
-                AuthBackground(),
-                Scaffold(
-                  backgroundColor: Colors.transparent,
-                  body: ListView(
-                    children: [
-                      SizedBox(
-                        height: 25,
+            child: Scaffold(
+              backgroundColor: lightNavy,
+              body: ListView(
+                children: [
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                  Container(
+                    height: height * 0.2,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/GreenRoundMan.png'),
                       ),
-                      MyImage(
-                        imageName: 'RoundMan',
-                        myHeight: 130,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      MyImage(
-                        imageName: 'LogIn',
-                        myHeight: 30,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Center(
+                    ),
+                  ),
+                  Container(
+                    height: height * 0.05,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('images/LogIn.png'))),
+                  ),
+                  Center(
+                    child: Container(
+                      height: height * 0.05,
+                      width: width * 0.8,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
                         child: Text(
                           'Welcome Back! Sign in to Continue',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      networkError != null
-                          ? Center(
-                              child: Text(
-                                '$networkError',
-                                style: TextStyle(
-                                    color: Colors.red[800],
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )
-                          : Container(),
-                      error != null
-                          ? Center(
-                              child: Text(
-                                '$error',
-                                style: TextStyle(
-                                    color: Colors.red[800],
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            )
-                          : Container(),
-                      AuthTextField(
+                    ),
+                  ),
+                  networkError != null
+                      ? Center(
+                          child: Text(
+                            '$networkError',
+                            style: TextStyle(
+                                color: Colors.redAccent,
+                                fontSize: height / 100,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      : Container(),
+                  error != null
+                      ? Center(
+                          child: Text(
+                            '$error',
+                            style: TextStyle(
+                                color: Colors.redAccent,
+                                fontSize: height / 100,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: height * 0.06,
+                  ),
+                  Center(
+                    child: Container(
+                      width: width * 0.9,
+                      child: AuthTextField(
                         obsecure: false,
                         labelTitle: 'Email',
                         keyboard: TextInputType.emailAddress,
@@ -121,7 +127,15 @@ class _SignInPageState extends State<SignInPage> {
                           }
                         },
                       ),
-                      AuthTextField(
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Center(
+                    child: Container(
+                      width: width * 0.9,
+                      child: AuthTextField(
                         obsecure: isObsecure,
                         labelTitle: 'Password',
                         keyboard: TextInputType.emailAddress,
@@ -142,10 +156,11 @@ class _SignInPageState extends State<SignInPage> {
                           }
                         },
                         icon: IconButton(
+                          padding: EdgeInsets.only(right: width / 20),
                           icon: Icon(
                             Icons.remove_red_eye,
                             color: Colors.black,
-                            size: 20,
+                            size: width / 17,
                           ),
                           onPressed: () {
                             setState(() {
@@ -154,155 +169,207 @@ class _SignInPageState extends State<SignInPage> {
                           },
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          //TODO:add get password functionality
-                        },
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      //TODO:add get password functionality
+                    },
+                    child: Center(
+                      child: Container(
+                        width: width * 0.88,
+                        height: height * 0.025,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 30),
+                          child: FittedBox(
+                            fit: BoxFit.contain,
                             child: Text(
-                              'Forgot your password?',
+                              'Forgot password?',
                               style: TextStyle(
-                                  color: navy,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
+                                color: logoGreen,
+                                fontWeight: FontWeight.bold,
+                                fontSize: height,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Center(
-                        child: RaisedButton(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              side: BorderSide(color: lightNavy)),
-                          onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              if (isConnected) {
-                                try {
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  dynamic result =
-                                      await _auth.signInWithEmailAndPassword(
-                                          email, password);
-                                  if (result == null) {
-                                    setState(() {
-                                      loading = false;
-                                      error =
-                                          'Check email and password and try again';
-                                      networkError = null;
-                                    });
-                                  }
-                                } catch (e) {
-                                  print(e.toString());
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                }
-                              } else {
-                                networkError =
-                                    'Check your internet connection and try again';
-                                error = null;
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.06,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      if (_formKey.currentState.validate()) {
+                        if (isConnected) {
+                          try {
+                            setState(() {
+                              loading = true;
+                            });
+                            dynamic result = await _auth
+                                .signInWithEmailAndPassword(email, password);
+                            if (result == null) {
+                              setState(() {
                                 loading = false;
-                              }
+                                error =
+                                    'Check email and password and try again';
+                                networkError = null;
+                              });
                             }
-                          },
-                          textColor: Colors.white,
-                          padding: const EdgeInsets.fromLTRB(90, 10, 90, 10),
-                          color: lightNavy,
-                          child: const Text('Log In',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              )),
+                          } catch (e) {
+                            print(e.toString());
+                            setState(() {
+                              loading = false;
+                            });
+                          }
+                        } else {
+                          networkError =
+                              'Check your internet connection and try again';
+                          error = null;
+                          loading = false;
+                        }
+                      }
+                    },
+                    child: Center(
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(width / 10),
+                            side: BorderSide(color: logoGreen)),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: logoGreen,
+                            borderRadius: BorderRadius.circular(width / 10),
+                          ),
+                          padding: EdgeInsets.fromLTRB(
+                              0, height / 100, 0, height / 100),
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text('Log In',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                )),
+                          ),
+                          height: height * 0.06,
+                          width: width * 0.7,
                         ),
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      height: height * 0.035,
+                      width: width * 0.65,
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'Don\'t have an account? ',
-                            style: TextStyle(fontSize: 17, color: Colors.white),
+                          Expanded(
+                            flex: 3,
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(
+                                'Don\'t have an account? ',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              widget.toggleView(AuthPageEnum.Register);
-                            },
-                            child: Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  color: navy,
-                                  fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                widget.toggleView(AuthPageEnum.Register);
+                              },
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Text(
+                                  'Sign Up',
+                                  style: TextStyle(
+                                    color: logoGreen,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ),
                           )
                         ],
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 0),
-                        child: Center(
-                          child: Text(
-                            '---- Or Continue With ----',
-                            style: TextStyle(
-                              color: lightNavy,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                  Center(
+                    child: Container(
+                      width: width * 0.5,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          '---- Or Continue With ----',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: height,
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 0, bottom: 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Opacity(
-                              child: MyImage(
-                                myHeight: 40,
-                                imageName: 'Facebook',
-                              ),
-                              opacity: 0.85,
-                            ),
-                            Opacity(
-                              child: MyImage(
-                                myHeight: 40,
-                                imageName: 'google',
-                              ),
-                              opacity: 0.85,
-                            ),
-                            Opacity(
-                              child: MyImage(
-                                myHeight: 40,
-                                imageName: 'phone',
-                              ),
-                              opacity: 0.85,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Opacity(
+                            opacity: 0.85,
+                            child: Container(
+                              height: height * 0.06,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('images/Facebook.png'),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Opacity(
+                            opacity: 0.85,
+                            child: Container(
+                              height: height * 0.06,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                image: AssetImage('images/google.png'),
+                                fit: BoxFit.contain,
+                              )),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Opacity(
+                            opacity: 0.85,
+                            child: Container(
+                              height: height * 0.06,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage('images/phone.png'),
+                                      fit: BoxFit.contain)),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
   }
