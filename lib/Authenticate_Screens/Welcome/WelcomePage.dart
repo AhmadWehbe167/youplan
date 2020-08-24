@@ -58,7 +58,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     'Create an account and start planning ',
                     style: TextStyle(
                       color: navy,
-                      fontSize: height / 35,
+                      fontSize: height / 40,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -70,7 +70,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     'with your friends',
                     style: TextStyle(
                       color: navy,
-                      fontSize: height / 35,
+                      fontSize: height / 40,
                     ),
                     textAlign: TextAlign.center,
                   ),

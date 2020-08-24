@@ -30,31 +30,31 @@ class RoundedButton extends StatelessWidget {
   }
 }
 
-class MyImage extends StatelessWidget {
-  final double myHeight;
-  final double myWidth;
-  final String imageName;
-  const MyImage({
-    Key key,
-    this.myHeight,
-    this.imageName,
-    this.myWidth,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: myHeight,
-      width: myWidth,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('images/$imageName.png'),
-          fit: BoxFit.contain,
-        ),
-      ),
-    );
-  }
-}
+//class MyImage extends StatelessWidget {
+//  final double myHeight;
+//  final double myWidth;
+//  final String imageName;
+//  const MyImage({
+//    Key key,
+//    this.myHeight,
+//    this.imageName,
+//    this.myWidth,
+//  }) : super(key: key);
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Container(
+//      height: myHeight,
+//      width: myWidth,
+//      decoration: BoxDecoration(
+//        image: DecorationImage(
+//          image: AssetImage('images/$imageName.png'),
+//          fit: BoxFit.contain,
+//        ),
+//      ),
+//    );
+//  }
+//}
 
 class MyAnimation extends StatelessWidget {
   final double myHeight;
