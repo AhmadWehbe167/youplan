@@ -82,23 +82,35 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   networkError != null
                       ? Center(
-                          child: Text(
-                            '$networkError',
-                            style: TextStyle(
-                                color: Colors.redAccent,
-                                fontSize: height / 100,
-                                fontWeight: FontWeight.bold),
+                          child: Container(
+                            width: width * 0.8,
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(
+                                '$networkError',
+                                style: TextStyle(
+                                    color: Colors.redAccent,
+                                    fontSize: height,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           ),
                         )
                       : Container(),
                   error != null
                       ? Center(
-                          child: Text(
-                            '$error',
-                            style: TextStyle(
-                                color: Colors.redAccent,
-                                fontSize: height / 100,
-                                fontWeight: FontWeight.normal),
+                          child: Container(
+                            width: width * 0.8,
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(
+                                '$error',
+                                style: TextStyle(
+                                    color: Colors.redAccent,
+                                    fontSize: width,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            ),
                           ),
                         )
                       : Container(),
