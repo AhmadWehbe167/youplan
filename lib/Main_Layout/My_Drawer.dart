@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:youplan/Model/User.dart';
 import 'package:youplan/Profile/Edit_Profile_Page.dart';
 import 'package:youplan/Profile/Profile_Page.dart';
-import 'package:youplan/Reminder/ReminderPage.dart';
 import 'package:youplan/services/auth.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -29,10 +28,10 @@ class MyDrawer extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ReminderPage()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ReminderPage()),
+              // );
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(40, 10, 0, 5),

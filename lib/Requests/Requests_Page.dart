@@ -3,7 +3,6 @@ import 'package:youplan/Main_Layout/My_Drawer.dart';
 import 'package:youplan/Requests/Challenge_Requests/ChallengeRequestsPage.dart';
 
 import 'Friend_Requests/Friend_Requests_Page.dart';
-import 'PLan_Requests/PLan_Requests_Page.dart';
 
 class RequestsPage extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class _RequestsPageState extends State<RequestsPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -44,9 +43,9 @@ class _RequestsPageState extends State<RequestsPage> {
               Text(
                 'Friend Requests',
               ),
-              Text(
-                'Plan Requests',
-              ),
+              // Text(
+              //   'Plan Requests',
+              // ),
               Text(
                 'Challenge Requests',
               ),
@@ -55,8 +54,8 @@ class _RequestsPageState extends State<RequestsPage> {
         ),
         body: TabBarView(
           children: [
-            PlanRequestsPage(),
             FriendRequestsPage(),
+            // PlanRequestsPage(),
             ChallengeRequestsPage(),
           ],
         ),

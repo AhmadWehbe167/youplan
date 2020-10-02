@@ -344,33 +344,6 @@ class _SignInPageState extends State<SignInPage> {
                             child: Container(
                               height: height * 0.06,
                               decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('images/Facebook.png'),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Opacity(
-                            opacity: 0.85,
-                            child: Container(
-                              height: height * 0.06,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                image: AssetImage('images/google.png'),
-                                fit: BoxFit.contain,
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Opacity(
-                            opacity: 0.85,
-                            child: Container(
-                              height: height * 0.06,
-                              decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: AssetImage('images/phone.png'),
                                       fit: BoxFit.contain)),

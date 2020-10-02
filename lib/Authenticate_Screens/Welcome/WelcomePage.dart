@@ -42,7 +42,8 @@ class _WelcomePageState extends State<WelcomePage> {
                 'Welcome',
                 style: TextStyle(
                   color: lightNavy,
-                  fontSize: height / 20,
+                  fontFamily: "ArchitectsDaughter",
+                  fontSize: height / 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),

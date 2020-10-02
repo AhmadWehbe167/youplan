@@ -26,10 +26,14 @@ dependencies:
   google_maps_webservice: ^0.0.17
   intl: ^0.16.1
   device_preview: ^0.4.7
+  splashscreen: ^1.2.0
 
 dev_dependencies:
-  flutter_test:
+  flutter_driver:
     sdk: flutter
+  mockito: ^4.1.2
+  rxdart:
+  test:
 
 flutter:
 
@@ -44,3 +48,7 @@ flutter:
    - family: ArchitectsDaughter
      fonts:
        - asset: fonts/ArchitectsDaughter-Regular.ttf
+   - family: ConcertOne
+     fonts:
+       - asset: fonts/ConcertOne-Regular.ttf
+

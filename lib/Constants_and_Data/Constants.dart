@@ -21,7 +21,7 @@ const List<Color> WhiteGradients = [
 const List<Color> aquaGradients = [navy, lightNavy];
 
 const TextStyle kTitleText =
-    TextStyle(color: Colors.black, fontFamily: 'Lobster', fontSize: 30);
+    TextStyle(color: Colors.white, fontFamily: 'Lobster', fontSize: 25);
 const TextStyle kButtonText = TextStyle(color: Colors.white, fontSize: 25);
 const TextStyle kLabelStyle = TextStyle(
   fontSize: 25,
@@ -37,7 +37,7 @@ List planType = <String>[
   'Food & Drink',
   'Concerts & Shows',
   'Entertainment',
-  'Cultural',
+  'Cultural & Arts',
   'Other',
 ].map<DropdownMenuItem<String>>((String value) {
   return DropdownMenuItem<String>(

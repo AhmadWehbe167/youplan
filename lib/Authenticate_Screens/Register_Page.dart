@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:youplan/Authenticate_Screens/Refactored.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
-import 'package:youplan/services/ConnectionCheck.dart';
 import 'package:youplan/services/auth.dart';
 import 'package:youplan/shared/loading.dart';
 
@@ -29,17 +28,17 @@ class _RegisterPageState extends State<RegisterPage> {
   String networkError;
   String emailTakenError;
   dynamic result;
-  bool isConnected = true;
+  // bool isConnected = true;
 
-  getConnection() async {
-    isConnected = await checkConnection();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getConnection();
-  }
+  // getConnection() async {
+  //   isConnected = await checkConnection();
+  // }
+  //
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   getConnection();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -320,64 +319,66 @@ class _RegisterPageState extends State<RegisterPage> {
                                   side: BorderSide(color: myOrange)),
                               onPressed: () async {
                                 if (_formKey.currentState.validate()) {
-                                  bool isConnected = await checkConnection();
-                                  if (isConnected) {
-                                    try {
-                                      setState(() {
-                                        loading = true;
-                                      });
-                                      print('I\'m connected');
-                                      bool isAvailable = await AuthServices()
-                                          .checkUserNameAvailability(userName);
-                                      print(
-                                          'checking username did complete successfully');
-                                      if (!isAvailable) {
-                                        setState(() {
-                                          loading = false;
-                                          userNameTakenError =
-                                              'UserName is taken choose a different one';
-                                          emailTakenError = null;
-                                          networkError = null;
-                                        });
-                                      } else {
-                                        print('UserName is not taken');
-                                        result = await _auth
-                                            .registerWithEmailAndPassword(
-                                          userName,
-                                          fullName,
-                                          email,
-                                          password,
-                                        );
-                                        print(
-                                            'Registering did complete successfully');
-                                        if (result == null) {
-                                          setState(() {
-                                            loading = false;
-                                            emailTakenError =
-                                                'this email is already taken';
-                                            userNameTakenError = null;
-                                            networkError = null;
-                                          });
-                                        }
-                                      }
-                                    } on PlatformException catch (a) {
+                                  // bool isConnected = await checkConnection();
+                                  // if (isConnected) {
+                                  try {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    print('I\'m connected');
+                                    bool isAvailable = await AuthServices()
+                                        .checkUserNameAvailability(userName);
+                                    print(
+                                        'checking username did complete successfully');
+                                    if (!isAvailable) {
                                       setState(() {
                                         loading = false;
-                                        networkError =
-                                            'An Error occured please try again';
-                                        userNameTakenError = null;
+                                        userNameTakenError =
+                                            'UserName is taken choose a different one';
                                         emailTakenError = null;
+                                        networkError = null;
                                       });
+                                    } else {
+                                      print('UserName is not taken');
+                                      result = await _auth
+                                          .registerWithEmailAndPassword(
+                                        context,
+                                        userName,
+                                        fullName,
+                                        email,
+                                        password,
+                                      );
+                                      print(
+                                          'Registering did complete successfully');
+                                      if (result == null) {
+                                        setState(() {
+                                          loading = false;
+                                          emailTakenError =
+                                              'this email is already taken';
+                                          userNameTakenError = null;
+                                          networkError = null;
+                                        });
+                                      }
                                     }
-                                  } else {
+                                  } on PlatformException catch (a) {
                                     setState(() {
+                                      loading = false;
                                       networkError =
-                                          'Check your internet connection and try again';
+                                          'An Error occured please try again';
                                       userNameTakenError = null;
                                       emailTakenError = null;
-                                      loading = false;
                                     });
                                   }
+                                  // }
+                                  // else {
+                                  //   setState(() {
+                                  //     networkError =
+                                  //         'Check your internet connection and try again';
+                                  //     userNameTakenError = null;
+                                  //     emailTakenError = null;
+                                  //     loading = false;
+                                  //   });
+                                  // }
                                 }
                               },
                               textColor: Colors.white,
@@ -443,28 +444,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Expanded(
-                                  child: Opacity(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  'images/Facebook.png'))),
-                                    ),
-                                    opacity: 0.9,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Opacity(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  'images/google.png'))),
-                                    ),
-                                    opacity: 0.9,
-                                  ),
-                                ),
                                 Expanded(
                                   child: Opacity(
                                     child: Container(

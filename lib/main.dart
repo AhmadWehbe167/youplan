@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:youplan/Authenticate_Screens/Welcome/SplashScreen.dart';
 import 'package:youplan/Model/User.dart';
-import 'package:youplan/Wrapper/Wrapper.dart';
 import 'package:youplan/services/auth.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(),
-        home: Wrapper(),
+        home: IntroScreen(),
       ),
     );
   }

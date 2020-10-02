@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:youplan/Home_Package/Refactored_Widgets/plan_card.dart';
+import 'package:youplan/Home_Package/Refactored_Widgets/ChallengeCard.dart';
 import 'package:youplan/Model/User.dart';
 import 'package:youplan/services/Challenge_Requests_database.dart';
 

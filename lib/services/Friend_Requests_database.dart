@@ -75,7 +75,7 @@ class FRDatabaseService {
     await memoriesReference
         .document(uid)
         .collection('categories')
-        .document('Cultural')
+        .document('Cultural & Arts')
         .setData({
       'plans': [],
     });
