@@ -80,3 +80,79 @@ class MyAnimation extends StatelessWidget {
     );
   }
 }
+
+class RoundedContainer extends StatelessWidget {
+  final String title;
+  final double borderRadius;
+  final double containerHeight;
+  final double fontSize;
+  const RoundedContainer({
+    @required this.title,
+    @required this.borderRadius,
+    @required this.containerHeight,
+    @required this.fontSize,
+    Key key,
+  })  : assert(title != null),
+        assert(borderRadius != null),
+        assert(containerHeight != null),
+        assert(fontSize != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: containerHeight,
+        decoration: BoxDecoration(
+          color: Colors.grey[500],
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        child: Center(
+            child: Text(
+          title,
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        )),
+      ),
+    );
+  }
+}
+
+class SubButton extends StatelessWidget {
+  final String title;
+  final double buttonWidth;
+  const SubButton({
+    Key key,
+    this.buttonWidth,
+    this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+        height: 30,
+        width: buttonWidth,
+        decoration: BoxDecoration(
+          color: Colors.grey[500],
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Center(
+            child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        )),
+      ),
+    );
+  }
+}

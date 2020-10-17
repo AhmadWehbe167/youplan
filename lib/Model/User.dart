@@ -1,4 +1,6 @@
-class User {
+class Muser {
   final String uid;
-  const User({this.uid});
+  final bool isEmailVerified;
+  final Function reload;
+  const Muser({this.uid, this.isEmailVerified, this.reload});
 }

@@ -11,7 +11,7 @@ class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 4,
+      seconds: 2,
       image: Image.asset(
         "images/Logo.png",
         fit: BoxFit.contain,

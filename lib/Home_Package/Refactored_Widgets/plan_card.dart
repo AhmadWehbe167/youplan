@@ -8,7 +8,7 @@ import 'package:youplan/Requests/PLan_Requests/ViewPlan.dart';
 
 class PlanCard extends StatefulWidget {
   final userDoc;
-  final User user;
+  final Muser user;
   final GlobalKey<ScaffoldState> globalKey;
   final ctxt;
   final index;

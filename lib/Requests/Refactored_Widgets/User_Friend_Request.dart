@@ -24,7 +24,7 @@ class UserFriendRequest extends StatefulWidget {
 class _UserFriendRequestState extends State<UserFriendRequest> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<Muser>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -149,7 +149,7 @@ class UserFriends extends StatefulWidget {
 class _UserFriendsState extends State<UserFriends> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<Muser>(context);
     return GestureDetector(
       onTap: () {
         Navigator.push(

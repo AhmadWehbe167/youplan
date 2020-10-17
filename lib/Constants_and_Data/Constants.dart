@@ -31,7 +31,7 @@ const TextStyle kUnselectedLabelStyle = TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.bold,
 );
-enum AuthPageEnum { SignIn, Register, Welcome }
+enum AuthPageEnum { SignIn, Register, Welcome, Verify }
 
 List planType = <String>[
   'Food & Drink',

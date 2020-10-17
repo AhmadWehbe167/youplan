@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:youplan/Explore/Explore_Page.dart';
 import 'package:youplan/Model/User.dart';
 import 'package:youplan/Profile/Friends_List.dart';
 import 'package:youplan/services/ConnectionCheck.dart';
 import 'package:youplan/services/Friend_Requests_database.dart';
+import 'package:youplan/shared/Shared_Widgets.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userID;
@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   getData() async {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<Muser>(context);
     try {
       iSentHimRequest = await FRDatabaseService(uid: user.uid)
           .userSentRequestByMe(widget.userID);
@@ -87,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<Muser>(context);
     return !isConnected
         ? Scaffold(
             backgroundColor: Colors.white,
@@ -100,9 +100,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           )
         : StreamBuilder(
-            stream: Firestore.instance
+            stream: FirebaseFirestore.instance
                 .collection('User')
-                .document(widget.userID)
+                .doc(widget.userID)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
