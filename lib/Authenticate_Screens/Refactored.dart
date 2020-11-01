@@ -30,7 +30,7 @@ class AuthTextField extends StatelessWidget {
       ),
       obscureText: obsecure,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(height / 70),
+        contentPadding: EdgeInsets.all(height / 50),
         errorStyle: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.redAccent,

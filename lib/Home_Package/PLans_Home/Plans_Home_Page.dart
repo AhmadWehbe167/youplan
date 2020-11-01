@@ -81,7 +81,7 @@ class _PlansHomePageState extends State<PlansHomePage> {
   Widget build(BuildContext context) {
 //    final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    final user = Provider.of<User>(context);
+    final user = Provider.of<Muser>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       key: globalKey,
@@ -101,9 +101,9 @@ class _PlansHomePageState extends State<PlansHomePage> {
                   ),
                 ))
               : StreamBuilder(
-                  stream: Firestore.instance
+                  stream: FirebaseFirestore.instance
                       .collection('Plans')
-                      .document(user.uid)
+                      .doc(user.uid)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -157,9 +157,9 @@ class _PlansHomePageState extends State<PlansHomePage> {
                           itemCount: snapshot.data['plans'].length,
                           itemBuilder: (BuildContext ctxt, int index) {
                             return StreamBuilder(
-                                stream: Firestore.instance
+                                stream: FirebaseFirestore.instance
                                     .collection('planNames')
-                                    .document(userDoc[index]['creator uid'])
+                                    .doc(userDoc[index]['creator uid'])
                                     .snapshots(),
                                 builder: (context, snapshot2) {
                                   if (!snapshot2.hasData) {

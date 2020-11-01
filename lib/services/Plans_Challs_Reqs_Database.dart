@@ -5,13 +5,13 @@ class PCRDatabaseServices {
   PCRDatabaseServices({this.uid});
 
   final CollectionReference usersReference =
-      Firestore.instance.collection('User');
+      FirebaseFirestore.instance.collection('User');
   final CollectionReference friendsReference =
-      Firestore.instance.collection('Friends');
+      FirebaseFirestore.instance.collection('Friends');
   final CollectionReference plansReference =
-      Firestore.instance.collection('Plans');
+      FirebaseFirestore.instance.collection('Plans');
   final CollectionReference requestsReference =
-      Firestore.instance.collection('Requests');
+      FirebaseFirestore.instance.collection('Requests');
   final CollectionReference userNamesReference =
-      Firestore.instance.collection('userNames');
+      FirebaseFirestore.instance.collection('userNames');
 }

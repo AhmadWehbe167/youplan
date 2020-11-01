@@ -9,8 +9,8 @@ class AuthBackground extends StatefulWidget {
 class _AuthBackgroundState extends State<AuthBackground> {
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
+    // final double height = MediaQuery.of(context).size.height;
+    // final double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: lightNavy,
       body: Stack(

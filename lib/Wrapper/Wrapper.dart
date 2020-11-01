@@ -10,27 +10,16 @@ class Wrapper extends StatefulWidget {
 }
 
 class _WrapperState extends State<Wrapper> {
-  // bool loading = true;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   Timer(Duration(milliseconds: 500), () {
-  //     setState(() {
-  //       loading = false;
-  //     });
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-    // if (loading) {
-    //   return LogoLoading();
-    // } else
-    if (user == null) {
-      return Authentication();
+    final user = Provider.of<Muser>(context);
+    if (user != null) {
+      print("User verification value is: ${user.isEmailVerified}");
+    }
+    if (user != null && user.isEmailVerified) {
+      return MainPageLayout(userId: user.uid);
     } else {
-      return MainPageLayout();
+      return Authentication();
     }
   }
 }

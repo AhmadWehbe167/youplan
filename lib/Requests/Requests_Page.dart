@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:youplan/Main_Layout/My_Drawer.dart';
-import 'package:youplan/Requests/Challenge_Requests/ChallengeRequestsPage.dart';
 
 import 'Friend_Requests/Friend_Requests_Page.dart';
 
@@ -46,9 +45,6 @@ class _RequestsPageState extends State<RequestsPage> {
               // Text(
               //   'Plan Requests',
               // ),
-              Text(
-                'Challenge Requests',
-              ),
             ],
           ),
         ),
@@ -56,7 +52,6 @@ class _RequestsPageState extends State<RequestsPage> {
           children: [
             FriendRequestsPage(),
             // PlanRequestsPage(),
-            ChallengeRequestsPage(),
           ],
         ),
         drawer: MyDrawer(),

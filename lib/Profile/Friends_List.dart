@@ -73,9 +73,9 @@ class _FriendsListState extends State<FriendsList> {
               ),
             )
           : StreamBuilder(
-              stream: Firestore.instance
+              stream: FirebaseFirestore.instance
                   .collection('Friends')
-                  .document(widget.userId)
+                  .doc(widget.userId)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {

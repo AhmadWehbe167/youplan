@@ -13,12 +13,12 @@ class PRDatabaseServices {
     String title,
   ) async {
     DocumentSnapshot doc =
-        await Firestore.instance.collection('planNames').document(uid).get();
-    return List.from(doc.data['Names']);
+        await FirebaseFirestore.instance.collection('planNames').doc(uid).get();
+    return List.from(doc.data()['Names']);
   }
 
   Future setPlanInfo(String title, List friendsInvited) async {
-    await planNamesReference.document(uid).updateData({
+    await planNamesReference.doc(uid).update({
       'Names': FieldValue.arrayUnion([title]),
       '$title Invited Friends': friendsInvited,
       '$title Accepted Friends': [],
@@ -41,11 +41,10 @@ class PRDatabaseServices {
     List<Map<String, String>> friendsInvited,
     List<Map<String, String>> friendsAccepted,
   }) async {
-    final DocumentSnapshot userSnapshot =
-        await usersReference.document(uid).get();
-    String myUserName = await userSnapshot.data['userName'];
-    String myFullName = await userSnapshot.data['fullName'];
-    return await requestsReference.document(receiverId).updateData({
+    final DocumentSnapshot userSnapshot = await usersReference.doc(uid).get();
+    String myUserName = await userSnapshot.data()['userName'];
+    String myFullName = await userSnapshot.data()['fullName'];
+    return await requestsReference.doc(receiverId).update({
       'plans': FieldValue.arrayUnion([
         {
           'creator uid': uid,
@@ -75,13 +74,12 @@ class PRDatabaseServices {
     String notes,
     bool isCreator,
   ) async {
-    final DocumentSnapshot userSnapshot =
-        await usersReference.document(uid).get();
+    final DocumentSnapshot userSnapshot = await usersReference.doc(uid).get();
     final DocumentSnapshot planInfoSnapshot =
-        await planNamesReference.document(senderId).get();
-    String myUserName = await userSnapshot.data['userName'];
-    String myFullName = await userSnapshot.data['fullName'];
-    await requestsReference.document(uid).updateData({
+        await planNamesReference.doc(senderId).get();
+    String myUserName = await userSnapshot.data()['userName'];
+    String myFullName = await userSnapshot.data()['fullName'];
+    await requestsReference.doc(uid).update({
       'plans': FieldValue.arrayRemove([
         {
           'creator fullName': senderFullName,
@@ -97,7 +95,7 @@ class PRDatabaseServices {
         }
       ])
     });
-    await planNamesReference.document(senderId).updateData({
+    await planNamesReference.doc(senderId).update({
       '$title Invited Friends': FieldValue.arrayRemove([
         {
           'fullName': myFullName,
@@ -106,7 +104,7 @@ class PRDatabaseServices {
         }
       ]),
     });
-    await planNamesReference.document(senderId).updateData({
+    await planNamesReference.doc(senderId).update({
       '$title Rejected Friends': FieldValue.arrayUnion([
         {
           'fullName': myFullName,
@@ -115,8 +113,8 @@ class PRDatabaseServices {
         }
       ]),
     });
-    if (planInfoSnapshot.data['$title Invited Friends'].length == 0) {
-      await requestsReference.document(senderId).updateData({
+    if (planInfoSnapshot.data()['$title Invited Friends'].length == 0) {
+      await requestsReference.doc(senderId).update({
         'plans': FieldValue.arrayRemove([
           {
             'creator fullName': senderFullName,
@@ -148,8 +146,8 @@ class PRDatabaseServices {
     bool isCreator,
   ) async {
     final DocumentSnapshot planInfoSnapshot =
-        await planNamesReference.document(senderId).get();
-    await requestsReference.document(uid).updateData({
+        await planNamesReference.doc(senderId).get();
+    await requestsReference.doc(uid).update({
       'plans': FieldValue.arrayRemove([
         {
           'creator fullName': senderFullName,
@@ -165,7 +163,7 @@ class PRDatabaseServices {
         }
       ])
     });
-    await plansReference.document(uid).updateData({
+    await plansReference.doc(uid).update({
       'plans': FieldValue.arrayUnion([
         {
           'creator fullName': senderFullName,
@@ -181,8 +179,8 @@ class PRDatabaseServices {
         }
       ])
     });
-    if (planInfoSnapshot.data['$title Accepted Friends'].length == 0) {
-      await requestsReference.document(senderId).updateData({
+    if (planInfoSnapshot.data()['$title Accepted Friends'].length == 0) {
+      await requestsReference.doc(senderId).update({
         'plans': FieldValue.arrayRemove([
           {
             'creator fullName': senderFullName,
@@ -198,7 +196,7 @@ class PRDatabaseServices {
           }
         ])
       });
-      await plansReference.document(senderId).updateData({
+      await plansReference.doc(senderId).update({
         'plans': FieldValue.arrayUnion([
           {
             'creator fullName': senderFullName,
@@ -215,11 +213,10 @@ class PRDatabaseServices {
         ])
       });
     }
-    final DocumentSnapshot userSnapshot =
-        await usersReference.document(uid).get();
-    String myUserName = await userSnapshot.data['userName'];
-    String myFullName = await userSnapshot.data['fullName'];
-    await planNamesReference.document(senderId).updateData({
+    final DocumentSnapshot userSnapshot = await usersReference.doc(uid).get();
+    String myUserName = await userSnapshot.data()['userName'];
+    String myFullName = await userSnapshot.data()['fullName'];
+    await planNamesReference.doc(senderId).update({
       '$title Invited Friends': FieldValue.arrayRemove([
         {
           'fullName': myFullName,
@@ -228,7 +225,7 @@ class PRDatabaseServices {
         }
       ]),
     });
-    await planNamesReference.document(senderId).updateData({
+    await planNamesReference.doc(senderId).update({
       '$title Accepted Friends': FieldValue.arrayUnion([
         {
           'fullName': myFullName,
@@ -250,14 +247,14 @@ class PRDatabaseServices {
     String description,
     String notes,
   ) async {
-    final DocumentSnapshot userSnapshot =
-        await usersReference.document(uid).get();
+    final DocumentSnapshot userSnapshot = await usersReference.doc(uid).get();
     final DocumentSnapshot planNamesSnapshot =
-        await planNamesReference.document(senderId).get();
-    String myUserName = await userSnapshot.data['userName'];
-    String myFullName = await userSnapshot.data['fullName'];
-    bool isCreatorDone = await planNamesSnapshot.data['$title Done by Creator'];
-    await planNamesReference.document(senderId).updateData({
+        await planNamesReference.doc(senderId).get();
+    String myUserName = await userSnapshot.data()['userName'];
+    String myFullName = await userSnapshot.data()['fullName'];
+    bool isCreatorDone =
+        await planNamesSnapshot.data()['$title Done by Creator'];
+    await planNamesReference.doc(senderId).update({
       '$title Accepted Friends': FieldValue.arrayRemove([
         {
           'fullName': myFullName,
@@ -266,7 +263,7 @@ class PRDatabaseServices {
         }
       ]),
     });
-    await planNamesReference.document(senderId).updateData({
+    await planNamesReference.doc(senderId).update({
       '$title Completed Friends': FieldValue.arrayUnion([
         {
           'fullName': myFullName,
@@ -275,7 +272,7 @@ class PRDatabaseServices {
         }
       ]),
     });
-    await plansReference.document(uid).updateData({
+    await plansReference.doc(uid).update({
       'plans': FieldValue.arrayRemove([
         {
           'creator fullName': senderFullName,
@@ -293,7 +290,7 @@ class PRDatabaseServices {
     });
     if (isCreatorDone) {
       final DocumentSnapshot planNamesSnapshot =
-          await planNamesReference.document(senderId).get();
+          await planNamesReference.doc(senderId).get();
       List completedUsers =
           List.from(planNamesSnapshot['$title Completed Friends']);
       List noAnswer = List.from(planNamesSnapshot['$title Invited Friends']);
@@ -304,10 +301,10 @@ class PRDatabaseServices {
       List justAccepted =
           List.from(planNamesSnapshot['$title Accepted Friends']);
       await memoriesReference
-          .document(uid)
+          .doc(uid)
           .collection('categories')
-          .document(type)
-          .updateData({
+          .doc(type)
+          .update({
         'plans': FieldValue.arrayUnion([
           {
             'creator fullName': senderFullName,
@@ -328,7 +325,7 @@ class PRDatabaseServices {
         ])
       });
       if (justAccepted.length == 0) {
-        await planNamesReference.document(uid).updateData({
+        await planNamesReference.doc(uid).update({
           'Names': FieldValue.arrayRemove([title]),
           '$title Invited Friends': FieldValue.delete(),
           '$title Accepted Friends': FieldValue.delete(),
@@ -352,14 +349,14 @@ class PRDatabaseServices {
     String description,
     String notes,
   ) async {
-    final DocumentSnapshot userSnapshot =
-        await usersReference.document(uid).get();
+    final DocumentSnapshot userSnapshot = await usersReference.doc(uid).get();
     final DocumentSnapshot planNamesSnapshot =
-        await planNamesReference.document(senderId).get();
-    String myUserName = await userSnapshot.data['userName'];
-    String myFullName = await userSnapshot.data['fullName'];
-    bool isCreatorDone = await planNamesSnapshot.data['$title Done by Creator'];
-    await planNamesReference.document(senderId).updateData({
+        await planNamesReference.doc(senderId).get();
+    String myUserName = await userSnapshot.data()['userName'];
+    String myFullName = await userSnapshot.data()['fullName'];
+    bool isCreatorDone =
+        await planNamesSnapshot.data()['$title Done by Creator'];
+    await planNamesReference.doc(senderId).update({
       '$title Accepted Friends': FieldValue.arrayRemove([
         {
           'fullName': myFullName,
@@ -368,7 +365,7 @@ class PRDatabaseServices {
         }
       ]),
     });
-    await planNamesReference.document(senderId).updateData({
+    await planNamesReference.doc(senderId).update({
       '$title Canceled Friends': FieldValue.arrayUnion([
         {
           'fullName': myFullName,
@@ -377,7 +374,7 @@ class PRDatabaseServices {
         }
       ]),
     });
-    await plansReference.document(uid).updateData({
+    await plansReference.doc(uid).update({
       'plans': FieldValue.arrayRemove([
         {
           'creator fullName': senderFullName,
@@ -395,11 +392,11 @@ class PRDatabaseServices {
     });
     if (isCreatorDone) {
       final DocumentSnapshot planNamesSnapshot =
-          await planNamesReference.document(senderId).get();
+          await planNamesReference.doc(senderId).get();
       List justAccepted =
           List.from(planNamesSnapshot['$title Accepted Friends']);
       if (justAccepted.length == 0) {
-        await planNamesReference.document(uid).updateData({
+        await planNamesReference.doc(uid).update({
           'Names': FieldValue.arrayRemove([title]),
           '$title Invited Friends': FieldValue.delete(),
           '$title Accepted Friends': FieldValue.delete(),
@@ -425,7 +422,7 @@ class PRDatabaseServices {
     List ignoredUsers,
   ) async {
     final DocumentSnapshot planNamesSnapshot =
-        await planNamesReference.document(senderId).get();
+        await planNamesReference.doc(senderId).get();
     List completedUsers =
         List.from(planNamesSnapshot['$title Completed Friends']);
     List noAnswer = List.from(planNamesSnapshot['$title Invited Friends']);
@@ -435,7 +432,7 @@ class PRDatabaseServices {
         List.from(planNamesSnapshot['$title Canceled Friends']);
     List justAccepted = List.from(planNamesSnapshot['$title Accepted Friends']);
     justAccepted.removeWhere((element) => ignoredUsers.contains(element));
-    await plansReference.document(uid).updateData({
+    await plansReference.doc(uid).update({
       'plans': FieldValue.arrayRemove([
         {
           'creator fullName': senderFullName,
@@ -451,11 +448,7 @@ class PRDatabaseServices {
         }
       ])
     });
-    await memoriesReference
-        .document(uid)
-        .collection('categories')
-        .document(type)
-        .updateData({
+    await memoriesReference.doc(uid).collection('categories').doc(type).update({
       'plans': FieldValue.arrayUnion([
         {
           'creator fullName': senderFullName,
@@ -477,10 +470,10 @@ class PRDatabaseServices {
     });
     for (int i = 0; i < completedUsers.length; i++) {
       await memoriesReference
-          .document(completedUsers[i]['uid'])
+          .doc(completedUsers[i]['uid'])
           .collection('categories')
-          .document(type)
-          .updateData({
+          .doc(type)
+          .update({
         'plans': FieldValue.arrayUnion([
           {
             'creator fullName': senderFullName,
@@ -502,7 +495,7 @@ class PRDatabaseServices {
       });
     }
     for (int i = 0; i < noAnswer.length; i++) {
-      await requestsReference.document(noAnswer[i]['uid']).updateData({
+      await requestsReference.doc(noAnswer[i]['uid']).update({
         'plans': FieldValue.arrayRemove([
           {
             'creator fullName': senderFullName,
@@ -520,7 +513,7 @@ class PRDatabaseServices {
       });
     }
     for (int i = 0; i < ignoredUsers.length; i++) {
-      await plansReference.document(ignoredUsers[i]['uid']).updateData({
+      await plansReference.doc(ignoredUsers[i]['uid']).update({
         'plans': FieldValue.arrayRemove([
           {
             'creator fullName': senderFullName,
@@ -538,7 +531,7 @@ class PRDatabaseServices {
       });
     }
     if (planNamesSnapshot['$title Accepted Friends'].length == 0) {
-      await planNamesReference.document(uid).updateData({
+      await planNamesReference.doc(uid).update({
         'Names': FieldValue.arrayRemove([title]),
         '$title Invited Friends': FieldValue.delete(),
         '$title Accepted Friends': FieldValue.delete(),
@@ -548,16 +541,16 @@ class PRDatabaseServices {
         '$title Done by Creator': FieldValue.delete(),
       });
     } else {
-      await planNamesReference.document(uid).updateData({
+      await planNamesReference.doc(uid).update({
         '$title Done by Creator': true,
       });
       for (int i = 0; i < ignoredUsers.length; i++) {
-        await planNamesReference.document(uid).updateData({
+        await planNamesReference.doc(uid).update({
           '$title Accepted Friends': FieldValue.arrayRemove([
             ignoredUsers[i],
           ]),
         });
-        await planNamesReference.document(uid).updateData({
+        await planNamesReference.doc(uid).update({
           '$title Canceled Friends': FieldValue.arrayUnion([
             ignoredUsers[i],
           ]),
@@ -578,10 +571,10 @@ class PRDatabaseServices {
     String notes,
   ) async {
     final DocumentSnapshot planNamesSnapshot =
-        await planNamesReference.document(senderId).get();
+        await planNamesReference.doc(senderId).get();
     List noAnswer = List.from(planNamesSnapshot['$title Invited Friends']);
     List justAccepted = List.from(planNamesSnapshot['$title Accepted Friends']);
-    await plansReference.document(uid).updateData({
+    await plansReference.doc(uid).update({
       'plans': FieldValue.arrayRemove([
         {
           'creator fullName': senderFullName,
@@ -598,7 +591,7 @@ class PRDatabaseServices {
       ])
     });
     for (int i = 0; i < noAnswer.length; i++) {
-      await requestsReference.document(noAnswer[i]['uid']).updateData({
+      await requestsReference.doc(noAnswer[i]['uid']).update({
         'plans': FieldValue.arrayRemove([
           {
             'creator fullName': senderFullName,
@@ -616,7 +609,7 @@ class PRDatabaseServices {
       });
     }
     for (int i = 0; i < justAccepted.length; i++) {
-      await plansReference.document(justAccepted[i]['uid']).updateData({
+      await plansReference.doc(justAccepted[i]['uid']).update({
         'plans': FieldValue.arrayRemove([
           {
             'creator fullName': senderFullName,
@@ -633,7 +626,7 @@ class PRDatabaseServices {
         ]),
       });
     }
-    await planNamesReference.document(uid).updateData({
+    await planNamesReference.doc(uid).update({
       'Names': FieldValue.arrayRemove([title]),
       '$title Invited Friends': FieldValue.delete(),
       '$title Accepted Friends': FieldValue.delete(),
@@ -711,9 +704,9 @@ class PRDatabaseServices {
     String title,
   ) async {
     final CollectionReference planNamesReference =
-        Firestore.instance.collection('planNames');
+        FirebaseFirestore.instance.collection('planNames');
     final DocumentSnapshot planNamesSnapshot =
-        await planNamesReference.document(uid).get();
+        await planNamesReference.doc(uid).get();
     return List.from(planNamesSnapshot['$title Accepted Friends']);
   }
 }

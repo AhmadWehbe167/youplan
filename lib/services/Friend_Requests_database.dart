@@ -10,23 +10,19 @@ class FRDatabaseService {
   });
 
   final CollectionReference usersReference =
-      Firestore.instance.collection('User');
+      FirebaseFirestore.instance.collection('User');
   final CollectionReference friendsReference =
-      Firestore.instance.collection('Friends');
+      FirebaseFirestore.instance.collection('Friends');
   final CollectionReference plansReference =
-      Firestore.instance.collection('Plans');
-  final CollectionReference challengesReference =
-      Firestore.instance.collection('Challenges');
+      FirebaseFirestore.instance.collection('Plans');
   final CollectionReference memoriesReference =
-      Firestore.instance.collection('Memories');
+      FirebaseFirestore.instance.collection('Memories');
   final CollectionReference requestsReference =
-      Firestore.instance.collection('Requests');
+      FirebaseFirestore.instance.collection('Requests');
   final CollectionReference userNamesReference =
-      Firestore.instance.collection('userNames');
+      FirebaseFirestore.instance.collection('userNames');
   final CollectionReference planNamesReference =
-      Firestore.instance.collection('planNames');
-  final CollectionReference challengeNamesReference =
-      Firestore.instance.collection('challengeNames');
+      FirebaseFirestore.instance.collection('planNames');
 
   bool checkUserInList(List users, String userId) {
     for (int i = 0; i < users.length; i++) {
@@ -38,102 +34,83 @@ class FRDatabaseService {
   }
 
   Future initUser(String userNameArg, String fullNameArg) async {
-    await usersReference.document(uid).setData({
+    await usersReference.doc(uid).set({
       '$userName': userNameArg,
       '$fullName': fullNameArg,
     });
-    await friendsReference.document(uid).setData({
+    await friendsReference.doc(uid).set({
       'friends': [],
     });
-    await plansReference.document(uid).setData({
-      'plans': [],
-    });
-    await challengesReference.document(uid).setData({
-      'challenges': [],
-    });
-    await memoriesReference
-        .document(uid)
-        .collection('categories')
-        .document('Food & Drink')
-        .setData({
+    await plansReference.doc(uid).set({
       'plans': [],
     });
     await memoriesReference
-        .document(uid)
+        .doc(uid)
         .collection('categories')
-        .document('Concerts & Shows')
-        .setData({
+        .doc('Food & Drink')
+        .set({
       'plans': [],
     });
     await memoriesReference
-        .document(uid)
+        .doc(uid)
         .collection('categories')
-        .document('Entertainment')
-        .setData({
+        .doc('Concerts & Shows')
+        .set({
       'plans': [],
     });
     await memoriesReference
-        .document(uid)
+        .doc(uid)
         .collection('categories')
-        .document('Cultural & Arts')
-        .setData({
+        .doc('Entertainment')
+        .set({
       'plans': [],
     });
     await memoriesReference
-        .document(uid)
+        .doc(uid)
         .collection('categories')
-        .document('Other')
-        .setData({
+        .doc('Cultural & Arts')
+        .set({
       'plans': [],
     });
-    await memoriesReference
-        .document(uid)
-        .collection('categories')
-        .document('Challenges')
-        .setData({
-      'challenges': [],
+    await memoriesReference.doc(uid).collection('categories').doc('Other').set({
+      'plans': [],
     });
-    await planNamesReference.document(uid).setData({
+    await planNamesReference.doc(uid).set({
       'Names': [],
     });
-    await challengeNamesReference.document(uid).setData({
-      'Names': [],
-    });
-    await userNamesReference.document(userNameArg.toUpperCase()).setData({});
-    return await requestsReference.document(uid).setData({
+    await userNamesReference.doc(userNameArg.toUpperCase()).set({});
+    return await requestsReference.doc(uid).set({
       'friends': [],
       'plans': [],
-      'challenges': [],
     });
   }
 
   Future<bool> userIsFriend(String receiverId) async {
     final DocumentSnapshot friendsSnapshot =
-        await friendsReference.document(uid).get();
-    List friends = await friendsSnapshot.data['friends'] ?? [];
+        await friendsReference.doc(uid).get();
+    List friends = await friendsSnapshot.data()['friends'] ?? [];
     return (checkUserInList(friends, receiverId));
   }
 
   Future<bool> userSentMeRequest(String receiverId) async {
     final DocumentSnapshot myRequestSnapshot =
-        await requestsReference.document(uid).get();
-    List myRequests = await myRequestSnapshot.data['friends'] ?? [];
+        await requestsReference.doc(uid).get();
+    List myRequests = await myRequestSnapshot.data()['friends'] ?? [];
     return (checkUserInList(myRequests, receiverId));
   }
 
   Future<bool> userSentRequestByMe(String receiverId) async {
     final DocumentSnapshot requestSnapshot =
-        await requestsReference.document(receiverId).get();
-    List requests = await requestSnapshot.data['friends'] ?? [];
+        await requestsReference.doc(receiverId).get();
+    List requests = await requestSnapshot.data()['friends'] ?? [];
     return (checkUserInList(requests, uid));
   }
 
   Future sendFriendRequest(String receiverId) async {
-    final DocumentSnapshot userSnapshot =
-        await usersReference.document(uid).get();
-    String myUserName = await userSnapshot.data['$userName'] ?? '';
-    String myFullName = await userSnapshot.data['$fullName'] ?? '';
-    return await requestsReference.document(receiverId).updateData({
+    final DocumentSnapshot userSnapshot = await usersReference.doc(uid).get();
+    String myUserName = await userSnapshot.data()['$userName'] ?? '';
+    String myFullName = await userSnapshot.data()['$fullName'] ?? '';
+    return await requestsReference.doc(receiverId).update({
       'friends': FieldValue.arrayUnion([
         {
           'uid': uid,
@@ -145,14 +122,14 @@ class FRDatabaseService {
   }
 
   Future acceptFriendRequest(String senderId) async {
-    final DocumentSnapshot doc = await usersReference.document(uid).get();
-    final DocumentSnapshot doc2 = await usersReference.document(senderId).get();
-    String myUserName = await doc.data['$userName'];
-    String otherUserName = await doc2.data['$userName'];
-    String myFullName = await doc.data['$fullName'];
-    String otherFullName = await doc2.data['$fullName'];
+    final DocumentSnapshot doc = await usersReference.doc(uid).get();
+    final DocumentSnapshot doc2 = await usersReference.doc(senderId).get();
+    String myUserName = await doc.data()['$userName'];
+    String otherUserName = await doc2.data()['$userName'];
+    String myFullName = await doc.data()['$fullName'];
+    String otherFullName = await doc2.data()['$fullName'];
 
-    await friendsReference.document(uid).updateData({
+    await friendsReference.doc(uid).update({
       'friends': FieldValue.arrayUnion([
         {
           'uid': senderId,
@@ -161,7 +138,7 @@ class FRDatabaseService {
         }
       ])
     });
-    await friendsReference.document(senderId).updateData({
+    await friendsReference.doc(senderId).update({
       'friends': FieldValue.arrayUnion([
         {
           'uid': uid,
@@ -170,7 +147,7 @@ class FRDatabaseService {
         }
       ])
     });
-    return await requestsReference.document(uid).updateData({
+    return await requestsReference.doc(uid).update({
       'friends': FieldValue.arrayRemove([
         {
           'uid': senderId,
@@ -182,10 +159,10 @@ class FRDatabaseService {
   }
 
   Future rejectFriendRequest(String senderId) async {
-    final DocumentSnapshot doc = await usersReference.document(senderId).get();
-    String otherUserName = await doc.data['$userName'];
-    String otherFullName = await doc.data['$fullName'];
-    return await requestsReference.document(uid).updateData({
+    final DocumentSnapshot doc = await usersReference.doc(senderId).get();
+    String otherUserName = await doc.data()['$userName'];
+    String otherFullName = await doc.data()['$fullName'];
+    return await requestsReference.doc(uid).update({
       'friends': FieldValue.arrayRemove([
         {
           'uid': senderId,
@@ -197,11 +174,10 @@ class FRDatabaseService {
   }
 
   Future cancelFriendRequest(String receiverId) async {
-    final DocumentSnapshot userSnapshot =
-        await usersReference.document(uid).get();
-    String myUserName = await userSnapshot.data['$userName'] ?? '';
-    String myFullName = await userSnapshot.data['$fullName'] ?? '';
-    return await requestsReference.document(receiverId).updateData({
+    final DocumentSnapshot userSnapshot = await usersReference.doc(uid).get();
+    String myUserName = await userSnapshot.data()['$userName'] ?? '';
+    String myFullName = await userSnapshot.data()['$fullName'] ?? '';
+    return await requestsReference.doc(receiverId).update({
       'friends': FieldValue.arrayRemove([
         {
           'uid': uid,
@@ -213,14 +189,14 @@ class FRDatabaseService {
   }
 
   Future unFriendUser(String receiverId) async {
-    final DocumentSnapshot myDoc = await usersReference.document(uid).get();
+    final DocumentSnapshot myDoc = await usersReference.doc(uid).get();
     final DocumentSnapshot otherDoc =
-        await usersReference.document(receiverId).get();
-    String myUserName = await myDoc.data['$userName'] ?? '';
-    String myFullName = await myDoc.data['$fullName'] ?? '';
-    String otherUserName = await otherDoc.data['$userName'] ?? '';
-    String otherFullName = await otherDoc.data['$fullName'] ?? '';
-    await friendsReference.document(receiverId).updateData({
+        await usersReference.doc(receiverId).get();
+    String myUserName = await myDoc.data()['$userName'] ?? '';
+    String myFullName = await myDoc.data()['$fullName'] ?? '';
+    String otherUserName = await otherDoc.data()['$userName'] ?? '';
+    String otherFullName = await otherDoc.data()['$fullName'] ?? '';
+    await friendsReference.doc(receiverId).update({
       'friends': FieldValue.arrayRemove([
         {
           'uid': uid,
@@ -229,7 +205,7 @@ class FRDatabaseService {
         }
       ])
     });
-    return await friendsReference.document(uid).updateData({
+    return await friendsReference.doc(uid).update({
       'friends': FieldValue.arrayRemove([
         {
           'uid': receiverId,

@@ -120,6 +120,7 @@ class _SignInPageState extends State<SignInPage> {
                   Center(
                     child: Container(
                       width: width * 0.9,
+                      height: height * 0.07,
                       child: AuthTextField(
                         obsecure: false,
                         labelTitle: 'Email',
@@ -147,6 +148,7 @@ class _SignInPageState extends State<SignInPage> {
                   Center(
                     child: Container(
                       width: width * 0.9,
+                      height: height * 0.07,
                       child: AuthTextField(
                         obsecure: isObsecure,
                         labelTitle: 'Password',
@@ -222,16 +224,13 @@ class _SignInPageState extends State<SignInPage> {
                             setState(() {
                               loading = true;
                             });
-                            dynamic result = await _auth
-                                .signInWithEmailAndPassword(email, password);
-                            if (result == null) {
-                              setState(() {
-                                loading = false;
-                                error =
-                                    'Check email and password and try again';
-                                networkError = null;
-                              });
-                            }
+                            dynamic result =
+                                await _auth.signInWithEmailAndPassword(
+                                    context, email, password);
+                            if (result != null) {}
+                            setState(() {
+                              loading = false;
+                            });
                           } catch (e) {
                             print(e.toString());
                             setState(() {

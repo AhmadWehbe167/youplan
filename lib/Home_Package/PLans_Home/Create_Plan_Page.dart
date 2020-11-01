@@ -46,7 +46,7 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<Muser>(context);
     return Form(
       key: _formKey,
       child: Scaffold(

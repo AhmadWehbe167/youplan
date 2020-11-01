@@ -28,11 +28,11 @@ class _SearchFriendsBarState extends State<SearchFriendsBar> {
   }
 
   getFriends() async {
-    DocumentSnapshot doc = await Firestore.instance
+    DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('Friends')
-        .document(widget.uid)
+        .doc(widget.uid)
         .get();
-    uIds = List.from(doc.data['friends']);
+    uIds = List.from(doc.data()['friends']);
   }
 
   @override

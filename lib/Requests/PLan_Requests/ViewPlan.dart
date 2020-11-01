@@ -55,9 +55,9 @@ class _ViewPlanState extends State<ViewPlan> {
           child: Column(
             children: <Widget>[
               StreamBuilder(
-                  stream: Firestore.instance
+                  stream: FirebaseFirestore.instance
                       .collection('Requests')
-                      .document(widget.uid)
+                      .doc(widget.uid)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -107,9 +107,9 @@ class _ViewPlanState extends State<ViewPlan> {
                 height: 50,
               ),
               StreamBuilder(
-                  stream: Firestore.instance
+                  stream: FirebaseFirestore.instance
                       .collection('planNames')
-                      .document(widget.uid)
+                      .doc(widget.uid)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {

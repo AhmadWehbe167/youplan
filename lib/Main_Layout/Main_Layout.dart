@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:youplan/Algolia_Search/Search_Users_Page.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
-import 'package:youplan/Explore/Explore_Page.dart';
 import 'package:youplan/Home_Package/Home_Page.dart';
+import 'package:youplan/Profile/Profile_Page.dart';
 import 'package:youplan/Requests/Requests_Page.dart';
 
 class MainPageLayout extends StatefulWidget {
+  final String userId;
+  MainPageLayout({this.userId});
   @override
   _MainPageLayoutState createState() => _MainPageLayoutState();
 }
 
 class _MainPageLayoutState extends State<MainPageLayout> {
   int _selectedIndex = 0;
+  String userID;
   static const TextStyle _style = TextStyle(
     fontFamily: 'Lobster',
     fontSize: 70,
   );
-  final List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    ExplorePage(),
-    RequestsPage(),
-    // Memories(),
-  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -29,6 +28,15 @@ class _MainPageLayoutState extends State<MainPageLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _widgetOptions = <Widget>[
+      HomePage(),
+      SearchUsersBar(),
+      RequestsPage(),
+      HomePage(),
+      ProfilePage(
+        userID: widget.userId,
+      ),
+    ];
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
@@ -45,19 +53,23 @@ class _MainPageLayoutState extends State<MainPageLayout> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('Search'),
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
-            title: Text('Requests'),
+            label: 'Requests',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.memory),
-            title: Text('Memories'),
+            label: 'Memories',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_sharp),
+            label: 'Profile',
           ),
         ],
       ),

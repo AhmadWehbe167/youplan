@@ -29,11 +29,11 @@ class _TagFriendsSearchState extends State<TagFriendsSearch> {
   }
 
   getFriends() async {
-    DocumentSnapshot doc = await Firestore.instance
+    DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('Friends')
-        .document(widget.uid)
+        .doc(widget.uid)
         .get();
-    uIds = List.from(doc.data['friends']);
+    uIds = List.from(doc.data()['friends']);
   }
 
   @override

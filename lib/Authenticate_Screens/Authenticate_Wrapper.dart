@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:youplan/Authenticate_Screens/Register_Page.dart';
 import 'package:youplan/Authenticate_Screens/Sign_in_Page.dart';
+import 'package:youplan/Authenticate_Screens/Verification_page.dart';
 import 'package:youplan/Authenticate_Screens/Welcome/WelcomePage.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 
@@ -11,10 +12,16 @@ class Authentication extends StatefulWidget {
 
 class _AuthenticationState extends State<Authentication> {
   AuthPageEnum authPageEnum = AuthPageEnum.Welcome;
-
-  void toggleView(AuthPageEnum value) {
+  String userName;
+  String fullName;
+  String password;
+  void toggleView(AuthPageEnum value,
+      [String thiUserName, String thisFullName, String thisPassword]) {
     setState(() {
       authPageEnum = value;
+      userName = thiUserName;
+      fullName = thisFullName;
+      password = thisPassword;
     });
   }
 
@@ -31,6 +38,13 @@ class _AuthenticationState extends State<Authentication> {
     } else if (authPageEnum == AuthPageEnum.Welcome) {
       return WelcomePage(
         toggleView: toggleView,
+      );
+    } else if (authPageEnum == AuthPageEnum.Verify) {
+      return VerificationPage(
+        toggleView: toggleView,
+        userName: userName,
+        fullName: fullName,
+        password: password,
       );
     }
     return Container();

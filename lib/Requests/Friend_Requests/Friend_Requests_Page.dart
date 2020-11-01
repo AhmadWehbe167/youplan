@@ -27,7 +27,7 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
   @override
   Widget build(BuildContext context) {
     final globalKey = GlobalKey<ScaffoldState>();
-    final user = Provider.of<User>(context);
+    final user = Provider.of<Muser>(context);
     return !isConnected
         ? Scaffold(
             backgroundColor: Colors.white,
@@ -41,9 +41,9 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
         : Scaffold(
             key: globalKey,
             body: StreamBuilder(
-                stream: Firestore.instance
+                stream: FirebaseFirestore.instance
                     .collection('Requests')
-                    .document(user.uid)
+                    .doc(user.uid)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {

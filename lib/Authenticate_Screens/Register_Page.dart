@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:youplan/Authenticate_Screens/Refactored.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
+import 'package:youplan/services/ConnectionCheck.dart';
 import 'package:youplan/services/auth.dart';
 import 'package:youplan/shared/loading.dart';
 
@@ -28,20 +29,17 @@ class _RegisterPageState extends State<RegisterPage> {
   String networkError;
   String emailTakenError;
   dynamic result;
-  // bool isConnected = true;
 
-  // getConnection() async {
-  //   isConnected = await checkConnection();
-  // }
-  //
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   getConnection();
-  // }
+  AuthPageEnum authPageEnum;
+  void toggleView(AuthPageEnum value) {
+    setState(() {
+      authPageEnum = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    // final user = Provider.of<User>(context);
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return loading
@@ -222,43 +220,46 @@ class _RegisterPageState extends State<RegisterPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(
                         width * 0.05, 0, width * 0.05, height / 100),
-                    child: AuthTextField(
-                      obsecure: isObsecure,
-                      labelTitle: 'Password',
-                      onChan: (val) {
-                        setState(() {
-                          password = val;
-                        });
-                      },
-                      validate: (val) {
-                        if (val.length == 0) {
-                          return 'This is mandatory';
-                        } else if (val.length < 6) {
-                          return 'Password should be at least 6 characters';
-                        } else if (val.length > 27) {
-                          return 'Password should not be more than 27';
-                        } else if (val[val.length - 1] == ' ') {
-                          return 'Check if last letter is white space';
-                        } else if (containsWhiteSpaces(val)) {
-                          return 'you can\'t have white spaces in password';
-                        } else if (!checkAlphaNumericPass(val)) {
-                          return 'Password should contain both letters and numbers';
-                        } else {
-                          return null;
-                        }
-                      },
-                      icon: IconButton(
-                        padding: EdgeInsets.fromLTRB(0, 0, width / 100, 0),
-                        icon: Icon(
-                          Icons.remove_red_eye,
-                          color: Colors.black,
-                          size: height / 30,
-                        ),
-                        onPressed: () {
+                    child: Container(
+                      height: height * 0.07,
+                      child: AuthTextField(
+                        obsecure: isObsecure,
+                        labelTitle: 'Password',
+                        onChan: (val) {
                           setState(() {
-                            isObsecure = !isObsecure;
+                            password = val;
                           });
                         },
+                        validate: (val) {
+                          if (val.length == 0) {
+                            return 'This is mandatory';
+                          } else if (val.length < 6) {
+                            return 'Password should be at least 6 characters';
+                          } else if (val.length > 27) {
+                            return 'Password should not be more than 27';
+                          } else if (val[val.length - 1] == ' ') {
+                            return 'Check if last letter is white space';
+                          } else if (containsWhiteSpaces(val)) {
+                            return 'you can\'t have white spaces in password';
+                          } else if (!checkAlphaNumericPass(val)) {
+                            return 'Password should contain both letters and numbers';
+                          } else {
+                            return null;
+                          }
+                        },
+                        icon: IconButton(
+                          padding: EdgeInsets.fromLTRB(0, 0, width / 100, 0),
+                          icon: Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.black,
+                            size: height / 30,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isObsecure = !isObsecure;
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -319,66 +320,59 @@ class _RegisterPageState extends State<RegisterPage> {
                                   side: BorderSide(color: myOrange)),
                               onPressed: () async {
                                 if (_formKey.currentState.validate()) {
-                                  // bool isConnected = await checkConnection();
-                                  // if (isConnected) {
-                                  try {
-                                    setState(() {
-                                      loading = true;
-                                    });
-                                    print('I\'m connected');
-                                    bool isAvailable = await AuthServices()
-                                        .checkUserNameAvailability(userName);
-                                    print(
-                                        'checking username did complete successfully');
-                                    if (!isAvailable) {
+                                  bool isConnected = await checkConnection();
+                                  if (isConnected) {
+                                    try {
                                       setState(() {
-                                        loading = false;
-                                        userNameTakenError =
-                                            'UserName is taken choose a different one';
-                                        emailTakenError = null;
-                                        networkError = null;
+                                        loading = true;
                                       });
-                                    } else {
-                                      print('UserName is not taken');
-                                      result = await _auth
-                                          .registerWithEmailAndPassword(
-                                        context,
-                                        userName,
-                                        fullName,
-                                        email,
-                                        password,
-                                      );
+                                      print('I\'m connected');
+                                      bool isAvailable = await AuthServices()
+                                          .checkUserNameAvailability(userName);
                                       print(
-                                          'Registering did complete successfully');
-                                      if (result == null) {
+                                          'checking username did complete successfully');
+                                      if (!isAvailable) {
                                         setState(() {
                                           loading = false;
-                                          emailTakenError =
-                                              'this email is already taken';
-                                          userNameTakenError = null;
+                                          userNameTakenError =
+                                              'UserName is taken choose a different one';
+                                          emailTakenError = null;
                                           networkError = null;
                                         });
+                                      } else {
+                                        print('UserName is not taken');
+                                        result = await _auth
+                                            .registerWithEmailAndPassword(
+                                          context,
+                                          userName,
+                                          fullName,
+                                          email,
+                                          password,
+                                        );
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                        widget.toggleView(AuthPageEnum.Verify,
+                                            userName, fullName, password);
                                       }
+                                    } on PlatformException catch (a) {
+                                      setState(() {
+                                        loading = false;
+                                        networkError =
+                                            'An Error occured please try again';
+                                        userNameTakenError = null;
+                                        emailTakenError = null;
+                                      });
                                     }
-                                  } on PlatformException catch (a) {
+                                  } else {
                                     setState(() {
-                                      loading = false;
                                       networkError =
-                                          'An Error occured please try again';
+                                          'Check your internet connection and try again';
                                       userNameTakenError = null;
                                       emailTakenError = null;
+                                      loading = false;
                                     });
                                   }
-                                  // }
-                                  // else {
-                                  //   setState(() {
-                                  //     networkError =
-                                  //         'Check your internet connection and try again';
-                                  //     userNameTakenError = null;
-                                  //     emailTakenError = null;
-                                  //     loading = false;
-                                  //   });
-                                  // }
                                 }
                               },
                               textColor: Colors.white,
