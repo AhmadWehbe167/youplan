@@ -33,58 +33,6 @@ class FRDatabaseService {
     return false;
   }
 
-  Future initUser(String userNameArg, String fullNameArg) async {
-    await usersReference.doc(uid).set({
-      '$userName': userNameArg,
-      '$fullName': fullNameArg,
-    });
-    await friendsReference.doc(uid).set({
-      'friends': [],
-    });
-    await plansReference.doc(uid).set({
-      'plans': [],
-    });
-    await memoriesReference
-        .doc(uid)
-        .collection('categories')
-        .doc('Food & Drink')
-        .set({
-      'plans': [],
-    });
-    await memoriesReference
-        .doc(uid)
-        .collection('categories')
-        .doc('Concerts & Shows')
-        .set({
-      'plans': [],
-    });
-    await memoriesReference
-        .doc(uid)
-        .collection('categories')
-        .doc('Entertainment')
-        .set({
-      'plans': [],
-    });
-    await memoriesReference
-        .doc(uid)
-        .collection('categories')
-        .doc('Cultural & Arts')
-        .set({
-      'plans': [],
-    });
-    await memoriesReference.doc(uid).collection('categories').doc('Other').set({
-      'plans': [],
-    });
-    await planNamesReference.doc(uid).set({
-      'Names': [],
-    });
-    await userNamesReference.doc(userNameArg.toUpperCase()).set({});
-    return await requestsReference.doc(uid).set({
-      'friends': [],
-      'plans': [],
-    });
-  }
-
   Future<bool> userIsFriend(String receiverId) async {
     final DocumentSnapshot friendsSnapshot =
         await friendsReference.doc(uid).get();

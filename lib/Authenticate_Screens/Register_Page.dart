@@ -30,13 +30,6 @@ class _RegisterPageState extends State<RegisterPage> {
   String emailTakenError;
   dynamic result;
 
-  AuthPageEnum authPageEnum;
-  void toggleView(AuthPageEnum value) {
-    setState(() {
-      authPageEnum = value;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // final user = Provider.of<User>(context);
@@ -440,11 +433,17 @@ class _RegisterPageState extends State<RegisterPage> {
                               children: [
                                 Expanded(
                                   child: Opacity(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  'images/phone.png'))),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        widget.toggleView(
+                                            AuthPageEnum.PhoneRegister);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/phone.png'))),
+                                      ),
                                     ),
                                     opacity: 0.9,
                                   ),
