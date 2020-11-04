@@ -133,7 +133,6 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
                       FlatButton(
                         onPressed: () async {
                           if (_formKey1.currentState.validate()) {
-                            bool verificationSucceeded = false;
                             await FirebaseAuth.instance.verifyPhoneNumber(
                               phoneNumber: "+" + countryCode + phoneNumber,
                               timeout: const Duration(seconds: 60),
@@ -159,7 +158,6 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
                                       FirebaseAuth.instance.currentUser.uid);
                                 }).catchError((onError) {
                                   print(onError.toString());
-                                }).whenComplete(() {
                                   setState(() {
                                     loading = false;
                                   });
@@ -228,11 +226,9 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
                                                       .currentUser.uid);
                                             }).catchError((onError) {
                                               setState(() {
-                                                Navigator.pop(context);
+                                                loading = false;
                                               });
                                               print(onError.toString());
-                                            }).whenComplete(() {
-                                              print("Done Registration");
                                             });
                                           },
                                           child: Text("Done")),
@@ -263,22 +259,6 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
                                     ],
                                   ),
                                 );
-
-                                if (smsCode != null) {
-                                  // Create a PhoneAuthCredential with the code
-                                  PhoneAuthCredential phoneAuthCredential =
-                                      PhoneAuthProvider.credential(
-                                          verificationId: verificationId,
-                                          smsCode: smsCode);
-                                  // Sign the user in (or link) with the credential
-                                  await FirebaseAuth.instance
-                                      .signInWithCredential(
-                                          phoneAuthCredential);
-                                } else {
-                                  setState(() {
-                                    buttonText = "Resend";
-                                  });
-                                }
                               },
                             );
                           }
