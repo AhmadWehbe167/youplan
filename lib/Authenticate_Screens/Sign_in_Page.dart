@@ -16,9 +16,11 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final AuthServices _auth = AuthServices();
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   bool isObsecure = true;
   String email;
+  String tempEmail;
   String password;
   bool loading = false;
   String error;
@@ -44,6 +46,7 @@ class _SignInPageState extends State<SignInPage> {
         : Form(
             key: _formKey,
             child: Scaffold(
+              key: _scaffoldKey,
               backgroundColor: lightNavy,
               body: ListView(
                 children: [
@@ -190,7 +193,53 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      //TODO:add get password functionality
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Text("Reset Password"),
+                                content: TextField(
+                                  decoration:
+                                      InputDecoration(labelText: "Email"),
+                                  onChanged: (String s) {
+                                    setState(() {
+                                      tempEmail = s;
+                                    });
+                                  },
+                                ),
+                                actions: [
+                                  Row(
+                                    children: [
+                                      FlatButton(
+                                          onPressed: () {
+                                            AuthServices()
+                                                .resetPassword(tempEmail)
+                                                .then((value) {
+                                              Navigator.pop(context);
+                                              final snackBar = SnackBar(
+                                                  content: Text(
+                                                      'Password Reset email has been sent successfully!'));
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(snackBar);
+                                            }).catchError((onError) {
+                                              Navigator.pop(context);
+                                              final snackBar = SnackBar(
+                                                  content:
+                                                      Text(onError.message));
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(snackBar);
+                                            });
+                                          },
+                                          child: Text("Reset")),
+                                      FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("Cancel")),
+                                    ],
+                                  )
+                                ],
+                              ));
+                      AuthServices().resetPassword(email);
                     },
                     child: Center(
                       child: Container(
@@ -340,12 +389,17 @@ class _SignInPageState extends State<SignInPage> {
                         Expanded(
                           child: Opacity(
                             opacity: 0.85,
-                            child: Container(
-                              height: height * 0.06,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage('images/phone.png'),
-                                      fit: BoxFit.contain)),
+                            child: GestureDetector(
+                              onTap: () {
+                                widget.toggleView(AuthPageEnum.PhoneLogIn);
+                              },
+                              child: Container(
+                                height: height * 0.06,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage('images/phone.png'),
+                                        fit: BoxFit.contain)),
+                              ),
                             ),
                           ),
                         )

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:youplan/services/Friend_Requests_database.dart';
+import 'package:youplan/services/auth.dart';
 import 'package:youplan/shared/loading.dart';
 
 class VerificationPage extends StatefulWidget {
@@ -16,11 +16,13 @@ class VerificationPage extends StatefulWidget {
 
 class _VerificationPageState extends State<VerificationPage> {
   bool loading = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return loading
         ? Loading()
         : Scaffold(
+            key: _scaffoldKey,
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -33,7 +35,7 @@ class _VerificationPageState extends State<VerificationPage> {
                       await currentUser.sendEmailVerification().then((value) {
                         final snackBar =
                             SnackBar(content: Text('Email verification sent!'));
-                        Scaffold.of(context).showSnackBar(snackBar);
+                        _scaffoldKey.currentState.showSnackBar(snackBar);
                       }).catchError((onError) {
                         print(onError.toString());
                         final snackBar = SnackBar(
@@ -60,8 +62,8 @@ class _VerificationPageState extends State<VerificationPage> {
                           if (widget.userName == null) {
                             print("UserName is null");
                           } else {
-                            await FRDatabaseService(uid: localUid)
-                                .initUser(widget.userName, widget.fullName);
+                            await AuthServices().initUser(
+                                widget.userName, widget.fullName, localUid);
                           }
                           await _auth.signInWithEmailAndPassword(
                               email: localEmail, password: widget.password);
@@ -70,7 +72,21 @@ class _VerificationPageState extends State<VerificationPage> {
                           });
                           // widget.toggleView(AuthPageEnum.SignIn);
                         } else {
-                          print("Please Verify your email");
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: Text("Verification Required"),
+                                    content: Text(
+                                        "Please Press on the link sent to your email "
+                                        "to verify this account before continuing"),
+                                    actions: [
+                                      FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("OK"))
+                                    ],
+                                  ));
                         }
                       },
                       child: Text("Continue")),

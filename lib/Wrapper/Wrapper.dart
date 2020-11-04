@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youplan/Authenticate_Screens/Authenticate_Wrapper.dart';
@@ -16,7 +17,8 @@ class _WrapperState extends State<Wrapper> {
     if (user != null) {
       print("User verification value is: ${user.isEmailVerified}");
     }
-    if (user != null && user.isEmailVerified) {
+    if (user != null && user.isEmailVerified ||
+        user != null && FirebaseAuth.instance.currentUser.phoneNumber != null) {
       return MainPageLayout(userId: user.uid);
     } else {
       return Authentication();

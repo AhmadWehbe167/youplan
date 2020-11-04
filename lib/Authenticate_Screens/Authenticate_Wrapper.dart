@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:youplan/Authenticate_Screens/Phone_Register_Page.dart';
+import 'package:youplan/Authenticate_Screens/Phone_SignIn_Page.dart';
 import 'package:youplan/Authenticate_Screens/Register_Page.dart';
 import 'package:youplan/Authenticate_Screens/Sign_in_Page.dart';
 import 'package:youplan/Authenticate_Screens/Verification_page.dart';
@@ -15,6 +17,7 @@ class _AuthenticationState extends State<Authentication> {
   String userName;
   String fullName;
   String password;
+
   void toggleView(AuthPageEnum value,
       [String thiUserName, String thisFullName, String thisPassword]) {
     setState(() {
@@ -45,6 +48,14 @@ class _AuthenticationState extends State<Authentication> {
         userName: userName,
         fullName: fullName,
         password: password,
+      );
+    } else if (authPageEnum == AuthPageEnum.PhoneRegister) {
+      return PhoneRegisterPage(
+        toggleView: toggleView,
+      );
+    } else if (authPageEnum == AuthPageEnum.PhoneLogIn) {
+      return PhoneLogInPage(
+        toggleView: toggleView,
       );
     }
     return Container();

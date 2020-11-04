@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "99938883350-2msououvtpo3e32e2cpm4ds6obraak2b.apps.googleusercontent.com",
+          "client_id": "99938883350-vo82965juohnf9qpq3f543md3pnthiva.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "youplan.youplan",
-            "certificate_hash": "e4be3627fb653c27dc010151a565f3fa3a052e4d"
+            "certificate_hash": "6b2d8e16f404642c4316a22faf7306d313591279"
           }
         },
         {
