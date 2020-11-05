@@ -12,6 +12,7 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
+    final double buttonElevation = 3;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -30,7 +31,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                   alignment: Alignment.bottomCenter,
-                  image: AssetImage('images/Logo.png'),
+                  image: AssetImage('images/finalLogo.png'),
                 )),
               )
             ],
@@ -96,13 +97,14 @@ class _WelcomePageState extends State<WelcomePage> {
               Transform.translate(
                 offset: Offset(0, -height / 5),
                 child: Center(
-                  child: FlatButton(
+                  child: RaisedButton(
+                    elevation: buttonElevation,
                     onPressed: () {
                       widget.toggleView(AuthPageEnum.SignIn);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(width / 2),
-                        side: BorderSide(color: Colors.white)),
+                        side: BorderSide(color: Colors.orangeAccent)),
                     textColor: Colors.white,
                     color: Color(0xFFFE8853),
                     padding: EdgeInsets.fromLTRB(
@@ -121,7 +123,8 @@ class _WelcomePageState extends State<WelcomePage> {
               Transform.translate(
                 offset: Offset(0, -height / 3.6),
                 child: Center(
-                  child: FlatButton(
+                  child: RaisedButton(
+                    elevation: buttonElevation,
                     onPressed: () {
                       widget.toggleView(AuthPageEnum.Register);
                     },
