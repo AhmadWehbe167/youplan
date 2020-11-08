@@ -5,12 +5,19 @@ import 'package:youplan/Model/User.dart';
 import 'package:youplan/services/collections_references.dart';
 
 class AuthServices {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   String userName = 'userName';
   String fullName = 'fullName';
-  final CollectionReference friendsReference =
-      FirebaseFirestore.instance.collection('Friends');
 
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth;
+  // final User user;
+  AuthServices({
+    this.auth,
+    // this.user,
+  });
+
+  //the following two methods is to create a stream of user where
+  // Wrapper can check if user is logged in or not
   Muser _userFromFirebaseAuth(User user) {
     return user != null
         ? Muser(
@@ -20,8 +27,8 @@ class AuthServices {
         : null;
   }
 
-  Stream<Muser> get user {
-    return _auth.authStateChanges().map(_userFromFirebaseAuth);
+  Stream<Muser> get userStream {
+    return auth.authStateChanges().map(_userFromFirebaseAuth);
   }
 
   Future registerWithEmailAndPassword(
@@ -33,7 +40,7 @@ class AuthServices {
   ) async {
     User user;
     // UserCredential result =
-    await _auth
+    await auth
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) async {
       if (!value.user.emailVerified) {
@@ -66,26 +73,11 @@ class AuthServices {
   }
 
   Future signInWithEmailAndPassword(
-      BuildContext context, String email, String password) async {
+      String email, String password, Function showError) async {
     try {
-      UserCredential result = await _auth
+      UserCredential result = await auth
           .signInWithEmailAndPassword(email: email, password: password)
-          .catchError((err) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text("Error"),
-            content: Text(err.message),
-            actions: [
-              FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("OK"))
-            ],
-          ),
-        );
-      });
+          .catchError((err) => showError);
       User user = result.user;
       return user;
     } catch (e) {
@@ -96,7 +88,7 @@ class AuthServices {
 
   Future signOut() async {
     try {
-      return await _auth.signOut();
+      return await auth.signOut();
     } catch (e) {
       print(e.toString());
       return null;
@@ -117,7 +109,7 @@ class AuthServices {
   }
 
   Future<void> resetPassword(String email) async {
-    await _auth.sendPasswordResetEmail(email: email);
+    await auth.sendPasswordResetEmail(email: email);
   }
 
   Future initUser(String userNameArg, String fullNameArg, String uid) async {
@@ -125,7 +117,7 @@ class AuthServices {
       '$userName': userNameArg,
       '$fullName': fullNameArg,
     });
-    await friendsReference.doc(uid).set({
+    await FirebaseFirestore.instance.collection('Friends').doc(uid).set({
       'friends': [],
     });
     await plansReference.doc(uid).set({
@@ -172,11 +164,11 @@ class AuthServices {
     });
   }
 
-  Future<void> signInWithPhoneNumber(
-    String countryCode,
-    String phoneNumber,
-    GlobalKey<ScaffoldState> scaffoldKey,
-    Function codeSentFunction,
-    Function codeAutoRetrievalFunction,
-  ) async {}
+  // Future<void> signInWithPhoneNumber(
+  //   String countryCode,
+  //   String phoneNumber,
+  //   GlobalKey<ScaffoldState> scaffoldKey,
+  //   Function codeSentFunction,
+  //   Function codeAutoRetrievalFunction,
+  // ) async {}
 }

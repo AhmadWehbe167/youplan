@@ -31,6 +31,25 @@ class _SignInPageState extends State<SignInPage> {
     isConnected = await checkConnection();
   }
 
+  void showError(dynamic err) {
+    {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Error"),
+          content: Text(err.message),
+          actions: [
+            FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"))
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -275,7 +294,7 @@ class _SignInPageState extends State<SignInPage> {
                             });
                             dynamic result =
                                 await _auth.signInWithEmailAndPassword(
-                                    context, email, password);
+                                    email, password, showError);
                             if (result != null) {}
                             setState(() {
                               loading = false;
