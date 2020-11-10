@@ -7,13 +7,9 @@ import 'package:youplan/services/collections_references.dart';
 class AuthServices {
   String userName = 'userName';
   String fullName = 'fullName';
-
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseAuth auth;
-  // final User user;
   AuthServices({
     this.auth,
-    // this.user,
   });
 
   //the following two methods is to create a stream of user where
@@ -23,7 +19,8 @@ class AuthServices {
         ? Muser(
             uid: user.uid,
             isEmailVerified: user.emailVerified,
-            reload: user.reload)
+            reload: user.reload,
+          )
         : null;
   }
 
@@ -72,17 +69,14 @@ class AuthServices {
     });
   }
 
-  Future signInWithEmailAndPassword(
-      String email, String password, Function showError) async {
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential result = await auth
-          .signInWithEmailAndPassword(email: email, password: password)
-          .catchError((err) => showError);
-      User user = result.user;
-      return user;
+      await auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
+      print(e.message);
+      print(e.code);
+      throw e;
       print(e.toString());
-      return null;
     }
   }
 
