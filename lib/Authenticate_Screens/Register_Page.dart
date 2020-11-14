@@ -45,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _scrollController,
                 children: [
                   Container(
-                    height: height * 0.25,
+                    height: height * 0.26,
                     child: Column(
                       children: <Widget>[
                         Expanded(
@@ -97,9 +97,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         )
                       : Container(),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
+                  // SizedBox(
+                  //   height: height * 0.02,
+                  // ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(
                         width * 0.05, height / 100, width * 0.05, height / 100),
@@ -296,11 +296,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           ]),
                         ),
                       )),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
+                  // SizedBox(
+                  //   height: height * 0.02,
+                  // ),
                   Container(
-                    height: height * 0.27,
+                    height: height * 0.26,
                     child: Column(
                       children: <Widget>[
                         Expanded(

@@ -59,7 +59,7 @@ class _SignInPageState extends State<SignInPage> {
               body: ListView(
                 children: [
                   SizedBox(
-                    height: widget.height * 0.05,
+                    height: widget.height * 0.03,
                   ),
                   Container(
                     height: widget.height * 0.2,
@@ -92,7 +92,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   SizedBox(
-                    height: widget.height * 0.06,
+                    height: widget.height * 0.08,
                   ),
                   Center(
                     child: Container(
@@ -238,7 +238,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   SizedBox(
-                    height: widget.height * 0.06,
+                    height: widget.height * 0.08,
                   ),
                   GestureDetector(
                     onTap: () async {
@@ -348,7 +348,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   SizedBox(
-                    height: widget.height * 0.05,
+                    height: widget.height * 0.03,
                   ),
                   Center(
                     child: Container(
@@ -367,7 +367,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   SizedBox(
-                    height: widget.height * 0.05,
+                    height: widget.height * 0.04,
                   ),
                   Container(
                     child: Row(
