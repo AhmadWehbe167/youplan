@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youplan/Authenticate_Screens/Phone_Register_Page.dart';
 import 'package:youplan/Authenticate_Screens/Phone_SignIn_Page.dart';
@@ -6,6 +7,7 @@ import 'package:youplan/Authenticate_Screens/Sign_in_Page.dart';
 import 'package:youplan/Authenticate_Screens/Verification_page.dart';
 import 'package:youplan/Authenticate_Screens/Welcome/WelcomePage.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
+import 'package:youplan/services/auth.dart';
 
 class Authentication extends StatefulWidget {
   @override
@@ -30,9 +32,14 @@ class _AuthenticationState extends State<Authentication> {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     if (authPageEnum == AuthPageEnum.SignIn) {
       return SignInPage(
         toggleView: toggleView,
+        auth: AuthServices(auth: FirebaseAuth.instance),
+        height: height,
+        width: width,
       );
     } else if (authPageEnum == AuthPageEnum.Register) {
       return RegisterPage(

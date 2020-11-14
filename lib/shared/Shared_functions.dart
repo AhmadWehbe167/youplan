@@ -17,3 +17,13 @@ userDataExists(UserData user, List<UserData> users) {
   }
   return false;
 }
+
+String errorMessagesHandler(dynamic error) {
+  if (error.code == "user-not-found") {
+    return "There is no user with this email. Make sure your email is correct or register for an account if you have not yet.";
+  } else if (error.code == "wrong-password") {
+    return "Password is wrong!";
+  } else {
+    return "Something went wrong please try again.";
+  }
+}

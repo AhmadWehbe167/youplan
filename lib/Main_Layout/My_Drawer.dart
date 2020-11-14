@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youplan/Model/User.dart';
@@ -67,7 +68,7 @@ class MyDrawer extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              AuthServices().signOut();
+              AuthServices(auth: FirebaseAuth.instance).signOut();
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(40, 10, 0, 5),

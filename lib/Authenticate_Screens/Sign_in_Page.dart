@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,17 +6,20 @@ import 'package:youplan/Authenticate_Screens/Refactored.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/services/ConnectionCheck.dart';
 import 'package:youplan/services/auth.dart';
+import 'package:youplan/shared/Shared_functions.dart';
 import 'package:youplan/shared/loading.dart';
 
 class SignInPage extends StatefulWidget {
   final Function toggleView;
-  const SignInPage({this.toggleView});
+  final AuthServices auth;
+  final double height;
+  final double width;
+  const SignInPage({this.toggleView, this.auth, this.height, this.width});
   @override
   _SignInPageState createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final AuthServices _auth = AuthServices();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   bool isObsecure = true;
@@ -23,43 +27,28 @@ class _SignInPageState extends State<SignInPage> {
   String tempEmail;
   String password;
   bool loading = false;
-  String error;
-  String networkError;
   bool isConnected = true;
 
   getConnection() async {
     isConnected = await checkConnection();
   }
 
-  void showError(dynamic err) {
-    {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("Error"),
-          content: Text(err.message),
-          actions: [
-            FlatButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("OK"))
-          ],
-        ),
-      );
-    }
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   getConnection();
+  // }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     getConnection();
   }
 
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
+    // final double height = MediaQuery.of(context).size.height;
+    // final double width = MediaQuery.of(context).size.width;
     return loading
         ? Loading()
         : Form(
@@ -70,10 +59,10 @@ class _SignInPageState extends State<SignInPage> {
               body: ListView(
                 children: [
                   SizedBox(
-                    height: height * 0.05,
+                    height: widget.height * 0.03,
                   ),
                   Container(
-                    height: height * 0.2,
+                    height: widget.height * 0.2,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage('images/GreenRoundMan.png'),
@@ -81,15 +70,15 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   Container(
-                    height: height * 0.05,
+                    height: widget.height * 0.05,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/LogIn.png'))),
                   ),
                   Center(
                     child: Container(
-                      height: height * 0.05,
-                      width: width * 0.8,
+                      height: widget.height * 0.05,
+                      width: widget.width * 0.8,
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: Text(
@@ -102,47 +91,13 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                     ),
                   ),
-                  networkError != null
-                      ? Center(
-                          child: Container(
-                            width: width * 0.8,
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: Text(
-                                '$networkError',
-                                style: TextStyle(
-                                    color: Colors.redAccent,
-                                    fontSize: height,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        )
-                      : Container(),
-                  error != null
-                      ? Center(
-                          child: Container(
-                            width: width * 0.8,
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: Text(
-                                '$error',
-                                style: TextStyle(
-                                    color: Colors.redAccent,
-                                    fontSize: width,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
-                          ),
-                        )
-                      : Container(),
                   SizedBox(
-                    height: height * 0.06,
+                    height: widget.height * 0.08,
                   ),
                   Center(
                     child: Container(
-                      width: width * 0.9,
-                      height: height * 0.07,
+                      width: widget.width * 0.9,
+                      height: widget.height * 0.07,
                       child: AuthTextField(
                         obsecure: false,
                         labelTitle: 'Email',
@@ -165,12 +120,12 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.01,
+                    height: widget.height * 0.01,
                   ),
                   Center(
                     child: Container(
-                      width: width * 0.9,
-                      height: height * 0.07,
+                      width: widget.width * 0.9,
+                      height: widget.height * 0.07,
                       child: AuthTextField(
                         obsecure: isObsecure,
                         labelTitle: 'Password',
@@ -192,11 +147,11 @@ class _SignInPageState extends State<SignInPage> {
                           }
                         },
                         icon: IconButton(
-                          padding: EdgeInsets.only(right: width / 20),
+                          padding: EdgeInsets.only(right: widget.width / 20),
                           icon: Icon(
                             Icons.remove_red_eye,
                             color: Colors.black,
-                            size: width / 17,
+                            size: widget.width / 17,
                           ),
                           onPressed: () {
                             setState(() {
@@ -208,7 +163,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.01,
+                    height: widget.height * 0.01,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -230,7 +185,8 @@ class _SignInPageState extends State<SignInPage> {
                                     children: [
                                       FlatButton(
                                           onPressed: () {
-                                            AuthServices()
+                                            AuthServices(
+                                                    auth: FirebaseAuth.instance)
                                                 .resetPassword(tempEmail)
                                                 .then((value) {
                                               Navigator.pop(context);
@@ -242,8 +198,9 @@ class _SignInPageState extends State<SignInPage> {
                                             }).catchError((onError) {
                                               Navigator.pop(context);
                                               final snackBar = SnackBar(
-                                                  content:
-                                                      Text(onError.message));
+                                                  content: Text(
+                                                      errorMessagesHandler(
+                                                          onError)));
                                               _scaffoldKey.currentState
                                                   .showSnackBar(snackBar);
                                             });
@@ -258,12 +215,11 @@ class _SignInPageState extends State<SignInPage> {
                                   )
                                 ],
                               ));
-                      AuthServices().resetPassword(email);
                     },
                     child: Center(
                       child: Container(
-                        width: width * 0.88,
-                        height: height * 0.025,
+                        width: widget.width * 0.88,
+                        height: widget.height * 0.025,
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: FittedBox(
@@ -273,7 +229,7 @@ class _SignInPageState extends State<SignInPage> {
                               style: TextStyle(
                                 color: logoGreen,
                                 fontWeight: FontWeight.bold,
-                                fontSize: height,
+                                fontSize: widget.height,
                               ),
                             ),
                           ),
@@ -282,34 +238,43 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.06,
+                    height: widget.height * 0.08,
                   ),
                   GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState.validate()) {
                         if (isConnected) {
-                          try {
-                            setState(() {
-                              loading = true;
-                            });
-                            dynamic result =
-                                await _auth.signInWithEmailAndPassword(
-                                    email, password, showError);
-                            if (result != null) {}
-                            setState(() {
-                              loading = false;
-                            });
-                          } catch (e) {
-                            print(e.toString());
-                            setState(() {
-                              loading = false;
-                            });
-                          }
+                          setState(() {
+                            loading = true;
+                          });
+                          await widget.auth
+                              .signInWithEmailAndPassword(email, password)
+                              .catchError((err) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text("Log In Failed!"),
+                                content: Text(errorMessagesHandler(err)),
+                                actions: [
+                                  FlatButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("OK"))
+                                ],
+                              ),
+                            );
+                          });
+                          setState(() {
+                            loading = false;
+                          });
                         } else {
-                          networkError =
-                              'Check your internet connection and try again';
-                          error = null;
-                          loading = false;
+                          await getConnection();
+                          final SnackBar snackbar = SnackBar(
+                            content: Text(
+                                "'Check your internet connection and try again'"),
+                          );
+                          _scaffoldKey.currentState.showSnackBar(snackbar);
                         }
                       }
                     },
@@ -317,15 +282,17 @@ class _SignInPageState extends State<SignInPage> {
                       child: Card(
                         elevation: 5,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(width / 10),
+                            borderRadius:
+                                BorderRadius.circular(widget.width / 10),
                             side: BorderSide(color: logoGreen)),
                         child: Container(
                           decoration: BoxDecoration(
                             color: logoGreen,
-                            borderRadius: BorderRadius.circular(width / 10),
+                            borderRadius:
+                                BorderRadius.circular(widget.width / 10),
                           ),
                           padding: EdgeInsets.fromLTRB(
-                              0, height / 100, 0, height / 100),
+                              0, widget.height / 100, 0, widget.height / 100),
                           child: FittedBox(
                             fit: BoxFit.contain,
                             child: Text('Log In',
@@ -334,16 +301,16 @@ class _SignInPageState extends State<SignInPage> {
                                   color: Colors.white,
                                 )),
                           ),
-                          height: height * 0.06,
-                          width: width * 0.7,
+                          height: widget.height * 0.06,
+                          width: widget.width * 0.7,
                         ),
                       ),
                     ),
                   ),
                   Center(
                     child: Container(
-                      height: height * 0.035,
-                      width: width * 0.65,
+                      height: widget.height * 0.035,
+                      width: widget.width * 0.65,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -381,11 +348,11 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.05,
+                    height: widget.height * 0.03,
                   ),
                   Center(
                     child: Container(
-                      width: width * 0.5,
+                      width: widget.width * 0.5,
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: Text(
@@ -393,14 +360,14 @@ class _SignInPageState extends State<SignInPage> {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: height,
+                            fontSize: widget.height,
                           ),
                         ),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.05,
+                    height: widget.height * 0.04,
                   ),
                   Container(
                     child: Row(
@@ -413,7 +380,7 @@ class _SignInPageState extends State<SignInPage> {
                                 widget.toggleView(AuthPageEnum.PhoneLogIn);
                               },
                               child: Container(
-                                height: height * 0.06,
+                                height: widget.height * 0.06,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: AssetImage('images/phone.png'),
