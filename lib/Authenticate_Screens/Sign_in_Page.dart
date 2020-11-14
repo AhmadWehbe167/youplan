@@ -22,7 +22,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  bool isObsecure = true;
+  bool isObscure = true;
   String email;
   String tempEmail;
   String password;
@@ -33,22 +33,8 @@ class _SignInPageState extends State<SignInPage> {
     isConnected = await checkConnection();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   getConnection();
-  // }
-
-  @override
-  void initState() {
-    super.initState();
-    getConnection();
-  }
-
   @override
   Widget build(BuildContext context) {
-    // final double height = MediaQuery.of(context).size.height;
-    // final double width = MediaQuery.of(context).size.width;
     return loading
         ? Loading()
         : Form(
@@ -70,7 +56,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   Container(
-                    height: widget.height * 0.05,
+                    height: widget.height * 0.045,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/LogIn.png'))),
@@ -97,7 +83,6 @@ class _SignInPageState extends State<SignInPage> {
                   Center(
                     child: Container(
                       width: widget.width * 0.9,
-                      height: widget.height * 0.07,
                       child: AuthTextField(
                         obsecure: false,
                         labelTitle: 'Email',
@@ -125,9 +110,8 @@ class _SignInPageState extends State<SignInPage> {
                   Center(
                     child: Container(
                       width: widget.width * 0.9,
-                      height: widget.height * 0.07,
                       child: AuthTextField(
-                        obsecure: isObsecure,
+                        obsecure: isObscure,
                         labelTitle: 'Password',
                         keyboard: TextInputType.emailAddress,
                         onChan: (val) {
@@ -155,7 +139,7 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              isObsecure = !isObsecure;
+                              isObscure = !isObscure;
                             });
                           },
                         ),
@@ -243,6 +227,7 @@ class _SignInPageState extends State<SignInPage> {
                   GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState.validate()) {
+                        await getConnection();
                         if (isConnected) {
                           setState(() {
                             loading = true;
@@ -272,7 +257,7 @@ class _SignInPageState extends State<SignInPage> {
                           await getConnection();
                           final SnackBar snackbar = SnackBar(
                             content: Text(
-                                "'Check your internet connection and try again'"),
+                                "Check your internet connection and try again!"),
                           );
                           _scaffoldKey.currentState.showSnackBar(snackbar);
                         }
