@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:youplan/Authenticate_Screens/Phone_Register_Page.dart';
-import 'package:youplan/Authenticate_Screens/Phone_SignIn_Page.dart';
-import 'package:youplan/Authenticate_Screens/Register_Page.dart';
-import 'package:youplan/Authenticate_Screens/Sign_in_Page.dart';
-import 'package:youplan/Authenticate_Screens/Verification_page.dart';
-import 'package:youplan/Authenticate_Screens/Welcome/WelcomePage.dart';
+import 'package:youplan/Authenticate_Screens/Email_Auth/SignUp_Page.dart';
+import 'package:youplan/Authenticate_Screens/Email_Auth/Sign_in_Page.dart';
+import 'package:youplan/Authenticate_Screens/Email_Auth/Verification_page.dart';
+import 'package:youplan/Authenticate_Screens/Phone_Auth/Phone_Register_Page.dart';
+import 'package:youplan/Authenticate_Screens/Phone_Auth/Phone_SignIn_Page.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
+import 'package:youplan/Welcome/WelcomePage.dart';
 import 'package:youplan/services/auth.dart';
 
 class Authentication extends StatefulWidget {
@@ -42,8 +42,11 @@ class _AuthenticationState extends State<Authentication> {
         width: width,
       );
     } else if (authPageEnum == AuthPageEnum.Register) {
-      return RegisterPage(
+      return SignUpPage(
         toggleView: toggleView,
+        auth: AuthServices(auth: FirebaseAuth.instance),
+        height: height,
+        width: width,
       );
     } else if (authPageEnum == AuthPageEnum.Welcome) {
       return WelcomePage(

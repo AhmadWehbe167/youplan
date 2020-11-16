@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:youplan/Authenticate_Screens/Authenticate_Wrapper.dart';
+import 'package:youplan/Authenticate_Screens/Auth_Services/Auth_Wrapper.dart';
 import 'package:youplan/Main_Layout/Main_Layout.dart';
 import 'package:youplan/Model/User.dart';
 
@@ -16,9 +16,14 @@ class _WrapperState extends State<Wrapper> {
     final user = Provider.of<Muser>(context);
     if (user != null) {
       print("User verification value is: ${user.isEmailVerified}");
+      if (FirebaseAuth.instance.currentUser.phoneNumber != null) {
+        print("User phone number value is not null");
+      }
     }
-    if (user != null && user.isEmailVerified ||
-        user != null && FirebaseAuth.instance.currentUser.phoneNumber != null) {
+    if ((user != null && user.isEmailVerified) ||
+        (user != null &&
+            FirebaseAuth.instance.currentUser.phoneNumber != null &&
+            FirebaseAuth.instance.currentUser.phoneNumber.isNotEmpty)) {
       return MainPageLayout(userId: user.uid);
     } else {
       return Authentication();

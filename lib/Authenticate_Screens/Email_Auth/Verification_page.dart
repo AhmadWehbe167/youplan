@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youplan/services/auth.dart';
+import 'package:youplan/shared/Shared_functions.dart';
 import 'package:youplan/shared/loading.dart';
 
 class VerificationPage extends StatefulWidget {
@@ -56,21 +57,62 @@ class _VerificationPageState extends State<VerificationPage> {
                           setState(() {
                             loading = true;
                           });
-                          String localEmail = _auth.currentUser.email;
-                          String localUid = _auth.currentUser.uid;
-                          await _auth.signOut();
-                          if (widget.userName == null) {
-                            print("UserName is null");
-                          } else {
-                            await AuthServices().initUser(
-                                widget.userName, widget.fullName, localUid);
+                          try {
+                            String localEmail = _auth.currentUser.email;
+                            String localUid = _auth.currentUser.uid;
+                            // var credential = EmailAuthProvider.credential(
+                            //     email: localEmail, password: widget.password);
+                            // _auth.currentUser.linkWithCredential(credential);
+                            await _auth.signOut();
+                            await _auth
+                                .signInWithEmailAndPassword(
+                                    email: localEmail,
+                                    password: widget.password)
+                                .then((_) async {
+                              await AuthServices()
+                                  .initUser(widget.userName, widget.fullName,
+                                      localUid)
+                                  .catchError((err) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text("Operation Failed!"),
+                                    content: Text(errorMessagesHandler(err)),
+                                    actions: [
+                                      FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("OK"))
+                                    ],
+                                  ),
+                                );
+                              });
+                            }).catchError((err) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("Operation Failed!"),
+                                  content: Text(errorMessagesHandler(err)),
+                                  actions: [
+                                    FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("OK"))
+                                  ],
+                                ),
+                              );
+                            });
+                            setState(() {
+                              loading = false;
+                            });
+                          } catch (e) {
+                            final snackBar = SnackBar(
+                                content: Text(
+                                    'An Error occurred please try again!'));
+                            Scaffold.of(context).showSnackBar(snackBar);
                           }
-                          await _auth.signInWithEmailAndPassword(
-                              email: localEmail, password: widget.password);
-                          setState(() {
-                            loading = false;
-                          });
-                          // widget.toggleView(AuthPageEnum.SignIn);
                         } else {
                           showDialog(
                               context: context,
