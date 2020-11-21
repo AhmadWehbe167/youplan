@@ -51,4 +51,7 @@ flutter:
    - family: ConcertOne
      fonts:
        - asset: fonts/ConcertOne-Regular.ttf
+   - family: NotoSansJP
+     fonts:
+       - asset: fonts/NotoSansJP-Bold.otf
 
