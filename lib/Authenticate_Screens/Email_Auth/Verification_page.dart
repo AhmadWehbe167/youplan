@@ -26,8 +26,20 @@ class _VerificationPageState extends State<VerificationPage> {
             key: _scaffoldKey,
             body: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Container(
+                    height: 300,
+                    width: 280,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                      alignment: Alignment.bottomCenter,
+                      image: AssetImage('images/verification.png'),
+                    )),
+                  ),
+                  SizedBox(
+                    height: 100,
+                  ),
                   Text("One step ahead Verify your email"),
                   TextButton(
                     child: Text("Send Verification Email Again"),
