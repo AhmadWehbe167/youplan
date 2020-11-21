@@ -28,7 +28,8 @@ class LogoLoading extends StatelessWidget {
           width: 150,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('images/Logo.png'), fit: BoxFit.contain)),
+                  image: AssetImage('images/finalLogo.png'),
+                  fit: BoxFit.contain)),
         ),
       ),
     );

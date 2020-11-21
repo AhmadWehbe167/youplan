@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:youplan/Authenticate_Screens/Refactored.dart';
+import 'package:youplan/Authenticate_Screens/Auth_Services/RefactoredWidgets_Functions.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/Model/User.dart';
 import 'package:youplan/services/auth.dart';
@@ -64,7 +64,7 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
                             userName = val;
                           });
                         },
-                        obsecure: false,
+                        obscure: false,
                       ),
                       TextFormField(
                         decoration: InputDecoration(

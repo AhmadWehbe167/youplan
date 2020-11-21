@@ -7,7 +7,7 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:provider/provider.dart';
 import 'package:youplan/Algolia_Search/Tag_Friends_Search.dart';
 import 'package:youplan/Algolia_Search/display_Search_results.dart';
-import 'package:youplan/Authenticate_Screens/Refactored.dart';
+import 'package:youplan/Authenticate_Screens/Auth_Services/RefactoredWidgets_Functions.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/Home_Package/PLans_Home/Planfunctions.dart';
 import 'package:youplan/Model/User.dart';
@@ -79,7 +79,7 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
                   return null;
                 }
               },
-              obsecure: false,
+              obscure: false,
               onChan: (val) {
                 title = val;
               },
@@ -162,7 +162,7 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
                   return null;
                 }
               },
-              obsecure: false,
+              obscure: false,
               onChan: (val) {
                 description = val;
               },
@@ -177,7 +177,7 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
                   return null;
                 }
               },
-              obsecure: false,
+              obscure: false,
               onChan: (val) {
                 notes = val;
               },

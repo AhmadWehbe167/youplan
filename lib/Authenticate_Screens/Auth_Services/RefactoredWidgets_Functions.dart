@@ -6,29 +6,33 @@ class AuthTextField extends StatelessWidget {
   final String labelTitle;
   final Function validate;
   final TextInputType keyboard;
-  final bool obsecure;
+  final bool obscure;
   final IconButton icon;
   final Function onChan;
+  final TextEditingController controller;
   const AuthTextField({
     Key key,
     this.labelTitle,
     this.validate,
     this.keyboard,
-    this.obsecure,
+    this.obscure,
     this.icon,
     this.onChan,
+    this.controller,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     return TextFormField(
+      textCapitalization: TextCapitalization.sentences,
+      controller: controller,
       style: TextStyle(
         color: navy,
-        letterSpacing: 0.5,
-        fontWeight: FontWeight.bold,
+        letterSpacing: 0.3,
+        // fontWeight: FontWeight.bold,
         fontSize: height * 0.025,
       ),
-      obscureText: obsecure,
+      obscureText: obscure,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(height / 50),
         errorStyle: TextStyle(
@@ -105,22 +109,22 @@ bool checkTextWithSpace(String value) {
   return false;
 }
 
-bool checkAlphaNumericPass(String value) {
-  bool alpha = false;
-  bool numeric = false;
-  for (int i = 0; i < value.length; i++) {
-    if (value[i].contains(RegExp('[a-zA-Z]')) && alpha == false) {
-      alpha = true;
-    } else if (value[i].contains(RegExp('[0-9]')) && numeric == false) {
-      numeric = true;
-    } else if (value[i].contains(RegExp('[a-zA-Z]')) && numeric == true) {
-      return true;
-    } else if (value[i].contains(RegExp('[0-9]')) && alpha == true) {
-      return true;
-    }
-  }
-  return false;
-}
+// bool checkAlphaNumericPass(String value) {
+//   bool alpha = false;
+//   bool numeric = false;
+//   for (int i = 0; i < value.length; i++) {
+//     if (value[i].contains(RegExp('[a-zA-Z]')) && alpha == false) {
+//       alpha = true;
+//     } else if (value[i].contains(RegExp('[0-9]')) && numeric == false) {
+//       numeric = true;
+//     } else if (value[i].contains(RegExp('[a-zA-Z]')) && numeric == true) {
+//       return true;
+//     } else if (value[i].contains(RegExp('[0-9]')) && alpha == true) {
+//       return true;
+//     }
+//   }
+//   return false;
+// }
 
 bool containsWhiteSpaces(String value) {
   for (int i = 0; i < value.length; i++) {
@@ -132,13 +136,25 @@ bool containsWhiteSpaces(String value) {
 }
 
 bool consecutiveWhiteSpaces(String value) {
-  bool whiteSpaced = false;
-  for (int i = 0; i < value.length; i++) {
-    if (value[i].contains(RegExp(' ')) && !whiteSpaced) {
-      whiteSpaced = true;
-    } else if (value[i].contains(RegExp(' ')) && whiteSpaced) {
-      return true;
+  for (int i = 0; i < value.length - 1; i++) {
+    if (value[i].contains(RegExp(' '))) {
+      if (value[i + 1].contains(RegExp(' '))) {
+        return true;
+      }
     }
   }
   return false;
+}
+
+String cleanFromSpaces(String value) {
+  while (consecutiveWhiteSpaces(value)) {
+    value = value.replaceAll("  ", " ");
+  }
+  if (value.length > 1 && value[value.length - 1] == ' ') {
+    value = value.substring(0, value.length - 1);
+  }
+  if (value.length > 1 && value[0] == ' ') {
+    value = value.substring(1, value.length);
+  }
+  return value;
 }

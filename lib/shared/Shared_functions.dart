@@ -19,10 +19,15 @@ userDataExists(UserData user, List<UserData> users) {
 }
 
 String errorMessagesHandler(dynamic error) {
+  print("Error code is ${error.code} and message is ${error.message}");
   if (error.code == "user-not-found") {
     return "There is no user with this email. Make sure your email is correct or register for an account if you have not yet.";
   } else if (error.code == "wrong-password") {
-    return "Password is wrong!";
+    return "Password is wrong";
+  } else if (error.code == "phone-number-already-exists") {
+    return "Phone number is already in use by another account";
+  } else if (error.code == "email-already-in-use") {
+    return "This Email is already in use by another account";
   } else {
     return "Something went wrong please try again.";
   }

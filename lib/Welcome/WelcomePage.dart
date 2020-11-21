@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:youplan/Authenticate_Screens/Welcome/WaversWidgets.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
+import 'package:youplan/Welcome/WaversWidgets.dart';
 
 class WelcomePage extends StatefulWidget {
   final Function toggleView;

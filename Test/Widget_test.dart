@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
-import 'package:youplan/Authenticate_Screens/Sign_in_Page.dart';
 import 'package:youplan/Model/User.dart';
 import 'package:youplan/services/auth.dart';
+
+import 'file:///D:/AndroidStudioProjects/youplanOld/lib/Authenticate_Screens/Email_Auth/Sign_in_Page.dart';
 
 class FirebaseAuthMock extends Mock implements FirebaseAuth {}
 
