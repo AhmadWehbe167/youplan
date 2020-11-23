@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:youplan/Authenticate_Screens/Auth_Services/RefactoredWidgets_Functions.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
@@ -33,13 +34,12 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
         : Form(
             key: _formKey1,
             child: Scaffold(
+              backgroundColor: navy,
               key: _scaffoldKey,
               body: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: ListView(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AuthTextField(
                         labelTitle: "UserName",
@@ -129,6 +129,44 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
                       ),
                       SizedBox(
                         height: 100,
+                      ),
+                      IntlPhoneField(
+                        initialCountryCode: "LB",
+                        decoration: InputDecoration(
+                          // contentPadding: EdgeInsets.all(height / 50),
+                          errorStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.redAccent,
+                            // fontSize: height * 0.018,
+                          ),
+                          // hintText: labelTitle,
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.normal,
+                          ),
+                          // suffixIcon: icon,
+                          isDense: true,
+                          fillColor: Colors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                              // borderRadius: new BorderRadius.circular(height / 50),
+                              borderSide: BorderSide(
+                            color: Colors.white,
+                            width: 2,
+                          )),
+                          focusedBorder: OutlineInputBorder(
+                              // borderRadius: new BorderRadius.circular(height / 50),
+                              borderSide: BorderSide(
+                            color: navy,
+                            width: 2,
+                          )),
+                          border: new OutlineInputBorder(
+                            // borderRadius: new BorderRadius.circular(height / 50),
+                            borderSide: new BorderSide(
+                              color: navy,
+                              width: 2,
+                            ),
+                          ),
+                        ),
                       ),
                       FlatButton(
                         onPressed: () async {

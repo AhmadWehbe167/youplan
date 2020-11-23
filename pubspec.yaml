@@ -28,6 +28,9 @@ dependencies:
   intl: ^0.16.1
   device_preview: ^0.4.7
   splashscreen: ^1.2.0
+  intl_phone_field:
+    git:
+      url: https://github.com/AhmadWehbe167/intl_phone_field.git
 
 dev_dependencies:
   flutter_driver:

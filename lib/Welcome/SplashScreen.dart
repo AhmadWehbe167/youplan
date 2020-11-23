@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
-import 'package:youplan/Authenticate_Screens/Email_Auth/Verification_page.dart';
+import 'package:youplan/Wrapper/Wrapper.dart';
 
 class IntroScreen extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _IntroScreenState extends State<IntroScreen> {
       photoSize: 100.0,
       onClick: () => print("flutter"),
       loaderColor: Colors.green,
-      navigateAfterSeconds: VerificationPage(),
+      navigateAfterSeconds: Wrapper(),
     );
   }
 }
