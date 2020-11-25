@@ -79,7 +79,7 @@ bool validateEmail(String value) {
   Pattern pattern =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
   RegExp regex = new RegExp(pattern);
-  return (!regex.hasMatch(value)) ? false : true;
+  return (!regex.hasMatch(value));
 }
 
 bool checkTextNumbers(String value) {
@@ -98,6 +98,13 @@ bool checkText(String value) {
     }
   }
   return false;
+}
+
+bool isNumeric(String s) {
+  if (s == null) {
+    return false;
+  }
+  return double.tryParse(s) != null;
 }
 
 bool checkTextWithSpace(String value) {

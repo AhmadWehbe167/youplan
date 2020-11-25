@@ -71,15 +71,18 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      width: widget.width / 1.6,
-                      child: FittedBox(
-                        alignment: Alignment.center,
-                        fit: BoxFit.contain,
-                        child: Text(
-                          'Create an account to get started',
-                          style: TextStyle(
-                            color: Colors.white,
+                    child: Center(
+                      child: Container(
+                        height: widget.height * 0.05,
+                        width: widget.width * 0.8,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                            'Create an account and get started',
+                            style: TextStyle(
+                              color: Colors.white,
+                              // fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -87,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
-            ),
+            ), //26%
             SizedBox(
               height: widget.height * 0.01,
             ),

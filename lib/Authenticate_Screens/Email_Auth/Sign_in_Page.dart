@@ -67,7 +67,7 @@ class _SignInPageState extends State<SignInPage> {
                     'Welcome Back! Sign in to Continue',
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      // fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
