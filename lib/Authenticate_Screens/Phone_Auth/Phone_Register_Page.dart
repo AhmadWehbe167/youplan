@@ -1,12 +1,12 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:provider/provider.dart';
 import 'package:youplan/Authenticate_Screens/Auth_Services/RefactoredWidgets_Functions.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
-import 'package:youplan/Model/User.dart';
+import 'package:youplan/services/ConnectionCheck.dart';
 import 'package:youplan/services/auth.dart';
-import 'package:youplan/shared/loading.dart';
+import 'package:youplan/shared/Shared_functions.dart';
 
 class PhoneRegisterPage extends StatefulWidget {
   final Function toggleView;
@@ -21,302 +21,472 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
   String smsCode;
   String userName;
   String fullName;
-  String buttonText = "Continue";
-  bool loading = false;
+  String userNameTakenError;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey1 = GlobalKey<FormState>();
+  TextEditingController fullNameController;
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<Muser>(context);
-    return loading
-        ? Loading()
-        : Form(
-            key: _formKey1,
-            child: Scaffold(
-              backgroundColor: navy,
-              key: _scaffoldKey,
-              body: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: ListView(
-                    children: [
-                      AuthTextField(
-                        labelTitle: "UserName",
-                        keyboard: TextInputType.text,
-                        validate: (String val) {
-                          if (val.length == 0) {
-                            return 'This is mandatory';
-                          } else if (val.length < 3) {
-                            return 'UserName should be at least 3 characters';
-                          } else if (val.length > 27) {
-                            return 'UserName should not be more than 27';
-                          } else if (val[val.length - 1] == ' ') {
-                            return 'Check if last letter is white space';
-                          } else if (checkTextNumbers(val)) {
-                            return 'no spaces and only characters, numbers, underscore';
-                          } else {
-                            return null;
-                          }
-                        },
-                        onChan: (val) {
-                          setState(() {
-                            userName = val;
-                          });
-                        },
-                        obscure: false,
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    return Form(
+      key: _formKey1,
+      child: Scaffold(
+        //4%
+        backgroundColor: lightNavy,
+        key: _scaffoldKey,
+        body: Center(
+          child: ListView(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  padding: EdgeInsets.all(0),
+                  onPressed: () {
+                    widget.toggleView(AuthPageEnum.Register);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Container(
+                height: height * 0.26,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage('images/orangeStandingMan.png'),
+                        )),
                       ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "Full Name",
-                        ),
-                        onChanged: (name) {
-                          setState(() {
-                            fullName = name;
-                          });
-                        },
-                        validator: (String val) {
-                          if (val.length == 0) {
-                            return 'This is mandatory';
-                          } else if (val.length < 4) {
-                            return 'Name should be at least 4 characters';
-                          } else if (val.length > 27) {
-                            return 'Name should not be more than 27';
-                          } else if (val[val.length - 1] == ' ') {
-                            return 'Check if last letter is white space';
-                          } else if (checkText(val)) {
-                            return 'use only characters';
-                          } else if (consecutiveWhiteSpaces(val)) {
-                            return 'you can\'t have two white spaces consecutively';
-                          } else {
-                            return null;
-                          }
-                        },
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage('images/WhiteSignUp.png'),
+                        )),
                       ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "Country Code",
-                        ),
-                        onChanged: (code) {
-                          setState(() {
-                            countryCode = code;
-                          });
-                        },
-                        validator: (String val) {
-                          if (val.length > 3 || val.length == 0) {
-                            return 'Put valid Country Code';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "Phone Number",
-                        ),
-                        onChanged: (String s) {
-                          setState(() {
-                            phoneNumber = s;
-                          });
-                        },
-                        validator: (String val) {
-                          if (val.length < 5 || val.length > 13) {
-                            return 'Put valid Phone number';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      SizedBox(
-                        height: 100,
-                      ),
-                      IntlPhoneField(
-                        initialCountryCode: "LB",
-                        decoration: InputDecoration(
-                          // contentPadding: EdgeInsets.all(height / 50),
-                          errorStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.redAccent,
-                            // fontSize: height * 0.018,
-                          ),
-                          // hintText: labelTitle,
-                          hintStyle: TextStyle(
-                            fontWeight: FontWeight.normal,
-                          ),
-                          // suffixIcon: icon,
-                          isDense: true,
-                          fillColor: Colors.white,
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                              // borderRadius: new BorderRadius.circular(height / 50),
-                              borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 2,
-                          )),
-                          focusedBorder: OutlineInputBorder(
-                              // borderRadius: new BorderRadius.circular(height / 50),
-                              borderSide: BorderSide(
-                            color: navy,
-                            width: 2,
-                          )),
-                          border: new OutlineInputBorder(
-                            // borderRadius: new BorderRadius.circular(height / 50),
-                            borderSide: new BorderSide(
-                              color: navy,
-                              width: 2,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Container(
+                          height: height * 0.03,
+                          width: width * 0.8,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                              'With Your Phone Number',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      FlatButton(
-                        onPressed: () async {
-                          if (_formKey1.currentState.validate()) {
-                            await FirebaseAuth.instance.verifyPhoneNumber(
-                              phoneNumber: "+" + countryCode + phoneNumber,
-                              timeout: const Duration(seconds: 60),
-                              verificationCompleted:
-                                  (PhoneAuthCredential credential) async {
-                                final SnackBar snackBar = SnackBar(
-                                  content: Text(
-                                    "The SMS Message has been received successfully!",
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                                );
-                                _scaffoldKey.currentState
-                                    .showSnackBar(snackBar);
-                                setState(() {
-                                  loading = true;
-                                });
-                                await FirebaseAuth.instance
-                                    .signInWithCredential(credential)
-                                    .then((value) async {
-                                  await AuthServices().initUser(
-                                      userName,
-                                      fullName,
-                                      FirebaseAuth.instance.currentUser.uid);
-                                }).catchError((onError) {
-                                  print(onError.toString());
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                });
-                              },
-                              verificationFailed: (FirebaseAuthException e) {
-                                if (e.code == 'invalid-phone-number') {
-                                  final SnackBar snackBar = SnackBar(
-                                    content: Text(
-                                      "The provided phone number is not valid!",
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  );
-                                  _scaffoldKey.currentState
-                                      .showSnackBar(snackBar);
-                                } else {
-                                  final SnackBar snackBar = SnackBar(
-                                    content: Text(
-                                      "An Error occurred please try again! ${e.message}",
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  );
-                                  _scaffoldKey.currentState
-                                      .showSnackBar(snackBar);
-                                }
-                              },
-                              codeSent: (String verificationId,
-                                  int resendToken) async {
-                                // Update the UI - wait for the user to enter the SMS code
-                                await showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) => AlertDialog(
-                                    title: Text("Enter Code"),
-                                    content: TextField(
-                                      decoration:
-                                          InputDecoration(labelText: "Code"),
-                                      keyboardType: TextInputType.phone,
-                                      onChanged: (String code) {
-                                        smsCode = code;
-                                      },
-                                    ),
-                                    actions: [
-                                      FlatButton(
-                                          onPressed: () async {
-                                            // Create a PhoneAuthCredential with the code
-                                            PhoneAuthCredential
-                                                phoneAuthCredential =
-                                                PhoneAuthProvider.credential(
-                                                    verificationId:
-                                                        verificationId,
-                                                    smsCode: smsCode);
-                                            // Sign the user in (or link) with the credential
-                                            Navigator.pop(context);
-                                            setState(() {
-                                              loading = true;
-                                            });
-                                            await FirebaseAuth.instance
-                                                .signInWithCredential(
-                                                    phoneAuthCredential)
-                                                .then((value) async {
-                                              await AuthServices().initUser(
-                                                  userName,
-                                                  fullName,
-                                                  FirebaseAuth.instance
-                                                      .currentUser.uid);
-                                            }).catchError((onError) {
-                                              setState(() {
-                                                loading = false;
-                                              });
-                                              print(onError.toString());
-                                            });
-                                          },
-                                          child: Text("Done")),
-                                      FlatButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text("Cancel")),
-                                    ],
-                                  ),
-                                );
-                              },
-                              codeAutoRetrievalTimeout:
-                                  (String verificationId) async {
-                                await showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) => AlertDialog(
-                                    title: Text("Error!"),
-                                    content: Text(
-                                        "An Error occurred. Please Try Again!"),
-                                    actions: [
-                                      FlatButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text("OK")),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                        },
+                    ),
+                  ],
+                ),
+              ), //26%
+              SizedBox(
+                height: height * 0.08,
+              ), //10%
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    width * 0.05, height / 100, width * 0.05, height / 100),
+                child: AuthTextField(
+                  labelTitle: "UserName",
+                  keyboard: TextInputType.text,
+                  validate: (String val) {
+                    if (val.length == 0) {
+                      return 'This is mandatory';
+                    } else if (val.length < 3) {
+                      return 'UserName should be at least 3 characters';
+                    } else if (val.length > 27) {
+                      return 'UserName should not be more than 27';
+                    } else if (val[val.length - 1] == ' ') {
+                      return 'Check if last letter is white space';
+                    } else if (checkTextNumbers(val)) {
+                      return 'no spaces and only characters, numbers, underscore';
+                    } else {
+                      return null;
+                    }
+                  },
+                  onChan: (val) {
+                    setState(() {
+                      userName = val;
+                    });
+                  },
+                  obscure: false,
+                ),
+              ),
+              userNameTakenError != null
+                  ? Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: height / 100),
                         child: Text(
-                          buttonText,
-                          style: TextStyle(color: Colors.white),
+                          '$userNameTakenError',
+                          style: TextStyle(
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.bold),
                         ),
-                        color: Colors.green,
                       ),
-                      FlatButton(
-                          onPressed: () {
-                            widget.toggleView(AuthPageEnum.Register);
-                          },
-                          child: Text("Back"))
-                    ],
+                    )
+                  : Container(),
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    width * 0.05, 0, width * 0.05, height / 100),
+                child: AuthTextField(
+                  controller: fullNameController,
+                  obscure: false,
+                  labelTitle: 'Full Name',
+                  keyboard: TextInputType.emailAddress,
+                  onChan: (val) {
+                    setState(() {
+                      fullName = val;
+                    });
+                  },
+                  validate: (String val) {
+                    setState(() {
+                      fullNameController = TextEditingController();
+                      val = cleanFromSpaces(val);
+                      fullNameController.text = val;
+                      fullName = val;
+                    });
+                    if (val.length == 0) {
+                      return 'This is mandatory';
+                    } else if (val.length < 4) {
+                      return 'Name should be at least 4 characters';
+                    } else if (val.length > 27) {
+                      return 'Name should not be more than 27';
+                    } else if (checkText(val)) {
+                      return 'use only characters';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    width * 0.05, 0, width * 0.05, height / 100),
+                child: IntlPhoneField(
+                  autoValidate: false,
+                  keyboardType: TextInputType.phone,
+                  onChanged: (val) {
+                    setState(() {
+                      phoneNumber = val.completeNumber;
+                    });
+                  },
+                  validator: (String val) {
+                    if (val.length == 0) {
+                      return 'This is mandatory';
+                    } else if (val.length < 7) {
+                      return 'should be at least 7 digits';
+                    } else if (val.length > 15) {
+                      return 'should not be more than 15 digits';
+                    } else if (!isNumeric(val)) {
+                      return 'only numbers allowed';
+                    } else {
+                      return null;
+                    }
+                  },
+                  countryCodeTextColor: Colors.grey[700],
+                  dropDownArrowColor: Colors.grey[700],
+                  initialCountryCode: "LB",
+                  dropdownDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(height / 50),
+                    errorStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.redAccent,
+                      fontSize: height * 0.018,
+                    ),
+                    hintText: "Phone Number",
+                    hintStyle: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: width * 0.05,
+                    ),
+                    suffixIcon: null,
+                    isDense: true,
+                    fillColor: Colors.white,
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(height / 50),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 2,
+                        )),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(height / 50),
+                        borderSide: BorderSide(
+                          color: navy,
+                          width: 2,
+                        )),
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(height / 50),
+                      borderSide: new BorderSide(
+                        color: navy,
+                        width: 2,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
+              Center(
+                child: Text(
+                  "You will receive a 6 digits code through\n"
+                  "a SMS to verify your phone number.",
+                  style: TextStyle(
+                    color: Colors.grey[300],
+                    fontSize: width * 0.042,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: height * 0.08,
+              ), //10%
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    width * 0.05, 0, width * 0.05, height / 100),
+                child: Container(
+                  height: height * 0.06,
+                  child: RaisedButton(
+                    elevation: 6,
+                    color: Color(0xFFFD8853),
+                    child: Text(
+                      "Continue",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: width * 0.05,
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    onPressed: () async {
+                      if (_formKey1.currentState.validate()) {
+                        bool isConnected = await checkConnection();
+                        if (isConnected) {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) =>
+                                  Center(child: CircularProgressIndicator()));
+
+                          bool userNameIsAvailable = await AuthServices()
+                              .checkUserNameAvailability(userName)
+                              .catchError((e) {
+                            Navigator.pop(context);
+                            final SnackBar snackbar = SnackBar(
+                              content: Text(errorMessagesHandler(e)),
+                            );
+                            _scaffoldKey.currentState.showSnackBar(snackbar);
+                          });
+
+                          if (userNameIsAvailable != null &&
+                              !userNameIsAvailable) {
+                            Navigator.pop(context);
+                            setState(() {
+                              userNameTakenError =
+                                  'UserName is taken choose a different one';
+                            });
+                          } else {
+                            final HttpsCallable callable = FirebaseFunctions
+                                .instance
+                                .httpsCallable('checkIfPhoneExists');
+                            dynamic resp =
+                                await callable.call({'phone': phoneNumber});
+                            if (resp.data) {
+                              Navigator.pop(context);
+                              await showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) => AlertDialog(
+                                  title: Text("Registered Already!"),
+                                  content: Text(
+                                      "An account with this phone number already exists. "
+                                      "So please sign in!"),
+                                  actions: [
+                                    FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("OK")),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              await FirebaseAuth.instance.verifyPhoneNumber(
+                                phoneNumber: phoneNumber,
+                                timeout: const Duration(seconds: 60),
+                                verificationCompleted:
+                                    (PhoneAuthCredential credential) async {
+                                  Navigator.pop(context);
+
+                                  //User with phone number already exists
+                                  await FirebaseAuth.instance
+                                      .signInWithCredential(credential)
+                                      .then((value) async {
+                                    FirebaseFunctions functions =
+                                        FirebaseFunctions.instance;
+                                    await AuthServices().initUser(
+                                        userName,
+                                        fullName,
+                                        FirebaseAuth.instance.currentUser.uid);
+                                  }).catchError((onError) {
+                                    print(onError.toString());
+                                  });
+                                },
+                                verificationFailed: (FirebaseAuthException e) {
+                                  Navigator.pop(context);
+                                  if (e.code == 'invalid-phone-number') {
+                                    final SnackBar snackBar = SnackBar(
+                                      content: Text(
+                                        "The provided phone number is not valid!",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    );
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(snackBar);
+                                  } else {
+                                    final SnackBar snackBar = SnackBar(
+                                      content: Text(
+                                        "An Error occurred please try again! ${e.message}",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    );
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(snackBar);
+                                  }
+                                },
+                                codeSent: (String verificationId,
+                                    int resendToken) async {
+                                  // Update the UI - wait for the user to enter the SMS code
+                                  Navigator.pop(context);
+                                  await showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) => AlertDialog(
+                                      title: Text("Enter Code"),
+                                      content: TextField(
+                                        decoration:
+                                            InputDecoration(labelText: "Code"),
+                                        keyboardType: TextInputType.phone,
+                                        onChanged: (String code) {
+                                          smsCode = code;
+                                        },
+                                      ),
+                                      actions: [
+                                        FlatButton(
+                                            onPressed: () async {
+                                              // Create a PhoneAuthCredential with the code
+                                              PhoneAuthCredential
+                                                  phoneAuthCredential =
+                                                  PhoneAuthProvider.credential(
+                                                      verificationId:
+                                                          verificationId,
+                                                      smsCode: smsCode);
+                                              // Sign the user in (or link) with the credential
+                                              Navigator.pop(context);
+                                              await FirebaseAuth.instance
+                                                  .signInWithCredential(
+                                                      phoneAuthCredential)
+                                                  .then((value) async {
+                                                await AuthServices().initUser(
+                                                    userName,
+                                                    fullName,
+                                                    FirebaseAuth.instance
+                                                        .currentUser.uid);
+                                              }).catchError((onError) {
+                                                print(onError.toString());
+                                              });
+                                            },
+                                            child: Text("Done")),
+                                        FlatButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("Cancel")),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                codeAutoRetrievalTimeout:
+                                    (String verificationId) async {
+                                  Navigator.pop(context);
+                                  await showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) => AlertDialog(
+                                      title: Text("Error!"),
+                                      content: Text(
+                                          "An Error occurred. Please Try Again!"),
+                                      actions: [
+                                        FlatButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("OK")),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          }
+                        } else {
+                          setState(() {
+                            userNameTakenError = null;
+                          });
+                          final SnackBar snackbar = SnackBar(
+                            content: Text(
+                                "Check your internet connection and try again"),
+                          );
+                          _scaffoldKey.currentState.showSnackBar(snackbar);
+                        }
+                      }
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    width * 0.05, 0, width * 0.05, height / 100),
+                child: Container(
+                  height: height * 0.06,
+                  child: RaisedButton(
+                    elevation: 6,
+                    color: Color(0xFF0A91B0),
+                    child: Text(
+                      "Back",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: width * 0.05,
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    onPressed: () {
+                      widget.toggleView(AuthPageEnum.Register);
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
