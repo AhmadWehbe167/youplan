@@ -26,7 +26,7 @@ void main() async {
   var fullName = test.find.widgetWithText(TextField, "Full Name");
   var email = test.find.widgetWithText(TextField, "Email");
   var password = test.find.widgetWithText(TextField, "Password");
-  var confirmPassword = test.find.byType(TextField).last;
+  // var confirmPassword = test.find.byType(TextField).last;
   var signInButton = test.find.text('Sign Up');
 
   setUpAll(() {

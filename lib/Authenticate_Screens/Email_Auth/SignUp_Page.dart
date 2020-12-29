@@ -41,450 +41,456 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: lightNavy,
-        body: ListView(
-          controller: _scrollController,
-          children: [
-            Container(
-              height: widget.height * 0.26,
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                        image: AssetImage('images/orangeStandingMan.png'),
-                      )),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                        image: AssetImage('images/WhiteSignUp.png'),
-                      )),
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
+    return WillPopScope(
+      onWillPop: () async => widget.toggleView(AuthPageEnum.Welcome),
+      child: Form(
+        key: _formKey,
+        child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: lightNavy,
+          body: ListView(
+            controller: _scrollController,
+            children: [
+              Container(
+                height: widget.height * 0.26,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 5,
                       child: Container(
-                        height: widget.height * 0.05,
-                        width: widget.width * 0.8,
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: Text(
-                            'Create an account and get started',
-                            style: TextStyle(
-                              color: Colors.white,
-                              // fontWeight: FontWeight.bold,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage('images/orangeStandingMan.png'),
+                        )),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage('images/WhiteSignUp.png'),
+                        )),
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Container(
+                          height: widget.height * 0.05,
+                          width: widget.width * 0.8,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                              'Create an account and get started',
+                              style: TextStyle(
+                                color: Colors.white,
+                                // fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ), //26%
+              SizedBox(
+                height: widget.height * 0.01,
               ),
-            ), //26%
-            SizedBox(
-              height: widget.height * 0.01,
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                  widget.width * 0.05,
-                  widget.height / 100,
-                  widget.width * 0.05,
-                  widget.height / 100),
-              child: AuthTextField(
-                controller: userNameController,
-                obscure: false,
-                labelTitle: 'UserName',
-                keyboard: TextInputType.emailAddress,
-                onChan: (val) {
-                  setState(() {
-                    userName = val;
-                  });
-                },
-                validate: (String val) {
-                  setState(() {
-                    userNameController = TextEditingController();
-                    val = cleanFromSpaces(val);
-                    userNameController.text = val;
-                    userName = val;
-                  });
-                  if (val.length == 0) {
-                    return 'This is mandatory';
-                  } else if (val.length < 3) {
-                    return 'UserName should be at least 3 characters';
-                  } else if (val.length > 27) {
-                    return 'UserName should not be more than 27';
-                  } else if (containsWhiteSpaces(val)) {
-                    return 'White spaces not allowed';
-                  } else if (checkTextNumbers(val)) {
-                    return 'only characters & numbers';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            ),
-            userNameTakenError != null
-                ? Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: widget.height / 100),
-                      child: Text(
-                        '$userNameTakenError',
-                        style: TextStyle(
-                            color: Colors.redAccent,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  )
-                : Container(),
-            Padding(
-              padding: EdgeInsets.fromLTRB(widget.width * 0.05, 0,
-                  widget.width * 0.05, widget.height / 100),
-              child: AuthTextField(
-                controller: fullNameController,
-                obscure: false,
-                labelTitle: 'Full Name',
-                keyboard: TextInputType.emailAddress,
-                onChan: (val) {
-                  setState(() {
-                    fullName = val;
-                  });
-                },
-                validate: (String val) {
-                  setState(() {
-                    fullNameController = TextEditingController();
-                    val = cleanFromSpaces(val);
-                    fullNameController.text = val;
-                    fullName = val;
-                  });
-                  if (val.length == 0) {
-                    return 'This is mandatory';
-                  } else if (val.length < 4) {
-                    return 'Name should be at least 4 characters';
-                  } else if (val.length > 27) {
-                    return 'Name should not be more than 27';
-                  } else if (checkText(val)) {
-                    return 'use only characters';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(widget.width * 0.05, 0,
-                  widget.width * 0.05, widget.height / 100),
-              child: AuthTextField(
-                controller: emailController,
-                obscure: false,
-                labelTitle: 'Email',
-                keyboard: TextInputType.emailAddress,
-                onChan: (val) {
-                  setState(() {
-                    email = val;
-                  });
-                },
-                validate: (String val) {
-                  setState(() {
-                    emailController = TextEditingController();
-                    val = cleanFromSpaces(val);
-                    emailController.text = val;
-                    email = val;
-                  });
-                  if (val.isEmpty) {
-                    return 'This is mandatory';
-                  } else if (!validateEmail(val)) {
-                    return 'Please Provide a valid email';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            ),
-            emailTakenError != null
-                ? Padding(
-                    padding: EdgeInsets.only(bottom: widget.height / 100),
-                    child: Center(
-                      child: Text(
-                        '$emailTakenError',
-                        style: TextStyle(
-                            color: Colors.redAccent,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  )
-                : Container(),
-            Padding(
-              padding: EdgeInsets.fromLTRB(widget.width * 0.05, 0,
-                  widget.width * 0.05, widget.height / 100),
-              child: Container(
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    widget.width * 0.05,
+                    widget.height / 100,
+                    widget.width * 0.05,
+                    widget.height / 100),
                 child: AuthTextField(
-                  obscure: isObscure,
-                  labelTitle: 'Password',
+                  controller: userNameController,
+                  obscure: false,
+                  labelTitle: 'UserName',
+                  keyboard: TextInputType.emailAddress,
                   onChan: (val) {
                     setState(() {
-                      password = val;
+                      userName = val;
                     });
                   },
-                  validate: (val) {
+                  validate: (String val) {
+                    setState(() {
+                      userNameController = TextEditingController();
+                      val = cleanFromSpaces(val);
+                      userNameController.text = val;
+                      userName = val;
+                    });
                     if (val.length == 0) {
                       return 'This is mandatory';
-                    } else if (val.length < 6) {
-                      return 'Password should be at least 6 characters';
+                    } else if (val.length < 3) {
+                      return 'UserName should be at least 3 characters';
                     } else if (val.length > 27) {
-                      return 'Password should not be more than 27';
+                      return 'UserName should not be more than 27';
+                    } else if (containsWhiteSpaces(val)) {
+                      return 'White spaces not allowed';
+                    } else if (checkTextNumbers(val)) {
+                      return 'only characters & numbers';
                     } else {
                       return null;
                     }
                   },
-                  icon: IconButton(
-                    padding: EdgeInsets.fromLTRB(0, 0, widget.width / 100, 0),
-                    icon: Icon(
-                      Icons.remove_red_eye,
-                      color: navy,
-                      size: widget.height / 30,
-                    ),
-                    onPressed: () {
+                ),
+              ),
+              userNameTakenError != null
+                  ? Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: widget.height / 100),
+                        child: Text(
+                          '$userNameTakenError',
+                          style: TextStyle(
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  : Container(),
+              Padding(
+                padding: EdgeInsets.fromLTRB(widget.width * 0.05, 0,
+                    widget.width * 0.05, widget.height / 100),
+                child: AuthTextField(
+                  controller: fullNameController,
+                  obscure: false,
+                  labelTitle: 'Full Name',
+                  keyboard: TextInputType.emailAddress,
+                  onChan: (val) {
+                    setState(() {
+                      fullName = val;
+                    });
+                  },
+                  validate: (String val) {
+                    setState(() {
+                      fullNameController = TextEditingController();
+                      val = cleanFromSpaces(val);
+                      fullNameController.text = val;
+                      fullName = val;
+                    });
+                    if (val.length == 0) {
+                      return 'This is mandatory';
+                    } else if (val.length < 4) {
+                      return 'Name should be at least 4 characters';
+                    } else if (val.length > 27) {
+                      return 'Name should not be more than 27';
+                    } else if (checkText(val)) {
+                      return 'use only characters';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(widget.width * 0.05, 0,
+                    widget.width * 0.05, widget.height / 100),
+                child: AuthTextField(
+                  controller: emailController,
+                  obscure: false,
+                  labelTitle: 'Email',
+                  keyboard: TextInputType.emailAddress,
+                  onChan: (val) {
+                    setState(() {
+                      email = val;
+                    });
+                  },
+                  validate: (String val) {
+                    setState(() {
+                      emailController = TextEditingController();
+                      val = cleanFromSpaces(val);
+                      emailController.text = val;
+                      email = val;
+                    });
+                    if (val.isEmpty) {
+                      return 'This is mandatory';
+                    } else if (!validateEmail(val)) {
+                      return 'Please Provide a valid email';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+              ),
+              emailTakenError != null
+                  ? Padding(
+                      padding: EdgeInsets.only(bottom: widget.height / 100),
+                      child: Center(
+                        child: Text(
+                          '$emailTakenError',
+                          style: TextStyle(
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  : Container(),
+              Padding(
+                padding: EdgeInsets.fromLTRB(widget.width * 0.05, 0,
+                    widget.width * 0.05, widget.height / 100),
+                child: Container(
+                  child: AuthTextField(
+                    obscure: isObscure,
+                    labelTitle: 'Password',
+                    onChan: (val) {
                       setState(() {
-                        isObscure = !isObscure;
+                        password = val;
                       });
                     },
+                    validate: (val) {
+                      if (val.length == 0) {
+                        return 'This is mandatory';
+                      } else if (val.length < 6) {
+                        return 'Password should be at least 6 characters';
+                      } else if (val.length > 27) {
+                        return 'Password should not be more than 27';
+                      } else {
+                        return null;
+                      }
+                    },
+                    icon: IconButton(
+                      padding: EdgeInsets.fromLTRB(0, 0, widget.width / 100, 0),
+                      icon: Icon(
+                        Icons.remove_red_eye,
+                        color: navy,
+                        size: widget.height / 30,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isObscure = !isObscure;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(widget.width * 0.05, 0,
-                  widget.width * 0.05, widget.height / 100),
-              child: AuthTextField(
-                obscure: isObscure,
-                labelTitle: 'Confirm Password',
-                onChan: (val) {
-                  setState(() {
-                    confirmPassword = val;
-                  });
-                },
-                validate: (val) {
-                  if (val != password) {
-                    return 'Passwords don\'t match';
-                  } else {
-                    return null;
-                  }
-                },
+              Padding(
+                padding: EdgeInsets.fromLTRB(widget.width * 0.05, 0,
+                    widget.width * 0.05, widget.height / 100),
+                child: AuthTextField(
+                  obscure: isObscure,
+                  labelTitle: 'Confirm Password',
+                  onChan: (val) {
+                    setState(() {
+                      confirmPassword = val;
+                    });
+                  },
+                  validate: (val) {
+                    if (val != password) {
+                      return 'Passwords don\'t match';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
               ),
-            ),
-            Align(
-                alignment: Alignment.topCenter,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: RichText(
-                    text: TextSpan(children: <TextSpan>[
-                      TextSpan(
-                          text: 'By signing up you agree to the ',
-                          style: TextStyle(
+              Align(
+                  alignment: Alignment.topCenter,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: RichText(
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                            text: 'By signing up you agree to the ',
+                            style: TextStyle(
+                                fontSize: widget.width / 28,
+                                color: Colors.white)),
+                        TextSpan(
+                            text: 'terms and conditions',
+                            style: TextStyle(
                               fontSize: widget.width / 28,
-                              color: Colors.white)),
-                      TextSpan(
-                          text: 'terms and conditions',
-                          style: TextStyle(
-                            fontSize: widget.width / 28,
-                            color: myOrange,
-                            fontWeight: FontWeight.bold,
-                          ))
-                    ]),
-                  ),
-                )),
-            Container(
-              height: widget.height * 0.26,
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: Align(
-                      child: RaisedButton(
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(widget.width / 15),
-                            side: BorderSide(color: myOrange)),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            bool isConnected = await checkConnection();
-                            if (isConnected) {
-                              showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) => Center(
-                                      child: CircularProgressIndicator()));
+                              color: myOrange,
+                              fontWeight: FontWeight.bold,
+                            ))
+                      ]),
+                    ),
+                  )),
+              Container(
+                height: widget.height * 0.26,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Align(
+                        child: RaisedButton(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(widget.width / 15),
+                              side: BorderSide(color: myOrange)),
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              bool isConnected = await checkConnection();
+                              if (isConnected) {
+                                showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) => Center(
+                                        child: CircularProgressIndicator()));
 
-                              bool userNameIsAvailable = await AuthServices()
-                                  .checkUserNameAvailability(userName)
-                                  .catchError((e) {
-                                Navigator.pop(context);
+                                bool userNameIsAvailable = await AuthServices()
+                                    .checkUserNameAvailability(userName)
+                                    .catchError((e) {
+                                  Navigator.pop(context);
+                                  final SnackBar snackbar = SnackBar(
+                                    content: Text(e.message),
+                                  );
+                                  _scaffoldKey.currentState
+                                      .showSnackBar(snackbar);
+                                });
+
+                                if (userNameIsAvailable != null &&
+                                    !userNameIsAvailable) {
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    userNameTakenError =
+                                        'UserName is taken choose a different one';
+                                    emailTakenError = null;
+                                    // networkError = null;
+                                  });
+                                } else {
+                                  await widget.auth
+                                      .registerWithEmailAndPassword(
+                                          email, password)
+                                      .then((value) {
+                                    Navigator.pop(context);
+                                    widget.toggleView(AuthPageEnum.Verify,
+                                        userName, fullName, password);
+                                  }).catchError((error) {
+                                    //TODO::How to deal with signed up but not verified emails
+                                    Navigator.pop(context);
+                                    if (error.code == "email-already-in-use") {
+                                      setState(() {
+                                        emailTakenError =
+                                            'Email is taken choose a different one';
+                                        userNameTakenError = null;
+                                      });
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text("Sign Up Failed!"),
+                                          content: Text(
+                                            errorMessagesHandler(error),
+                                          ),
+                                          actions: [
+                                            FlatButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("OK"))
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  });
+                                }
+                              } else {
+                                setState(() {
+                                  userNameTakenError = null;
+                                  emailTakenError = null;
+                                });
                                 final SnackBar snackbar = SnackBar(
-                                  content: Text(e.message),
+                                  content: Text(
+                                      "Check your internet connection and try again"),
                                 );
                                 _scaffoldKey.currentState
                                     .showSnackBar(snackbar);
-                              });
-
-                              if (userNameIsAvailable != null &&
-                                  !userNameIsAvailable) {
-                                Navigator.pop(context);
-                                setState(() {
-                                  userNameTakenError =
-                                      'UserName is taken choose a different one';
-                                  emailTakenError = null;
-                                  // networkError = null;
-                                });
-                              } else {
-                                await widget.auth
-                                    .registerWithEmailAndPassword(
-                                        email, password)
-                                    .then((value) {
-                                  Navigator.pop(context);
-                                  widget.toggleView(AuthPageEnum.Verify,
-                                      userName, fullName, password);
-                                }).catchError((error) {
-                                  //TODO::How to deal with signed up but not verified emails
-                                  Navigator.pop(context);
-                                  if (error.code == "email-already-in-use") {
-                                    setState(() {
-                                      emailTakenError =
-                                          'Email is taken choose a different one';
-                                      userNameTakenError = null;
-                                    });
-                                  } else {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: Text("Sign Up Failed!"),
-                                        content: Text(
-                                          errorMessagesHandler(error),
-                                        ),
-                                        actions: [
-                                          FlatButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text("OK"))
-                                        ],
-                                      ),
-                                    );
-                                  }
-                                });
                               }
-                            } else {
-                              setState(() {
-                                userNameTakenError = null;
-                                emailTakenError = null;
-                              });
-                              final SnackBar snackbar = SnackBar(
-                                content: Text(
-                                    "Check your internet connection and try again"),
-                              );
-                              _scaffoldKey.currentState.showSnackBar(snackbar);
                             }
-                          }
-                        },
-                        textColor: Colors.white,
-                        color: myOrange,
-                        padding: EdgeInsets.fromLTRB(
-                            widget.width / 4,
-                            widget.height / 100,
-                            widget.width / 4,
-                            widget.height / 100),
-                        child: Text('Sign Up',
-                            style: TextStyle(
-                              fontSize: widget.height / 30,
-                              fontWeight: FontWeight.bold,
-                            )),
-                      ),
-                      alignment: Alignment.bottomCenter,
-                    ),
-                    flex: 2,
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Already have an account? ',
-                          style: TextStyle(
-                              fontSize: widget.width / 22, color: Colors.white),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            widget.toggleView(AuthPageEnum.SignIn);
                           },
-                          child: Text(
-                            'Sign In',
-                            style: TextStyle(
-                                fontSize: widget.width / 21,
-                                color: myOrange,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      width: widget.width / 1.7,
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Text(
-                          '---- Or Continue With ----',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          textColor: Colors.white,
+                          color: myOrange,
+                          padding: EdgeInsets.fromLTRB(
+                              widget.width / 4,
+                              widget.height / 100,
+                              widget.width / 4,
+                              widget.height / 100),
+                          child: Text('Sign Up',
+                              style: TextStyle(
+                                fontSize: widget.height / 30,
+                                fontWeight: FontWeight.bold,
+                              )),
                         ),
+                        alignment: Alignment.bottomCenter,
                       ),
+                      flex: 2,
                     ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: widget.height * 0.02, bottom: 10),
+                    Expanded(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Opacity(
-                              child: GestureDetector(
-                                onTap: () {
-                                  widget.toggleView(AuthPageEnum.PhoneRegister);
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image:
-                                              AssetImage('images/phone.png'))),
-                                ),
-                              ),
-                              opacity: 0.9,
-                            ),
+                          Text(
+                            'Already have an account? ',
+                            style: TextStyle(
+                                fontSize: widget.width / 22,
+                                color: Colors.white),
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              widget.toggleView(AuthPageEnum.SignIn);
+                            },
+                            child: Text(
+                              'Sign In',
+                              style: TextStyle(
+                                  fontSize: widget.width / 21,
+                                  color: myOrange,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
                         ],
                       ),
                     ),
-                  )
-                ],
-              ),
-            )
-          ],
+                    Expanded(
+                      child: Container(
+                        width: widget.width / 1.7,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                            '---- Or Continue With ----',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: widget.height * 0.02, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Opacity(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    widget
+                                        .toggleView(AuthPageEnum.PhoneRegister);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                'images/phone.png'))),
+                                  ),
+                                ),
+                                opacity: 0.9,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

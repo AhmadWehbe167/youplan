@@ -50,8 +50,8 @@ void main() async {
   }
 
   var emailField = find.byType(TextField).first;
-  var passwordField = find.byType(TextField).last;
-  var signInButton = find.text('Log In');
+  // var passwordField = find.byType(TextField).last;
+  // var signInButton = find.text('Log In');
 
   group("Testing Log In functionality", () {
     testWidgets("Log In", (WidgetTester tester) async {
