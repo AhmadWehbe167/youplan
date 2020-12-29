@@ -278,6 +278,9 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
                       onPressed: () async {
                         if (_formKey1.currentState.validate()) {
                           bool isConnected = await checkConnection();
+                          setState(() {
+                            userNameTakenError = null;
+                          });
                           if (isConnected) {
                             showDialog(
                                 context: context,
@@ -339,8 +342,6 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
                                     await FirebaseAuth.instance
                                         .signInWithCredential(credential)
                                         .then((value) async {
-                                      FirebaseFunctions functions =
-                                          FirebaseFunctions.instance;
                                       await AuthServices().initUser(
                                           userName,
                                           fullName,
@@ -380,49 +381,55 @@ class _PhoneRegisterPageState extends State<PhoneRegisterPage> {
                                     await showDialog(
                                       context: context,
                                       barrierDismissible: false,
-                                      builder: (context) => AlertDialog(
-                                        title: Text("Enter Code"),
-                                        content: TextField(
-                                          decoration: InputDecoration(
-                                              labelText: "Code"),
-                                          keyboardType: TextInputType.phone,
-                                          onChanged: (String code) {
-                                            smsCode = code;
-                                          },
+                                      builder: (context) => WillPopScope(
+                                        onWillPop: () async => false,
+                                        child: AlertDialog(
+                                          title: Text("Enter Code"),
+                                          content: TextField(
+                                            decoration: InputDecoration(
+                                                labelText: "Code"),
+                                            keyboardType: TextInputType.phone,
+                                            onChanged: (String code) {
+                                              smsCode = code;
+                                            },
+                                          ),
+                                          actions: [
+                                            FlatButton(
+                                                onPressed: () async {
+                                                  // Create a PhoneAuthCredential with the code
+                                                  PhoneAuthCredential
+                                                      phoneAuthCredential =
+                                                      PhoneAuthProvider
+                                                          .credential(
+                                                              verificationId:
+                                                                  verificationId,
+                                                              smsCode: smsCode);
+                                                  // Sign the user in (or link) with the credential
+                                                  Navigator.pop(context);
+                                                  await FirebaseAuth.instance
+                                                      .signInWithCredential(
+                                                          phoneAuthCredential)
+                                                      .then((value) async {
+                                                    await AuthServices()
+                                                        .initUser(
+                                                            userName,
+                                                            fullName,
+                                                            FirebaseAuth
+                                                                .instance
+                                                                .currentUser
+                                                                .uid);
+                                                  }).catchError((onError) {
+                                                    print(onError.toString());
+                                                  });
+                                                },
+                                                child: Text("Done")),
+                                            FlatButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("Cancel")),
+                                          ],
                                         ),
-                                        actions: [
-                                          FlatButton(
-                                              onPressed: () async {
-                                                // Create a PhoneAuthCredential with the code
-                                                PhoneAuthCredential
-                                                    phoneAuthCredential =
-                                                    PhoneAuthProvider
-                                                        .credential(
-                                                            verificationId:
-                                                                verificationId,
-                                                            smsCode: smsCode);
-                                                // Sign the user in (or link) with the credential
-                                                Navigator.pop(context);
-                                                await FirebaseAuth.instance
-                                                    .signInWithCredential(
-                                                        phoneAuthCredential)
-                                                    .then((value) async {
-                                                  await AuthServices().initUser(
-                                                      userName,
-                                                      fullName,
-                                                      FirebaseAuth.instance
-                                                          .currentUser.uid);
-                                                }).catchError((onError) {
-                                                  print(onError.toString());
-                                                });
-                                              },
-                                              child: Text("Done")),
-                                          FlatButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text("Cancel")),
-                                        ],
                                       ),
                                     );
                                   },
