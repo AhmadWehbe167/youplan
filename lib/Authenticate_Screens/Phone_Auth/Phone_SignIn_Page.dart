@@ -18,7 +18,6 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
   String smsCode;
   String userName;
   String fullName;
-  String buttonText = "Continue";
   bool loading = false;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey1 = GlobalKey<FormState>();
@@ -188,13 +187,18 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
                       child: RaisedButton(
                         elevation: 6,
                         color: Color(0xFFFD8853),
-                        child: Text(
-                          "Continue",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: width * 0.05,
-                          ),
-                        ),
+                        child: loading
+                            ? CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
+                            : Text(
+                                "Continue",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: width * 0.05,
+                                ),
+                              ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -202,11 +206,9 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
                           if (_formKey1.currentState.validate()) {
                             bool isConnected = await checkConnection();
                             if (isConnected) {
-                              showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) => Center(
-                                      child: CircularProgressIndicator()));
+                              setState(() {
+                                loading = true;
+                              });
 
                               final HttpsCallable callable = FirebaseFunctions
                                   .instance
@@ -230,7 +232,9 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
                                   },
                                   verificationFailed:
                                       (FirebaseAuthException e) {
-                                    Navigator.pop(context);
+                                    setState(() {
+                                      loading = false;
+                                    });
                                     if (e.code == 'invalid-phone-number') {
                                       final SnackBar snackBar = SnackBar(
                                         content: Text(
@@ -254,7 +258,9 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
                                   codeSent: (String verificationId,
                                       int resendToken) async {
                                     // Update the UI - wait for the user to enter the SMS code
-                                    Navigator.pop(context);
+                                    setState(() {
+                                      loading = false;
+                                    });
                                     await showDialog(
                                       context: context,
                                       barrierDismissible: false,
@@ -303,7 +309,9 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
                                   },
                                   codeAutoRetrievalTimeout:
                                       (String verificationId) async {
-                                    Navigator.pop(context);
+                                    setState(() {
+                                      loading = false;
+                                    });
                                     await showDialog(
                                       context: context,
                                       barrierDismissible: false,
@@ -323,7 +331,9 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
                                   },
                                 );
                               } else {
-                                Navigator.pop(context);
+                                setState(() {
+                                  loading = false;
+                                });
                                 await showDialog(
                                   context: context,
                                   barrierDismissible: false,

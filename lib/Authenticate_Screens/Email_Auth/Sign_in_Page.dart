@@ -26,9 +26,15 @@ class _SignInPageState extends State<SignInPage> {
   String password;
   bool isConnected = true;
   TextEditingController passController;
+  bool isLoading = false;
 
   getConnection() async {
     isConnected = await checkConnection();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
@@ -93,7 +99,7 @@ class _SignInPageState extends State<SignInPage> {
                     validate: (val) {
                       if (val.isEmpty) {
                         return 'This is mandatory';
-                      } else if (!validateEmail(val)) {
+                      } else if (validateEmail(val)) {
                         return 'Please Provide a valid email';
                       } else {
                         return null;
@@ -224,18 +230,15 @@ class _SignInPageState extends State<SignInPage> {
                   if (_formKey.currentState.validate()) {
                     await getConnection();
                     if (isConnected) {
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) =>
-                              Center(child: CircularProgressIndicator()));
-
+                      setState(() {
+                        isLoading = true;
+                      });
                       await widget.auth
                           .signInWithEmailAndPassword(email, password)
-                          .then((value) {
-                        Navigator.pop(context);
-                      }).catchError((err) async {
-                        Navigator.pop(context);
+                          .catchError((err) async {
+                        setState(() {
+                          isLoading = false;
+                        });
                         await showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -276,11 +279,16 @@ class _SignInPageState extends State<SignInPage> {
                           0, widget.height / 100, 0, widget.height / 100),
                       child: FittedBox(
                         fit: BoxFit.contain,
-                        child: Text('Log In',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            )),
+                        child: isLoading
+                            ? CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
+                            : Text('Log In',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                )),
                       ),
                       height: widget.height * 0.06,
                       width: widget.width * 0.7,
