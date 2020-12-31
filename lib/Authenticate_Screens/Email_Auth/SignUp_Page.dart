@@ -38,6 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController userNameController;
   TextEditingController fullNameController;
   TextEditingController emailController;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +205,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     });
                     if (val.isEmpty) {
                       return 'This is mandatory';
-                    } else if (!validateEmail(val)) {
+                    } else if (validateEmail(val)) {
                       return 'Please Provide a valid email';
                     } else {
                       return null;
@@ -321,16 +322,21 @@ class _SignUpPageState extends State<SignUpPage> {
                             if (_formKey.currentState.validate()) {
                               bool isConnected = await checkConnection();
                               if (isConnected) {
-                                showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (context) => Center(
-                                        child: CircularProgressIndicator()));
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                // showDialog(
+                                //     context: context,
+                                //     barrierDismissible: false,
+                                //     builder: (context) => Center(
+                                //         child: CircularProgressIndicator()));
 
                                 bool userNameIsAvailable = await AuthServices()
                                     .checkUserNameAvailability(userName)
                                     .catchError((e) {
-                                  Navigator.pop(context);
+                                  setState(() {
+                                    isLoading = false;
+                                  });
                                   final SnackBar snackbar = SnackBar(
                                     content: Text(e.message),
                                   );
@@ -340,8 +346,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
                                 if (userNameIsAvailable != null &&
                                     !userNameIsAvailable) {
-                                  Navigator.pop(context);
                                   setState(() {
+                                    isLoading = false;
                                     userNameTakenError =
                                         'UserName is taken choose a different one';
                                     emailTakenError = null;
@@ -352,12 +358,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                       .registerWithEmailAndPassword(
                                           email, password)
                                       .then((value) {
-                                    Navigator.pop(context);
                                     widget.toggleView(AuthPageEnum.Verify,
                                         userName, fullName, password);
                                   }).catchError((error) {
-                                    //TODO::How to deal with signed up but not verified emails
-                                    Navigator.pop(context);
+                                    //TODO:: deal with signed up but not verified emails
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                     if (error.code == "email-already-in-use") {
                                       setState(() {
                                         emailTakenError =
@@ -405,11 +412,16 @@ class _SignUpPageState extends State<SignUpPage> {
                               widget.height / 100,
                               widget.width / 4,
                               widget.height / 100),
-                          child: Text('Sign Up',
-                              style: TextStyle(
-                                fontSize: widget.height / 30,
-                                fontWeight: FontWeight.bold,
-                              )),
+                          child: isLoading
+                              ? CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white),
+                                )
+                              : Text('Sign Up',
+                                  style: TextStyle(
+                                    fontSize: widget.height / 30,
+                                    fontWeight: FontWeight.bold,
+                                  )),
                         ),
                         alignment: Alignment.bottomCenter,
                       ),

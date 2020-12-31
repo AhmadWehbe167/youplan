@@ -12,7 +12,7 @@ class _RequestsPageState extends State<RequestsPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 1,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
