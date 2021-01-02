@@ -5,7 +5,7 @@ const Color turquoise = Color(0xff4adddd);
 const Color logoGreen = Color(0xff77a93a);
 const Color logoBlue = Color(0xff0071bd);
 const Color logoViolet = Color(0xff814cce);
-const Color myOrange = Color(0xFFFE8853);
+const Color Orange = Color(0xFFFD8256);
 const Color navy = Color(0xFF00416A);
 const Color lightNavy = Color(0xff005e74);
 const List<Color> orangeGradients = [
@@ -21,12 +21,13 @@ const List<Color> WhiteGradients = [
 const List<Color> aquaGradients = [navy, lightNavy];
 
 const TextStyle kTitleText =
-    TextStyle(color: Colors.white, fontFamily: 'Lobster', fontSize: 25);
+    TextStyle(color: Colors.white, fontFamily: 'Lobster', fontSize: 30);
 const TextStyle kButtonText = TextStyle(color: Colors.white, fontSize: 25);
 const TextStyle kLabelStyle = TextStyle(
   fontSize: 25,
   fontWeight: FontWeight.bold,
 );
+final Color headerBottomColor = Color(0xFF095182);
 const TextStyle kUnselectedLabelStyle = TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.bold,

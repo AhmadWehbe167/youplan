@@ -28,6 +28,7 @@ class _PlansHomePageState extends State<PlansHomePage> {
   final globalKey = GlobalKey<ScaffoldState>();
   var loading = true;
   bool isConnected = true;
+  final Color background = Color(0xFF043F6B);
 
   getConnection() async {
     isConnected = await checkConnection();
@@ -79,11 +80,11 @@ class _PlansHomePageState extends State<PlansHomePage> {
 
   @override
   Widget build(BuildContext context) {
-//    final double height = MediaQuery.of(context).size.height;
+    final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     final user = Provider.of<Muser>(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: background,
       key: globalKey,
       body: loading
           ? Container()
@@ -123,34 +124,39 @@ class _PlansHomePageState extends State<PlansHomePage> {
                       );
                     } else if (snapshot.data['plans'].length == 0) {
                       return Center(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                              'You Have No',
-                              style: TextStyle(
-                                fontFamily: 'ConcertOne',
-                                fontSize: width / 8,
-                                color: lightNavy,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: height * 0.4,
+                              width: width * 0.9,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('images/NoPlan.png'),
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             ),
-                          ),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                              'Plans',
+                            Text(
+                              'No Plans Yet Create One',
                               style: TextStyle(
-                                fontFamily: 'ArchitectsDaughter',
-                                fontSize: width / 8,
-                                fontWeight: FontWeight.bold,
-                                color: lightNavy,
+                                color: Color(0xFF9CC3CC),
+                                fontSize: width * 0.075,
                               ),
                             ),
-                          ),
-                        ],
-                      ));
+                            Text(
+                              'and Get Started',
+                              style: TextStyle(
+                                color: Color(0xFF9CC3CC),
+                                fontSize: width * 0.075,
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.12,
+                            ),
+                          ],
+                        ),
+                      );
                     } else {
                       var userDoc = snapshot.data['plans'];
                       return ListView.builder(

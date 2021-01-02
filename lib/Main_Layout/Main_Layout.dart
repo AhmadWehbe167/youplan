@@ -3,7 +3,6 @@ import 'package:youplan/Algolia_Search/Search_Users_Page.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/Home_Package/Home_Page.dart';
 import 'package:youplan/Profile/Profile_Page.dart';
-import 'package:youplan/Requests/Requests_Page.dart';
 
 class MainPageLayout extends StatefulWidget {
   final String userId;
@@ -31,7 +30,6 @@ class _MainPageLayoutState extends State<MainPageLayout> {
     final List<Widget> _widgetOptions = <Widget>[
       HomePage(),
       SearchUsersBar(),
-      RequestsPage(),
       HomePage(),
       ProfilePage(
         userID: widget.userId,
@@ -41,12 +39,12 @@ class _MainPageLayoutState extends State<MainPageLayout> {
       backgroundColor: Colors.white,
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: lightNavy,
-        unselectedItemColor: Colors.white,
-        selectedIconTheme: IconThemeData(color: Colors.redAccent),
+        backgroundColor: headerBottomColor,
+        unselectedItemColor: Color(0xFF71A5B2),
+        selectedIconTheme: IconThemeData(color: Orange),
         selectedLabelStyle: TextStyle(color: Colors.white),
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.redAccent,
+        selectedItemColor: Orange,
         onTap: _onItemTapped,
         type: BottomNavigationBarType
             .fixed, // so that we can display more than 3 items in navigation bar
@@ -58,10 +56,6 @@ class _MainPageLayoutState extends State<MainPageLayout> {
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Requests',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.memory),

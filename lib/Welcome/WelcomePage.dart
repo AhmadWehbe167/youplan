@@ -130,7 +130,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(width / 2),
-                        side: BorderSide(color: myOrange, width: width / 370)),
+                        side: BorderSide(color: Orange, width: width / 370)),
                     textColor: Color(0xFFFE8853),
                     color: Colors.white,
                     padding: EdgeInsets.fromLTRB(
