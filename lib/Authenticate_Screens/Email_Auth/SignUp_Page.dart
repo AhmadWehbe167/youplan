@@ -300,7 +300,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             text: 'terms and conditions',
                             style: TextStyle(
                               fontSize: widget.width / 28,
-                              color: myOrange,
+                              color: Orange,
                               fontWeight: FontWeight.bold,
                             ))
                       ]),
@@ -317,7 +317,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.circular(widget.width / 15),
-                              side: BorderSide(color: myOrange)),
+                              side: BorderSide(color: Orange)),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               bool isConnected = await checkConnection();
@@ -406,7 +406,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             }
                           },
                           textColor: Colors.white,
-                          color: myOrange,
+                          color: Orange,
                           padding: EdgeInsets.fromLTRB(
                               widget.width / 4,
                               widget.height / 100,
@@ -446,7 +446,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               'Sign In',
                               style: TextStyle(
                                   fontSize: widget.width / 21,
-                                  color: myOrange,
+                                  color: Orange,
                                   fontWeight: FontWeight.bold),
                             ),
                           )

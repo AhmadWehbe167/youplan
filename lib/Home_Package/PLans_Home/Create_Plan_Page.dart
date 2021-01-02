@@ -102,7 +102,7 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
                 isDense: true,
                 isExpanded: true,
                 underline: Container(),
-                dropdownColor: myOrange,
+                dropdownColor: Orange,
                 items: planType,
                 value: type,
                 onChanged: (String newValue) {
