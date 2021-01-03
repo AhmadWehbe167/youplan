@@ -26,9 +26,8 @@ class PlansHomePage extends StatefulWidget {
 
 class _PlansHomePageState extends State<PlansHomePage> {
   final globalKey = GlobalKey<ScaffoldState>();
-  var loading = true;
+  var loading = false;
   bool isConnected = true;
-  final Color background = Color(0xFF043F6B);
 
   getConnection() async {
     isConnected = await checkConnection();
@@ -71,11 +70,6 @@ class _PlansHomePageState extends State<PlansHomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     getConnection();
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        loading = false;
-      });
-    });
   }
 
   @override
