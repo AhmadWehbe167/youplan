@@ -127,13 +127,16 @@ class _PlansHomePageState extends State<PlansHomePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              height: height * 0.4,
-                              width: width * 0.9,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('images/NoPlan.png'),
-                                  fit: BoxFit.contain,
+                            Opacity(
+                              opacity: 0.85,
+                              child: Container(
+                                height: height * 0.4,
+                                width: width * 0.9,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage('images/NoPlan.png'),
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
                               ),
                             ),
