@@ -16,11 +16,11 @@ class DisplaySearchResult extends StatelessWidget {
       child: Column(children: <Widget>[
         Text(
           fullName ?? "",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
         Text(
           userName ?? "",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
         Divider(
           color: Colors.black,

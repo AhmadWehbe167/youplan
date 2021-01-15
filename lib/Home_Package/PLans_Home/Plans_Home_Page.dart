@@ -3,13 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
-import 'package:youplan/Home_Package/PLans_Home/Attendees_Check_Box.dart';
-import 'package:youplan/Home_Package/PLans_Home/Planfunctions.dart';
 import 'package:youplan/Home_Package/Refactored_Widgets/plan_card.dart';
 import 'package:youplan/Model/User.dart';
 import 'package:youplan/Model/Users_Data.dart';
 import 'package:youplan/services/ConnectionCheck.dart';
 import 'package:youplan/services/Plan_Requests_database.dart';
+
+import 'Attendees_Check_Box.dart';
+import 'Planfunctions.dart';
 
 class PlansHomePage extends StatefulWidget {
   final UserData friend;
@@ -26,9 +27,8 @@ class PlansHomePage extends StatefulWidget {
 
 class _PlansHomePageState extends State<PlansHomePage> {
   final globalKey = GlobalKey<ScaffoldState>();
-  var loading = true;
+  var loading = false;
   bool isConnected = true;
-  final Color background = Color(0xFF043F6B);
 
   getConnection() async {
     isConnected = await checkConnection();
@@ -67,15 +67,19 @@ class _PlansHomePageState extends State<PlansHomePage> {
     }
   }
 
+  bool hasField(AsyncSnapshot snap, String field) {
+    try {
+      var a = snap.data[field];
+      return true;
+    } catch (Error) {
+      return false;
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     getConnection();
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        loading = false;
-      });
-    });
   }
 
   @override
@@ -107,7 +111,7 @@ class _PlansHomePageState extends State<PlansHomePage> {
                       .doc(user.uid)
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
+                    if (!snapshot.hasData || !hasField(snapshot, 'plans')) {
                       return Center(
                         child: FittedBox(
                           fit: BoxFit.contain,
@@ -122,13 +126,17 @@ class _PlansHomePageState extends State<PlansHomePage> {
                           ),
                         ),
                       );
-                    } else if (snapshot.data['plans'].length == 0) {
+                    } else if (hasField(snapshot, 'plans') &&
+                        snapshot.data['plans'].length == 0) {
                       return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
                             Opacity(
-                              opacity: 0.85,
+                              opacity: 0.75,
                               child: Container(
                                 height: height * 0.4,
                                 width: width * 0.9,
@@ -140,18 +148,24 @@ class _PlansHomePageState extends State<PlansHomePage> {
                                 ),
                               ),
                             ),
-                            Text(
-                              'No Plans Yet Create One',
-                              style: TextStyle(
-                                color: Color(0xFF9CC3CC),
-                                fontSize: width * 0.075,
+                            Opacity(
+                              opacity: 0.75,
+                              child: Text(
+                                'No Plans Yet Create One',
+                                style: TextStyle(
+                                  color: Color(0xFF9CC3CC),
+                                  fontSize: width * 0.075,
+                                ),
                               ),
                             ),
-                            Text(
-                              'and Get Started',
-                              style: TextStyle(
-                                color: Color(0xFF9CC3CC),
-                                fontSize: width * 0.075,
+                            Opacity(
+                              opacity: 0.75,
+                              child: Text(
+                                'and Get Started',
+                                style: TextStyle(
+                                  color: Color(0xFF9CC3CC),
+                                  fontSize: width * 0.075,
+                                ),
                               ),
                             ),
                             SizedBox(
