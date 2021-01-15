@@ -58,7 +58,7 @@ class _SearchUsersBarState extends State<SearchUsersBar> {
               style: new TextStyle(color: Colors.white, fontSize: width * 0.06),
               decoration: new InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Search for your friends ...',
+                  hintText: 'Search ...',
                   hintStyle: TextStyle(color: Color(0xFFD9DFE3)),
                   prefixIcon:
                       const Icon(Icons.search, color: Color(0xFFD9DFE3)))),
@@ -67,15 +67,52 @@ class _SearchUsersBarState extends State<SearchUsersBar> {
               stream: Stream.fromFuture(_operation(_searchTerm)),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Container(
-                    width: width * 0.8,
-                    height: height * 0.5,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/SearchPage.png'),
-                        fit: BoxFit.contain,
+                  return ListView(
+                    children: [
+                      SizedBox(
+                        height: height * 0.085,
                       ),
-                    ),
+                      Opacity(
+                        opacity: 0.75,
+                        child: Container(
+                          width: width * 0.7,
+                          height: height * 0.45,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('images/SearchPage.png'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.025,
+                      ),
+                      Opacity(
+                        child: Center(
+                          child: Text(
+                            'Find your friends and',
+                            style: TextStyle(
+                              color: Color(0xFF9CC3CC),
+                              fontSize: width * 0.075,
+                            ),
+                          ),
+                        ),
+                        opacity: 0.75,
+                      ),
+                      Opacity(
+                        child: Center(
+                          child: Text(
+                            'add them',
+                            style: TextStyle(
+                              color: Color(0xFF9CC3CC),
+                              fontSize: width * 0.075,
+                            ),
+                          ),
+                        ),
+                        opacity: 0.75,
+                      ),
+                    ],
                   );
                 } else {
                   List<AlgoliaObjectSnapshot> currSearchStuff = snapshot.data;

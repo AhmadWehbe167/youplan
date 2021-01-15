@@ -121,8 +121,11 @@ class _PlansHomePageState extends State<PlansHomePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
                             Opacity(
-                              opacity: 0.85,
+                              opacity: 0.75,
                               child: Container(
                                 height: height * 0.4,
                                 width: width * 0.9,
@@ -134,18 +137,24 @@ class _PlansHomePageState extends State<PlansHomePage> {
                                 ),
                               ),
                             ),
-                            Text(
-                              'No Plans Yet Create One',
-                              style: TextStyle(
-                                color: Color(0xFF9CC3CC),
-                                fontSize: width * 0.075,
+                            Opacity(
+                              opacity: 0.75,
+                              child: Text(
+                                'No Plans Yet Create One',
+                                style: TextStyle(
+                                  color: Color(0xFF9CC3CC),
+                                  fontSize: width * 0.075,
+                                ),
                               ),
                             ),
-                            Text(
-                              'and Get Started',
-                              style: TextStyle(
-                                color: Color(0xFF9CC3CC),
-                                fontSize: width * 0.075,
+                            Opacity(
+                              opacity: 0.75,
+                              child: Text(
+                                'and Get Started',
+                                style: TextStyle(
+                                  color: Color(0xFF9CC3CC),
+                                  fontSize: width * 0.075,
+                                ),
                               ),
                             ),
                             SizedBox(
