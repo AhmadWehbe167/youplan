@@ -3,13 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
-import 'package:youplan/Home_Package/PLans_Home/Attendees_Check_Box.dart';
-import 'package:youplan/Home_Package/PLans_Home/Planfunctions.dart';
 import 'package:youplan/Home_Package/Refactored_Widgets/plan_card.dart';
 import 'package:youplan/Model/User.dart';
 import 'package:youplan/Model/Users_Data.dart';
 import 'package:youplan/services/ConnectionCheck.dart';
 import 'package:youplan/services/Plan_Requests_database.dart';
+
+import 'Attendees_Check_Box.dart';
+import 'Planfunctions.dart';
 
 class PlansHomePage extends StatefulWidget {
   final UserData friend;
@@ -66,6 +67,15 @@ class _PlansHomePageState extends State<PlansHomePage> {
     }
   }
 
+  bool hasField(AsyncSnapshot snap, String field) {
+    try {
+      var a = snap.data[field];
+      return true;
+    } catch (Error) {
+      return false;
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -101,7 +111,7 @@ class _PlansHomePageState extends State<PlansHomePage> {
                       .doc(user.uid)
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
+                    if (!snapshot.hasData || !hasField(snapshot, 'plans')) {
                       return Center(
                         child: FittedBox(
                           fit: BoxFit.contain,
@@ -116,7 +126,8 @@ class _PlansHomePageState extends State<PlansHomePage> {
                           ),
                         ),
                       );
-                    } else if (snapshot.data['plans'].length == 0) {
+                    } else if (hasField(snapshot, 'plans') &&
+                        snapshot.data['plans'].length == 0) {
                       return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

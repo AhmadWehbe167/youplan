@@ -19,6 +19,8 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
   String userName;
   String fullName;
   bool loading = false;
+  bool codeSent = false;
+  String verificationID;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey1 = GlobalKey<FormState>();
 
@@ -94,88 +96,125 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
                   SizedBox(
                     height: height * 0.2,
                   ), //10%
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        width * 0.05, 0, width * 0.05, height / 100),
-                    child: IntlPhoneField(
-                      autoValidate: false,
-                      keyboardType: TextInputType.phone,
-                      onChanged: (val) {
-                        setState(() {
-                          phoneNumber = val.completeNumber;
-                        });
-                      },
-                      validator: (String val) {
-                        if (val.length == 0) {
-                          return 'This is mandatory';
-                        } else if (val.length < 7) {
-                          return 'should be at least 7 digits';
-                        } else if (val.length > 15) {
-                          return 'should not be more than 15 digits';
-                        } else if (!isNumeric(val)) {
-                          return 'only numbers allowed';
-                        } else {
-                          return null;
-                        }
-                      },
-                      countryCodeTextColor: Colors.grey[700],
-                      dropDownArrowColor: Colors.grey[700],
-                      initialCountryCode: "LB",
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(height / 50),
-                        errorStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.redAccent,
-                          fontSize: height * 0.018,
-                        ),
-                        hintText: "Phone Number",
-                        hintStyle: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: width * 0.05,
-                        ),
-                        suffixIcon: null,
-                        isDense: true,
-                        fillColor: Colors.white,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                new BorderRadius.circular(height / 50),
-                            borderSide: BorderSide(
+                  !codeSent
+                      ? Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              width * 0.05, 0, width * 0.05, height / 100),
+                          child: IntlPhoneField(
+                            autoValidate: false,
+                            keyboardType: TextInputType.phone,
+                            onChanged: (val) {
+                              setState(() {
+                                phoneNumber = val.completeNumber;
+                              });
+                            },
+                            validator: (String val) {
+                              if (val.length == 0) {
+                                return 'This is mandatory';
+                              } else if (val.length < 7) {
+                                return 'should be at least 7 digits';
+                              } else if (val.length > 15) {
+                                return 'should not be more than 15 digits';
+                              } else if (!isNumeric(val)) {
+                                return 'only numbers allowed';
+                              } else {
+                                return null;
+                              }
+                            },
+                            countryCodeTextColor: Colors.grey[700],
+                            dropDownArrowColor: Colors.grey[700],
+                            initialCountryCode: "LB",
+                            dropdownDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
-                              width: 2,
-                            )),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                new BorderRadius.circular(height / 50),
-                            borderSide: BorderSide(
-                              color: navy,
-                              width: 2,
-                            )),
-                        border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(height / 50),
-                          borderSide: new BorderSide(
-                            color: navy,
-                            width: 2,
+                            ),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(height / 50),
+                              errorStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent,
+                                fontSize: height * 0.018,
+                              ),
+                              hintText: "Phone Number",
+                              hintStyle: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: width * 0.05,
+                              ),
+                              suffixIcon: null,
+                              isDense: true,
+                              fillColor: Colors.white,
+                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(height / 50),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                    width: 2,
+                                  )),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(height / 50),
+                                  borderSide: BorderSide(
+                                    color: navy,
+                                    width: 2,
+                                  )),
+                              border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(height / 50),
+                                borderSide: new BorderSide(
+                                  color: navy,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              width * 0.05, 0, width * 0.05, height / 100),
+                          child: AuthTextField(
+                            labelTitle: "Code",
+                            validate: (val) {
+                              if (val.length != 0) {
+                                return 'Code is 6 digits long';
+                              } else if (!isNumeric(val)) {
+                                return 'Code is only numbers';
+                              } else {
+                                return null;
+                              }
+                            },
+                            obscure: false,
+                            keyboard: TextInputType.phone,
+                            onChan: (val) {
+                              smsCode = val;
+                            },
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      "You will receive a 6 digits code through\n"
-                      "a SMS to verify your phone number.",
-                      style: TextStyle(
-                        color: Colors.grey[300],
-                        fontSize: width * 0.042,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ),
+                  !codeSent
+                      ? Center(
+                          child: Text(
+                            "You will receive a 6 digits code through\n"
+                            "a SMS to verify your phone number.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.grey[300],
+                              fontSize: width * 0.042,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        )
+                      : Center(
+                          child: Text(
+                            "Enter the code you received\n"
+                            "through an SMS please",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.grey[300],
+                              fontSize: width * 0.042,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
                   SizedBox(
                     height: height * 0.08,
                   ), //10%
@@ -203,161 +242,131 @@ class _PhoneLogInPageState extends State<PhoneLogInPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         onPressed: () async {
-                          if (_formKey1.currentState.validate()) {
-                            bool isConnected = await checkConnection();
-                            if (isConnected) {
-                              setState(() {
-                                loading = true;
-                              });
+                          if (codeSent) {
+                            PhoneAuthCredential phoneAuthCredential =
+                                PhoneAuthProvider.credential(
+                              verificationId: verificationID,
+                              smsCode: smsCode,
+                            );
+                            // Sign the user in (or link) with the credential
+                            await FirebaseAuth.instance
+                                .signInWithCredential(phoneAuthCredential)
+                                .catchError((onError) {
+                              print(onError.toString());
+                            });
+                          } else {
+                            if (_formKey1.currentState.validate()) {
+                              bool isConnected = await checkConnection();
+                              if (isConnected) {
+                                setState(() {
+                                  loading = true;
+                                });
 
-                              final HttpsCallable callable = FirebaseFunctions
-                                  .instance
-                                  .httpsCallable('checkIfPhoneExists');
-                              dynamic resp =
-                                  await callable.call({'phone': phoneNumber});
-                              if (resp.data) {
-                                await FirebaseAuth.instance.verifyPhoneNumber(
-                                  phoneNumber: phoneNumber,
-                                  timeout: const Duration(seconds: 60),
-                                  verificationCompleted:
-                                      (PhoneAuthCredential credential) async {
-                                    Navigator.pop(context);
-
-                                    //User with phone number already exists
-                                    await FirebaseAuth.instance
-                                        .signInWithCredential(credential)
-                                        .catchError((onError) {
-                                      print(onError.toString());
-                                    });
-                                  },
-                                  verificationFailed:
-                                      (FirebaseAuthException e) {
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                    if (e.code == 'invalid-phone-number') {
-                                      final SnackBar snackBar = SnackBar(
-                                        content: Text(
-                                          "The provided phone number is not valid!",
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                      );
-                                      _scaffoldKey.currentState
-                                          .showSnackBar(snackBar);
-                                    } else {
-                                      final SnackBar snackBar = SnackBar(
-                                        content: Text(
-                                          "An Error occurred please try again! ${e.message}",
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                      );
-                                      _scaffoldKey.currentState
-                                          .showSnackBar(snackBar);
-                                    }
-                                  },
-                                  codeSent: (String verificationId,
-                                      int resendToken) async {
-                                    // Update the UI - wait for the user to enter the SMS code
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                    await showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (context) => WillPopScope(
-                                        onWillPop: () async => false,
-                                        child: AlertDialog(
-                                          title: Text("Enter Code"),
-                                          content: TextField(
-                                            decoration: InputDecoration(
-                                                labelText: "Code"),
-                                            keyboardType: TextInputType.phone,
-                                            onChanged: (String code) {
-                                              smsCode = code;
-                                            },
+                                final HttpsCallable callable = FirebaseFunctions
+                                    .instance
+                                    .httpsCallable('checkIfPhoneExists');
+                                dynamic resp =
+                                    await callable.call({'phone': phoneNumber});
+                                if (resp.data) {
+                                  await FirebaseAuth.instance.verifyPhoneNumber(
+                                    phoneNumber: phoneNumber,
+                                    timeout: const Duration(seconds: 60),
+                                    verificationCompleted:
+                                        (PhoneAuthCredential credential) async {
+                                      //User with phone number already exists
+                                      await FirebaseAuth.instance
+                                          .signInWithCredential(credential)
+                                          .catchError((onError) {
+                                        print(onError.toString());
+                                      });
+                                    },
+                                    verificationFailed:
+                                        (FirebaseAuthException e) {
+                                      setState(() {
+                                        loading = false;
+                                      });
+                                      if (e.code == 'invalid-phone-number') {
+                                        final SnackBar snackBar = SnackBar(
+                                          content: Text(
+                                            "The provided phone number is not valid!",
+                                            style: TextStyle(color: Colors.red),
                                           ),
+                                        );
+                                        _scaffoldKey.currentState
+                                            .showSnackBar(snackBar);
+                                      } else {
+                                        final SnackBar snackBar = SnackBar(
+                                          content: Text(
+                                            "An Error occurred please try again! ${e.message}",
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        );
+                                        _scaffoldKey.currentState
+                                            .showSnackBar(snackBar);
+                                      }
+                                    },
+                                    codeSent: (String verificationId,
+                                        int resendToken) async {
+                                      // Update the UI - wait for the user to enter the SMS code
+                                      setState(() {
+                                        loading = false;
+                                        codeSent = true;
+                                        verificationID = verificationId;
+                                      });
+                                    },
+                                    codeAutoRetrievalTimeout:
+                                        (String verificationId) async {
+                                      setState(() {
+                                        loading = false;
+                                      });
+                                      await showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (context) => AlertDialog(
+                                          title: Text("Error!"),
+                                          content: Text(
+                                              "An Error occurred. Please Try Again!"),
                                           actions: [
-                                            FlatButton(
-                                                onPressed: () async {
-                                                  // Create a PhoneAuthCredential with the code
-                                                  PhoneAuthCredential
-                                                      phoneAuthCredential =
-                                                      PhoneAuthProvider
-                                                          .credential(
-                                                              verificationId:
-                                                                  verificationId,
-                                                              smsCode: smsCode);
-                                                  // Sign the user in (or link) with the credential
-                                                  Navigator.pop(context);
-                                                  await FirebaseAuth.instance
-                                                      .signInWithCredential(
-                                                          phoneAuthCredential)
-                                                      .catchError((onError) {
-                                                    print(onError.toString());
-                                                  });
-                                                },
-                                                child: Text("Done")),
                                             FlatButton(
                                                 onPressed: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text("Cancel")),
+                                                child: Text("OK")),
                                           ],
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  codeAutoRetrievalTimeout:
-                                      (String verificationId) async {
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                    await showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (context) => AlertDialog(
-                                        title: Text("Error!"),
-                                        content: Text(
-                                            "An Error occurred. Please Try Again!"),
-                                        actions: [
-                                          FlatButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text("OK")),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  await showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) => AlertDialog(
+                                      title: Text("Not Registered!"),
+                                      content: Text(
+                                          "There is no account with this phone number. "
+                                          "So please Sign Up for an account first!"),
+                                      actions: [
+                                        FlatButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("OK")),
+                                      ],
+                                    ),
+                                  );
+                                }
                               } else {
-                                setState(() {
-                                  loading = false;
-                                });
-                                await showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) => AlertDialog(
-                                    title: Text("Not Registered!"),
-                                    content: Text(
-                                        "There is no account with this phone number. "
-                                        "So please Sign Up for an account first!"),
-                                    actions: [
-                                      FlatButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text("OK")),
-                                    ],
-                                  ),
+                                final SnackBar snackbar = SnackBar(
+                                  content: Text(
+                                      "Check your internet connection and try again"),
                                 );
+                                _scaffoldKey.currentState
+                                    .showSnackBar(snackbar);
                               }
-                            } else {
-                              final SnackBar snackbar = SnackBar(
-                                content: Text(
-                                    "Check your internet connection and try again"),
-                              );
-                              _scaffoldKey.currentState.showSnackBar(snackbar);
                             }
                           }
                         },
