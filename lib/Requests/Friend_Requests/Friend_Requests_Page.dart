@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:youplan/Constants_and_Data/Constants.dart';
+import 'package:youplan/Home_Package/PLans_Home/Planfunctions.dart';
 import 'package:youplan/Model/User.dart';
 import 'package:youplan/Profile/Profile_Page.dart';
 import 'package:youplan/services/ConnectionCheck.dart';
@@ -26,12 +28,15 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     final globalKey = GlobalKey<ScaffoldState>();
     final user = Provider.of<Muser>(context);
     return !isConnected
         ? Scaffold(
             backgroundColor: Colors.white,
             body: Center(
+              //TODO:: deal with connection error
               child: Text(
                 'Page Not Found. Check your internet Connection and try again',
                 style: TextStyle(fontSize: 20),
@@ -39,6 +44,7 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
             ),
           )
         : Scaffold(
+            backgroundColor: background,
             key: globalKey,
             body: StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -48,12 +54,64 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Scaffold(
+                      //TODO::deal with Loading
                       backgroundColor: Colors.white,
                       body: Center(
                         child: Text(
                           'Loading ... ',
                           style: TextStyle(fontSize: 20),
                         ),
+                      ),
+                    );
+                  } else if (hasField(snapshot, 'friends') &&
+                      snapshot.data['friends'].length == 0) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: height * 0.05,
+                          ),
+                          Opacity(
+                            opacity: 0.75,
+                            child: Container(
+                              height: height * 0.4,
+                              width: width * 0.9,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('images/NoFrReq.png'),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.02,
+                          ),
+                          Opacity(
+                            opacity: 0.75,
+                            child: Text(
+                              'No friend requests in',
+                              style: TextStyle(
+                                color: Color(0xFF9CC3CC),
+                                fontSize: width * 0.075,
+                              ),
+                            ),
+                          ),
+                          Opacity(
+                            opacity: 0.75,
+                            child: Text(
+                              'the meantime',
+                              style: TextStyle(
+                                color: Color(0xFF9CC3CC),
+                                fontSize: width * 0.075,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.12,
+                          ),
+                        ],
                       ),
                     );
                   } else {

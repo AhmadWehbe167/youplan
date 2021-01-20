@@ -47,6 +47,7 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Muser>(context);
+    var size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
       child: Scaffold(
@@ -58,7 +59,10 @@ class _CreatePlanPageState extends State<CreatePlanPage> {
           elevation: 0,
           title: Text(
             'Create Plan',
-            style: kTitleText,
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Lobster',
+                fontSize: size.width * 0.1),
           ),
           centerTitle: true,
         ),

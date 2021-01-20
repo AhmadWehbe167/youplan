@@ -2,22 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:youplan/Algolia_Search/Search_Users_Page.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/Home_Package/Home_Page.dart';
-import 'package:youplan/Profile/Profile_Page.dart';
+import 'package:youplan/Memories/Memories.dart';
+import 'package:youplan/Requests/Requests_Page.dart';
 
 class MainPageLayout extends StatefulWidget {
-  final String userId;
-  MainPageLayout({this.userId});
   @override
   _MainPageLayoutState createState() => _MainPageLayoutState();
 }
 
 class _MainPageLayoutState extends State<MainPageLayout> {
   int _selectedIndex = 0;
-  String userID;
-  static const TextStyle _style = TextStyle(
-    fontFamily: 'Lobster',
-    fontSize: 70,
-  );
 
   void _onItemTapped(int index) {
     setState(() {
@@ -30,14 +24,14 @@ class _MainPageLayoutState extends State<MainPageLayout> {
     final List<Widget> _widgetOptions = <Widget>[
       HomePage(),
       SearchUsersBar(),
-      HomePage(),
-      ProfilePage(
-        userID: widget.userId,
-      ),
+      RequestsPage(),
+      MemoriesPage(),
     ];
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: headerBottomColor,
         unselectedItemColor: Color(0xFF71A5B2),
@@ -58,12 +52,12 @@ class _MainPageLayoutState extends State<MainPageLayout> {
             label: 'Search',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.memory),
-            label: 'Memories',
+            icon: Icon(Icons.notifications),
+            label: 'Requests',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_sharp),
-            label: 'Profile',
+            icon: Icon(Icons.memory),
+            label: 'Memories',
           ),
         ],
       ),

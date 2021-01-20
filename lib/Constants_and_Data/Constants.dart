@@ -20,8 +20,6 @@ const List<Color> WhiteGradients = [
 ];
 const List<Color> aquaGradients = [navy, lightNavy];
 const Color background = Color(0xFF043F6B);
-const TextStyle kTitleText =
-    TextStyle(color: Colors.white, fontFamily: 'Lobster', fontSize: 30);
 const TextStyle kButtonText = TextStyle(color: Colors.white, fontSize: 25);
 const TextStyle kLabelStyle = TextStyle(
   fontSize: 25,
