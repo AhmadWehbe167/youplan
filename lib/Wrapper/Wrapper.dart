@@ -14,12 +14,6 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Muser>(context);
-    if (user != null) {
-      print("User verification value is: ${user.isEmailVerified}");
-      if (FirebaseAuth.instance.currentUser.phoneNumber != null) {
-        print("User phone number value is not null");
-      }
-    }
     if ((user != null && user.isEmailVerified) ||
         (user != null &&
             FirebaseAuth.instance.currentUser.phoneNumber != null &&
