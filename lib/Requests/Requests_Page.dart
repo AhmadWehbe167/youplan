@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/Main_Layout/My_Drawer.dart';
 
 import 'Friend_Requests/Friend_Requests_Page.dart';
+import 'PLan_Requests/PLan_Requests_Page.dart';
 
 class RequestsPage extends StatefulWidget {
   @override
@@ -11,47 +13,48 @@ class RequestsPage extends StatefulWidget {
 class _RequestsPageState extends State<RequestsPage> {
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return DefaultTabController(
-      length: 1,
+      length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black),
-          backgroundColor: Colors.white,
-          elevation: 0,
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+          backgroundColor: headerBottomColor,
+          elevation: 5,
           title: Text(
             'Requests',
             style: TextStyle(
-                color: Colors.black, fontFamily: 'Lobster', fontSize: 30),
+                color: Colors.white,
+                fontFamily: 'Lobster',
+                fontSize: size.width * 0.09),
           ),
           centerTitle: true,
           bottom: TabBar(
-            isScrollable: true,
-            labelColor: Colors.black,
+            labelColor: Colors.white,
             labelStyle: TextStyle(
-              fontSize: 23,
+              fontSize: size.width * 0.07,
               fontWeight: FontWeight.bold,
             ),
-            labelPadding: EdgeInsets.fromLTRB(10, 0, 5, 5),
-            unselectedLabelColor: Colors.grey,
-            unselectedLabelStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            indicatorColor: Colors.white,
+            labelPadding: EdgeInsets.only(bottom: size.width * 0.015),
+            unselectedLabelColor: Colors.grey[300],
             tabs: [
               Text(
-                'Friend Requests',
+                'Friends',
               ),
-              // Text(
-              //   'Plan Requests',
-              // ),
+              Text(
+                'Plans',
+              ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
             FriendRequestsPage(),
-            // PlanRequestsPage(),
+            PlanRequestsPage(),
           ],
         ),
         drawer: MyDrawer(),

@@ -67,15 +67,6 @@ class _PlansHomePageState extends State<PlansHomePage> {
     }
   }
 
-  bool hasField(AsyncSnapshot snap, String field) {
-    try {
-      var a = snap.data[field];
-      return true;
-    } catch (Error) {
-      return false;
-    }
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

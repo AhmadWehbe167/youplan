@@ -18,9 +18,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final user = Provider.of<Muser>(context);
-    // final double width = MediaQuery.of(context).size.width;
-    // final double height = MediaQuery.of(context).size.height;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -31,7 +29,10 @@ class _HomePageState extends State<HomePage> {
         elevation: 5,
         title: Text(
           'Plans',
-          style: kTitleText,
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Lobster',
+              fontSize: size.width * 0.09),
         ),
         centerTitle: true,
         actions: [
@@ -39,12 +40,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.filter_list),
             onPressed: () {
               //TODO:Filter results PopUp
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              //TODO: redirect to Requests Page
             },
           ),
         ],

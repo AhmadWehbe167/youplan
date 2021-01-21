@@ -1,85 +1,91 @@
-// import 'package:flutter/material.dart';
-// import 'package:youplan/Memories/Memories_Page.dart';
-//
-// class Memories extends StatefulWidget {
-//   @override
-//   _MemoriesState createState() => _MemoriesState();
-// }
-//
-// class _MemoriesState extends State<Memories> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultTabController(
-//       length: 6,
-//       child: Scaffold(
-//         appBar: AppBar(
-//           iconTheme: IconThemeData(color: Colors.black),
-//           backgroundColor: Colors.white,
-//           elevation: 0,
-//           title: Text(
-//             'Requests',
-//             style: TextStyle(
-//                 color: Colors.black, fontFamily: 'Lobster', fontSize: 30),
-//           ),
-//           centerTitle: true,
-//           bottom: TabBar(
-//             isScrollable: true,
-//             labelColor: Colors.black,
-//             labelStyle: TextStyle(
-//               fontSize: 23,
-//               fontWeight: FontWeight.bold,
-//             ),
-//             labelPadding: EdgeInsets.fromLTRB(10, 0, 5, 5),
-//             unselectedLabelColor: Colors.grey,
-//             unselectedLabelStyle: TextStyle(
-//               fontSize: 20,
-//               fontWeight: FontWeight.bold,
-//             ),
-//             tabs: [
-//               Text(
-//                 'Food & Drink',
-//               ),
-//               Text(
-//                 'Entertainment',
-//               ),
-//               Text(
-//                 'Concerts & Shows',
-//               ),
-//               Text(
-//                 'Cultural',
-//               ),
-//               Text(
-//                 'Challenges',
-//               ),
-//               Text(
-//                 'Other',
-//               ),
-//             ],
-//           ),
-//         ),
-//         body: TabBarView(
-//           children: [
-//             MemoriesPage(
-//               type: 'Food & Drink',
-//             ),
-//             MemoriesPage(
-//               type: 'Entertainment',
-//             ),
-//             MemoriesPage(
-//               type: 'Concerts & Shows',
-//             ),
-//             MemoriesPage(
-//               type: 'Cultural',
-//             ),
-//             MemoriesPage(
-//               type: 'Challenges',
-//             ),
-//             MemoriesPage(
-//               type: 'Other',
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+import 'package:flutter/material.dart';
+import 'package:youplan/Constants_and_Data/Constants.dart';
+import 'package:youplan/Main_Layout/My_Drawer.dart';
+
+class MemoriesPage extends StatefulWidget {
+  @override
+  _MemoriesPageState createState() => _MemoriesPageState();
+}
+
+class _MemoriesPageState extends State<MemoriesPage> {
+  @override
+  Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    return Scaffold(
+      backgroundColor: background,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: headerBottomColor,
+        elevation: 0,
+        title: Text(
+          'Memories',
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Lobster',
+            fontSize: width * 0.09,
+          ),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              //TODO::Filter results
+            },
+          )
+        ],
+      ),
+      drawer: MyDrawer(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: height * 0.1,
+            ),
+            Opacity(
+              opacity: 0.75,
+              child: Container(
+                height: height * 0.4,
+                width: width * 0.8,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('images/Memories.png'),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: height * 0.05,
+            ),
+            Opacity(
+              opacity: 0.75,
+              child: Text(
+                'No memories yet. Complete',
+                style: TextStyle(
+                  color: Color(0xFF9CC3CC),
+                  fontSize: width * 0.07,
+                ),
+              ),
+            ),
+            Opacity(
+              opacity: 0.75,
+              child: Text(
+                'a plan to get one.',
+                style: TextStyle(
+                  color: Color(0xFF9CC3CC),
+                  fontSize: width * 0.07,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: height * 0.12,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

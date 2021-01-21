@@ -18,7 +18,7 @@ class _WrapperState extends State<Wrapper> {
         (user != null &&
             FirebaseAuth.instance.currentUser.phoneNumber != null &&
             FirebaseAuth.instance.currentUser.phoneNumber.isNotEmpty)) {
-      return MainPageLayout(userId: user.uid);
+      return MainPageLayout();
     } else {
       return Authentication();
     }

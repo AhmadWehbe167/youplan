@@ -11,8 +11,6 @@ import 'package:youplan/Profile/Profile_Page.dart';
 import 'AlgoliaSearch.dart';
 
 class SearchUsersBar extends StatefulWidget {
-  SearchUsersBar({Key key}) : super(key: key);
-
   @override
   _SearchUsersBarState createState() => _SearchUsersBarState();
 }
@@ -43,7 +41,10 @@ class _SearchUsersBarState extends State<SearchUsersBar> {
         elevation: 5,
         title: Text(
           'Search',
-          style: kTitleText,
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Lobster',
+              fontSize: width * 0.09),
         ),
         centerTitle: true,
       ),
@@ -86,7 +87,7 @@ class _SearchUsersBarState extends State<SearchUsersBar> {
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.025,
+                        height: height * 0.015,
                       ),
                       Opacity(
                         child: Center(

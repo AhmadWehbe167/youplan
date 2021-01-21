@@ -118,3 +118,12 @@ Future completePlan(
     );
   }
 }
+
+bool hasField(AsyncSnapshot snap, String field) {
+  try {
+    var a = snap.data[field];
+    return true;
+  } catch (Error) {
+    return false;
+  }
+}
