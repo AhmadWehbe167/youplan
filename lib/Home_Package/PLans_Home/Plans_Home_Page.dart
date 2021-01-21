@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/Home_Package/Refactored_Widgets/plan_card.dart';
 import 'package:youplan/Model/User.dart';
-import 'package:youplan/Model/Users_Data.dart';
+import 'package:youplan/Model/User_Data.dart';
 import 'package:youplan/services/ConnectionCheck.dart';
 import 'package:youplan/services/Plan_Requests_database.dart';
 

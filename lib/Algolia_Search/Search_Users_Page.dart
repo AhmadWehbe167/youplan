@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:algolia/algolia.dart';
 import 'package:flutter/material.dart';
-import 'package:youplan/Algolia_Search/Models/Models.dart';
 import 'package:youplan/Algolia_Search/display_Search_results.dart';
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/Main_Layout/My_Drawer.dart';
+import 'package:youplan/Model/SearchModel.dart';
 import 'package:youplan/Profile/Profile_Page.dart';
 
 import 'AlgoliaSearch.dart';
@@ -71,13 +71,12 @@ class _SearchUsersBarState extends State<SearchUsersBar> {
                   return ListView(
                     children: [
                       SizedBox(
-                        height: height * 0.085,
+                        height: height * 0.11,
                       ),
                       Opacity(
                         opacity: 0.75,
                         child: Container(
-                          width: width * 0.7,
-                          height: height * 0.45,
+                          height: height * 0.4,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage('images/SearchPage.png'),
@@ -87,7 +86,7 @@ class _SearchUsersBarState extends State<SearchUsersBar> {
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.015,
+                        height: height * 0.02,
                       ),
                       Opacity(
                         child: Center(
@@ -95,7 +94,7 @@ class _SearchUsersBarState extends State<SearchUsersBar> {
                             'Find your friends and',
                             style: TextStyle(
                               color: Color(0xFF9CC3CC),
-                              fontSize: width * 0.075,
+                              fontSize: width * 0.07,
                             ),
                           ),
                         ),
@@ -107,7 +106,7 @@ class _SearchUsersBarState extends State<SearchUsersBar> {
                             'add them',
                             style: TextStyle(
                               color: Color(0xFF9CC3CC),
-                              fontSize: width * 0.075,
+                              fontSize: width * 0.07,
                             ),
                           ),
                         ),

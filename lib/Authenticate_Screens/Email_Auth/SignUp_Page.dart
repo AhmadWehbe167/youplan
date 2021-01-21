@@ -124,8 +124,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       return 'This is mandatory';
                     } else if (val.length < 3) {
                       return 'UserName should be at least 3 characters';
-                    } else if (val.length > 27) {
-                      return 'UserName should not be more than 27';
+                    } else if (val.length > 24) {
+                      return 'UserName should not be more than 24';
                     } else if (containsWhiteSpaces(val)) {
                       return 'White spaces not allowed';
                     } else if (checkTextNumbers(val)) {
@@ -173,8 +173,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       return 'This is mandatory';
                     } else if (val.length < 4) {
                       return 'Name should be at least 4 characters';
-                    } else if (val.length > 27) {
-                      return 'Name should not be more than 27';
+                    } else if (val.length > 24) {
+                      return 'Name should not be more than 24';
                     } else if (checkText(val)) {
                       return 'use only characters';
                     } else {
@@ -283,6 +283,19 @@ class _SignUpPageState extends State<SignUpPage> {
                       return null;
                     }
                   },
+                  icon: IconButton(
+                    padding: EdgeInsets.fromLTRB(0, 0, widget.width / 100, 0),
+                    icon: Icon(
+                      Icons.remove_red_eye,
+                      color: navy,
+                      size: widget.height / 30,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isObscure = !isObscure;
+                      });
+                    },
+                  ),
                 ),
               ),
               Align(
@@ -325,11 +338,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                // showDialog(
-                                //     context: context,
-                                //     barrierDismissible: false,
-                                //     builder: (context) => Center(
-                                //         child: CircularProgressIndicator()));
 
                                 bool userNameIsAvailable = await AuthServices()
                                     .checkUserNameAvailability(userName)

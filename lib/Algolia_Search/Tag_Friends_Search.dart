@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:youplan/Algolia_Search/AlgoliaSearch.dart';
 import 'package:youplan/Algolia_Search/display_Search_results.dart';
-import 'package:youplan/Model/Users_Data.dart';
+import 'package:youplan/Model/User_Data.dart';
 import 'package:youplan/shared/Shared_functions.dart';
 
 class TagFriendsSearch extends StatefulWidget {
@@ -99,15 +99,8 @@ class _TagFriendsSearchState extends State<TagFriendsSearch> {
                                             receiverId:
                                                 currSearchStuff[index].objectID,
                                             fun: () {
-                                              UserData user = UserData(
-                                                  userName:
-                                                      currSearchStuff[index]
-                                                          .data["userName"],
-                                                  fullName:
-                                                      currSearchStuff[index]
-                                                          .data["fullName"],
-                                                  uid: currSearchStuff[index]
-                                                      .objectID);
+                                              UserData user =
+                                                  UserData(snapshot);
                                               Navigator.pop(context, user);
                                             },
                                           )
