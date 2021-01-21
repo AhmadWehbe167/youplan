@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youplan/Model/Users_Data.dart';
+import 'package:youplan/Model/User_Data.dart';
 
 class DisplaySearchResult extends StatelessWidget {
   final String fullName;

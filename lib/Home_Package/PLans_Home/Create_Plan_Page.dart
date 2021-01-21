@@ -11,7 +11,7 @@ import 'package:youplan/Authenticate_Screens/Auth_Services/RefactoredWidgets_Fun
 import 'package:youplan/Constants_and_Data/Constants.dart';
 import 'package:youplan/Home_Package/PLans_Home/Planfunctions.dart';
 import 'package:youplan/Model/User.dart';
-import 'package:youplan/Model/Users_Data.dart';
+import 'package:youplan/Model/User_Data.dart';
 import 'package:youplan/shared/Shared_functions.dart';
 
 class CreatePlanPage extends StatefulWidget {

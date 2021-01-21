@@ -1,4 +1,4 @@
-import 'package:youplan/Model/Users_Data.dart';
+import 'package:youplan/Model/User_Data.dart';
 
 userExists(String uid, List users) {
   for (int i = 0; i < users.length; i++) {

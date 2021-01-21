@@ -116,23 +116,6 @@ bool checkTextWithSpace(String value) {
   return false;
 }
 
-// bool checkAlphaNumericPass(String value) {
-//   bool alpha = false;
-//   bool numeric = false;
-//   for (int i = 0; i < value.length; i++) {
-//     if (value[i].contains(RegExp('[a-zA-Z]')) && alpha == false) {
-//       alpha = true;
-//     } else if (value[i].contains(RegExp('[0-9]')) && numeric == false) {
-//       numeric = true;
-//     } else if (value[i].contains(RegExp('[a-zA-Z]')) && numeric == true) {
-//       return true;
-//     } else if (value[i].contains(RegExp('[0-9]')) && alpha == true) {
-//       return true;
-//     }
-//   }
-//   return false;
-// }
-
 bool containsWhiteSpaces(String value) {
   for (int i = 0; i < value.length; i++) {
     if (value[i].contains(RegExp(' '))) {

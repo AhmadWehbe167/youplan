@@ -89,6 +89,9 @@ class AuthServices {
       await usersReference.doc(uid).set({
         '$userName': userNameArg,
         '$fullName': fullNameArg,
+        'profile image': null,
+        'plans count': 0,
+        'bio': 'Hello! I am a new user',
       });
       await FirebaseFirestore.instance.collection('Friends').doc(uid).set({
         'friends': [],
